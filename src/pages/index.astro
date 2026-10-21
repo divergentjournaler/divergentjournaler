@@ -1,0 +1,36 @@
+
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BlogFeed from '../components/BlogFeed.astro';
+import settings from '../data/site.settings.data.json';
+import Pagination from '../components/Pagination.astro';
+
+const postFiles = import.meta.glob('../content/posts/**/*.json', {
+  eager: true,
+  import: 'default',
+});
+
+interface Post {
+  metadata: {
+    title: string;
+    slug: string;
+    categorySlug: string;
+    date: string;
+  };
+  html: string;
+}
+
+const allPosts = (Object.values(postFiles) as Post[])
+  .sort((a, b) => b.metadata.date.localeCompare(a.metadata.date));
+
+const totalPages = Math.ceil(
+  allPosts.length / settings.blog.postsPerPage
+);
+
+const posts = allPosts.slice(0, settings.blog.postsPerPage);
+---
+
+<BaseLayout title="Divergent Journaler" description={settings.general.homeDescription}>
+  <BlogFeed posts={posts} />
+<Pagination currentPage={1} totalPages={totalPages} />
+</BaseLayout>

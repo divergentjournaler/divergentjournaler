@@ -1,0 +1,56 @@
+
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogFeed from '../../components/BlogFeed.astro';
+import settings from '../../data/site.settings.data.json';
+import Pagination from '../../components/Pagination.astro';
+
+interface Post {
+  metadata: {
+    title: string;
+    slug: string;
+    categorySlug: string;
+    date: string;
+  };
+  html: string;
+}
+
+export function getStaticPaths() {
+  const postFiles = import.meta.glob('../../content/posts/**/*.json', {
+    eager: true,
+    import: 'default',
+  });
+
+  const posts = (Object.values(postFiles) as Post[])
+    .sort((a, b) => b.metadata.date.localeCompare(a.metadata.date));
+
+  const postsPerPage = settings.blog.postsPerPage;
+  const totalPages = Math.ceil(posts.length / postsPerPage);
+
+  return Array.from({ length: Math.max(0, totalPages - 1) }, (_, index) => {
+    const page = index + 2;
+    const start = (page - 1) * postsPerPage;
+
+    return {
+      params: { page: String(page) },
+      props: {
+        posts: posts.slice(start, start + postsPerPage),
+        page,
+        totalPages,
+      },
+    };
+  });
+}
+
+const { posts, page, totalPages } = Astro.props;
+---
+
+<BaseLayout
+  title={`Page ${page}`}
+  description={`Browse more creative journaling articles, personal reflections, and inspiration from Divergent Journaler. Page ${page}.`}
+>
+  <BlogFeed posts={posts} />
+
+<Pagination currentPage={page} totalPages={totalPages} />
+
+</BaseLayout>

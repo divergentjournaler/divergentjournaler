@@ -1,0 +1,108 @@
+---
+import Header from '../components/Header.astro';
+import Sidebar from '../components/Sidebar.astro';
+import '../styles/style.css';
+import settings from '../data/site.settings.data.json';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  showSidebar?: boolean;
+}
+
+const {
+  title = settings.general.siteTitle,
+  description = settings.general.defaultDescription,
+  showSidebar = settings.layout.showSidebar,
+} = Astro.props;
+
+const canonicalUrl = new URL(
+  Astro.url.pathname,
+  settings.general.siteUrl
+).href;
+
+const seo = settings.seo;
+const light = settings.appearance.light;
+const dark = settings.appearance.dark;
+const defaultTheme = settings.appearance.defaultTheme;
+
+const pageTitle =
+  title === settings.general.siteTitle
+    ? (seo.homeTitleOnly ? '' : 'Home')
+    : title;
+
+const formattedTitle = pageTitle
+  ? seo.titlePosition === 'before'
+    ? `${seo.titleSiteName}${seo.titleSeparator}${pageTitle}`
+    : `${pageTitle}${seo.titleSeparator}${seo.titleSiteName}`
+  : seo.titleSiteName;
+---
+
+
+<html
+  lang="en"
+  data-theme={defaultTheme}
+  style={`
+    --light-bg: ${light.backgroundColor};
+    --light-text: ${light.textColor};
+    --light-accent: ${light.accentColor};
+    --dark-bg: ${dark.backgroundColor};
+    --dark-text: ${dark.textColor};
+    --dark-accent: ${dark.accentColor};
+    
+    --light-link-color: ${light.linkColor};
+    --light-link-hover-color: ${light.linkHoverColor};
+    --dark-link-color: ${dark.linkColor};
+    --dark-link-hover-color: ${dark.linkHoverColor};
+
+    --site-font-family: ${settings.appearance.typography.fontFamily};
+    --site-font-size: ${settings.appearance.typography.fontSize};
+    --site-line-height: ${settings.appearance.typography.lineHeight};
+
+    --nav-font-family: ${settings.appearance.typography.navigation.fontFamily};
+    --nav-font-size: ${settings.appearance.typography.navigation.fontSize};
+    --nav-font-weight: ${settings.appearance.typography.navigation.fontWeight};
+    --nav-letter-spacing: ${settings.appearance.typography.navigation.letterSpacing};
+
+    --title-font-size: ${settings.appearance.typography.siteTitle.fontSize};
+    --title-font-weight: ${settings.appearance.typography.siteTitle.fontWeight};
+    --title-letter-spacing: ${settings.appearance.typography.siteTitle.letterSpacing};
+
+    --tagline-font-size: ${settings.appearance.typography.tagline.fontSize};
+    --tagline-font-weight: ${settings.appearance.typography.tagline.fontWeight};
+    --tagline-letter-spacing: ${settings.appearance.typography.tagline.letterSpacing};
+  `}
+>
+
+  <head>
+    <script is:inline>
+  (() => {
+    const savedTheme = localStorage.getItem("site-theme");
+
+    if (savedTheme === "light" || savedTheme === "dark") {
+      document.documentElement.dataset.theme = savedTheme;
+    }
+  })();
+</script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+   <title>{formattedTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl} />
+  </head>
+
+  <body>
+    <Header />
+
+    <div class:list={['page-layout', { 'no-sidebar': !showSidebar }]}>
+  <main>
+    <slot />
+  </main>
+
+  {showSidebar && <Sidebar />}
+</div>
+<Footer />
+  </body>
+</html>

@@ -1,0 +1,210 @@
+{
+  "1467": {
+    "title": "SarahGanaway.Com",
+    "animation": "slide",
+    "transitionSeconds": 1.0,
+    "intervalSeconds": 3.0,
+    "maxWidth": 400,
+    "height": 400,
+    "imageBehaviour": "natural",
+    "autoplay": true,
+    "loop": true,
+    "pauseOnHover": false,
+    "random": false,
+    "showPagination": true,
+    "hidePagination": true,
+    "hideNavigationButtons": false,
+    "slides": [
+      {
+        "title": "Colorful Line Art Journal Cover",
+        "url": "https://www.sarahganaway.com",
+        "urlTarget": "_blank",
+        "alt": "COLORFUL LINE ART COVER - SARAHGANAWAY.COM",
+        "image": "/wp-content/uploads/2024/09/03-SGAD-COLORFUL.jpg"
+      },
+      {
+        "title": "Vintage Carnival Journal Cover",
+        "url": "https://www.sarahganaway.com",
+        "urlTarget": "_blank",
+        "alt": "VINTAGE CARNIVAL COVER - SARAHGANAWAY.COM",
+        "image": "/wp-content/uploads/2024/09/04-SGAD-CARNIVAL.jpg"
+      },
+      {
+        "title": "The Mom Tarot Journal Cover",
+        "url": "https://www.sarahganaway.com",
+        "urlTarget": "_blank",
+        "alt": "THE MOM TAROT COVER - SARAHGANAWAY.COM",
+        "image": "/wp-content/uploads/2024/09/05-SGAD-MOM.jpg"
+      },
+      {
+        "title": "The Drama Queen Tarot Journal Cover",
+        "url": "https://www.sarahganaway.com",
+        "urlTarget": "_blank",
+        "alt": "THE DRAMA QUEEN TAROT COVER - SARAHGANAWAY.COM",
+        "image": "/wp-content/uploads/2024/09/06-SGAD-DRAMA.jpg"
+      },
+      {
+        "title": "Watercolor Flowers Journal Cover",
+        "url": "https://www.sarahganaway.com",
+        "urlTarget": "_blank",
+        "alt": "WATERCOLOR FLOWERS COVER - SARAHGANAWAY.COM",
+        "image": "/wp-content/uploads/2024/09/07-SGAD-WATERCOLOR.jpg"
+      },
+      {
+        "title": "Girls Rock Journal Cover",
+        "url": "https://www.sarahganaway.com",
+        "urlTarget": "_blank",
+        "alt": "GIRLS ROCK COVER - SARAHGANAWAY.COM",
+        "image": "/wp-content/uploads/2024/09/08-SGAD-GIRLS.jpg"
+      },
+      {
+        "title": "Indian Paintbrush Journal Cover",
+        "url": "https://www.sarahganaway.com",
+        "urlTarget": "_blank",
+        "alt": "INDIAN PAINTBRUSH COVER - SARAHGANAWAY.COM",
+        "image": "/wp-content/uploads/2024/09/09-SGAD-PAINTBRUSH.jpg"
+      },
+      {
+        "title": "Fantasy Mushroom House Journal Cover",
+        "url": "https://www.sarahganaway.com",
+        "urlTarget": "_blank",
+        "alt": "FANTASY MUSHROOM HOUSE COVER - SARAHGANAWAY.COM",
+        "image": "/wp-content/uploads/2024/09/10-SGAD-MUSHROOM.jpg"
+      },
+      {
+        "title": "Can't Fix Stupid Journal Cover",
+        "url": "https://www.sarahganaway.com",
+        "urlTarget": "_blank",
+        "alt": "CANT FIX STUPID COVER - SARAHGANAWAY.COM",
+        "image": "/wp-content/uploads/2024/09/11-SGAD-STUPID.jpg"
+      },
+      {
+        "title": "Cosmic Astronaut Journal Cover",
+        "url": "https://www.sarahganaway.com",
+        "urlTarget": "_blank",
+        "alt": "COSMIC ASTRONAUT COVER - SARAHGANAWAY.COM",
+        "image": "/wp-content/uploads/2024/09/12-SGAD-ASTRONAUT.jpg"
+      },
+      {
+        "title": "Mixed Media Yellow Journal Cover",
+        "url": "https://www.sarahganaway.com",
+        "urlTarget": "_blank",
+        "alt": "MIXED MEDIA YELLOW COVER - SARAHGANAWAY.COM",
+        "image": "/wp-content/uploads/2024/09/02-SGAD-YELLOW.jpg"
+      },
+      {
+        "title": "Mixed Media Red Journal Cover",
+        "url": "https://www.sarahganaway.com",
+        "urlTarget": "_blank",
+        "alt": "MIXED MEDIA RED COVER - SARAHGANAWAY.COM",
+        "image": "/wp-content/uploads/2024/09/01-SGAD-RED.jpg"
+      }
+    ]
+  },
+  "1490": {
+    "title": "SG Wide Ad",
+    "animation": "fade",
+    "transitionSeconds": 1.0,
+    "intervalSeconds": 8,
+    "maxWidth": 600,
+    "height": 200,
+    "imageBehaviour": "natural",
+    "autoplay": true,
+    "loop": true,
+    "pauseOnHover": true,
+    "random": true,
+    "showPagination": true,
+    "hidePagination": true,
+    "hideNavigationButtons": false,
+    "slides": [
+      {
+        "title": "sgwidead03a",
+        "url": "https://www.sarahganaway.com",
+        "urlTarget": "_blank",
+        "alt": "",
+        "image": "/wp-content/uploads/2024/09/sgwidead03a.png"
+      },
+      {
+        "title": "sgwidead04a",
+        "url": "https://www.sarahganaway.com",
+        "urlTarget": "_blank",
+        "alt": "",
+        "image": "/wp-content/uploads/2024/09/sgwidead04a.png"
+      },
+      {
+        "title": "sgwidead05a",
+        "url": "https://www.sarahganaway.com",
+        "urlTarget": "_blank",
+        "alt": "",
+        "image": "/wp-content/uploads/2024/09/sgwidead05a.png"
+      },
+      {
+        "title": "sgwidead02",
+        "url": "https://www.sarahganaway.com",
+        "urlTarget": "_blank",
+        "alt": "",
+        "image": "/wp-content/uploads/2024/09/sgwidead02.png"
+      },
+      {
+        "title": "sgadwide01",
+        "url": "https://www.sarahganaway.com",
+        "urlTarget": "_blank",
+        "alt": "",
+        "image": "/wp-content/uploads/2024/09/sgadwide01.png"
+      }
+    ]
+  },
+  "1546": {
+    "title": "SG Wide Ad - Mid Way",
+    "animation": "fade",
+    "transitionSeconds": 1.0,
+    "intervalSeconds": 15.0,
+    "maxWidth": 600,
+    "height": 200,
+    "imageBehaviour": "natural",
+    "autoplay": true,
+    "loop": true,
+    "pauseOnHover": true,
+    "random": true,
+    "showPagination": true,
+    "hidePagination": true,
+    "hideNavigationButtons": false,
+    "slides": [
+      {
+        "title": "sgwidead03a",
+        "url": "https://www.sarahganaway.com",
+        "urlTarget": "_blank",
+        "alt": "",
+        "image": "/wp-content/uploads/2024/09/sgwidead03a.png"
+      },
+      {
+        "title": "sgwidead04a",
+        "url": "https://www.sarahganaway.com",
+        "urlTarget": "_blank",
+        "alt": "",
+        "image": "/wp-content/uploads/2024/09/sgwidead04a.png"
+      },
+      {
+        "title": "sgwidead05a",
+        "url": "https://www.sarahganaway.com",
+        "urlTarget": "_blank",
+        "alt": "",
+        "image": "/wp-content/uploads/2024/09/sgwidead05a.png"
+      },
+      {
+        "title": "sgwidead02",
+        "url": "https://www.sarahganaway.com",
+        "urlTarget": "_blank",
+        "alt": "",
+        "image": "/wp-content/uploads/2024/09/sgwidead02.png"
+      },
+      {
+        "title": "sgadwide01",
+        "url": "https://www.sarahganaway.com",
+        "urlTarget": "_blank",
+        "alt": "",
+        "image": "/wp-content/uploads/2024/09/sgadwide01.png"
+      }
+    ]
+  }
+}

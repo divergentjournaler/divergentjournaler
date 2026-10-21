@@ -1,0 +1,23 @@
+
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import vaultHtml from '../content/divergent-vault.html?raw';
+import settings from '../data/site.settings.data.json';
+
+const vaultUrl = 'https://drive.google.com/drive/folders/1f7tC5BlCbFzXKZS63scZ_u39k1BgmkkO?usp=share_link';
+---
+
+<BaseLayout title="Divergent Vault" description={settings.general.vaultDescription}>
+
+  <main class="divergent-vault">
+    
+<p>
+  <a href={vaultUrl} target="_blank" rel="noopener noreferrer">
+    Enter the Vault
+  </a>
+</p>
+
+<div set:html={vaultHtml} />
+
+  </main>
+</BaseLayout>

@@ -1,0 +1,11 @@
+
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import aboutHtml from '../content/about.html?raw';
+import settings from '../data/site.settings.data.json';
+---
+
+<BaseLayout title="About" description={settings.general.aboutDescription}>
+  
+  <div class="about-page" set:html={aboutHtml} />
+</BaseLayout>

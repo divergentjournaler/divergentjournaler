@@ -1,0 +1,21 @@
+
+---
+---
+
+<footer class="site-footer">
+  <p>
+    © 2023–<span id="copyright-year">2026</span> The Divergent Journaler -
+    <a href="/privacy-policy/">Privacy Policy</a>
+    -
+    <a href="/cookie-policy/">Cookie Policy</a>
+  </p>
+</footer>
+
+
+<script>
+  const yearElement = document.getElementById('copyright-year');
+
+  if (yearElement) {
+    yearElement.textContent = String(new Date().getFullYear());
+  }
+</script>

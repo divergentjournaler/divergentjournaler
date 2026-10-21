@@ -1,0 +1,99 @@
+
+{
+ "general": {
+  "siteTitle": "The Divergent Journaler",
+  "tagline": "Journaling, creativity, and a beautifully divergent mind.",
+  "logo": "/wp-content/uploads/2023/11/cropped-IMG_0153.png",
+  "logoWidth": 120,
+  "siteUrl": "https://divergentjournaler.com",
+  "defaultDescription": "Explore journaling methods, creative inspiration, and practical ideas for making your journal uniquely yours.",
+  "homeDescription": "Explore Divergent Journaler for creative journaling ideas, personal reflections, journal prompts, free printables, and inspiration to make journaling your own.",
+  "aboutDescription": "Get to know the journaler behind Divergent Journaler and explore my personal approach to creativity, writing, and journaling.",
+  "vaultDescription": "Visit the Divergent Vault for free journaling resources, printables, and creative materials gathered in one convenient place.",
+  "searchDescription": "Search Divergent Journaler for articles, journal prompts, creative projects, printables, and journaling inspiration."
+},
+"navigation": {
+  "primary": [
+    { "label": "FREEBIE VAULT", "url": "/divergent-vault/" },
+    { "label": "WEEKLY PROMPTS", "url": "/category/journal-prompts/" }
+  ],
+  "more": [
+    { "label": "Journaling", "url": "/category/journaling/" },
+    { "label": "Journal Prompts", "url": "/category/journal-prompts/" },
+    { "label": "Free Journal Resources", "url": "/category/free-journal-resources/" },
+    { "label": "Divergent Dialogues", "url": "/category/divergent-dialogues/" },
+    { "label": "About", "url": "/about-me-and-my-journaling/" }
+  ]
+},
+"seo": {
+  "titleSeparator": " : ",
+  "titleSiteName": "The Divergent Journaler",
+  "titlePosition": "after",
+  "homeTitleOnly": true
+},
+  "social": {
+    "showSocialIcons": true,
+    "instagram": "https://www.instagram.com/divergentjournaler",
+    "pinterest": "https://pinterest.com/divergentjournaler/"
+  },
+  "blog": {
+    "postsPerPage": 10,
+    "excerptLength": 280,
+    "showDates": true,
+    "showExcerpts": true,
+    "showReadMore": true
+  },
+  "layout": {
+    "showSidebar": true,
+    "sidebarPosition": "right",
+    "sidebarWidth": 280,
+    "contentMaxWidth": 1100
+  },
+  "sidebar": {
+    "showSearch": true,
+    "showWritingQuote": true,
+    "showPromptQuote": true,
+    "showRecentPosts": true,
+    "recentPostsCount": 8,
+    "showJournals": true
+  },
+ "appearance": {
+  "defaultTheme": "light",
+  "light": {
+    "accentColor": "#008cce",
+    "backgroundColor": "#ffffff",
+    "textColor": "#242424",
+    "linkHoverColor": "#7f428d",
+    "linkColor": "#42758d"
+  },
+
+  "typography": {
+  "fontFamily": "-apple-system, BlinkMacSystemFont, \"Helvetica Neue\", Helvetica, sans-serif",
+  "fontSize": "16px",
+  "lineHeight": "1.8",
+  "navigation": {
+    "fontFamily": "-apple-system, BlinkMacSystemFont, \"Helvetica Neue\", Helvetica, sans-serif",
+    "fontSize": "13px",
+    "fontWeight": "300",
+    "letterSpacing": "0.1em"
+  },
+  "siteTitle": {
+  "fontSize": "20px",
+  "fontWeight": "400",
+  "letterSpacing": "0.3em"
+},
+"tagline": {
+  "fontSize": "13px",
+  "fontWeight": "400",
+  "letterSpacing": "0.1em"
+}
+},
+  "dark": {
+    "accentColor": "#a9bccc",
+    "linkColor": "#a9bccc",
+    "linkHoverColor" : "#c2a9cc",
+    "backgroundColor": "#17191b",
+    "textColor": "#c9cbcd"
+  }
+}
+}

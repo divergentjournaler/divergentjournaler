@@ -1,0 +1,93 @@
+
+---
+
+interface Post {
+  metadata: {
+    title: string;
+    slug: string;
+    categorySlug: string;
+    date: string;
+    featuredImage?: string;
+  };
+  html: string;
+}
+
+interface Props {
+  posts: Post[];
+}
+
+import settings from '../data/site.settings.data.json';
+
+const { posts } = Astro.props;
+
+function createExcerpt(
+  html: string,
+  maxLength = settings.blog.excerptLength
+): string {
+  const text = html
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#8217;/g, '’')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  return text.length > maxLength
+  ? text.slice(0, maxLength).trimEnd()
+  : text;
+}
+---
+
+<div class="blog-feed">
+  {posts.map((post) => (
+    <article class="post-preview">
+
+      <h2>
+        <a href={`/${post.metadata.categorySlug}/${post.metadata.slug}/`}>
+          {post.metadata.title}
+        </a>
+      </h2>
+
+      
+      <div class="post-preview-body">
+        {post.metadata.featuredImage && (
+          <a
+            class="post-preview-image"
+            href={`/${post.metadata.categorySlug}/${post.metadata.slug}/`}
+          >
+            <img
+              src={post.metadata.featuredImage}
+              alt={post.metadata.title}
+              loading="lazy"
+            />
+          </a>
+        )}
+
+        {settings.blog.showExcerpts && (
+  <p class="post-excerpt">
+    {createExcerpt(post.html)}{' '}
+    <a
+      class="excerpt-more"
+      href={`/${post.metadata.categorySlug}/${post.metadata.slug}/`}
+      aria-label={`Read more: ${post.metadata.title}`}
+    >
+      [ . . . ]
+    </a>
+  </p>
+)}
+      </div>
+{settings.blog.showDates && (
+        <p class="post-date">
+  Published : {new Date(post.metadata.date).toLocaleDateString('en-US', {
+    month: 'short',
+    day: '2-digit',
+    year: 'numeric',
+    timeZone: 'UTC'
+  }).replace(',', '')}
+</p>
+      )}
+    </article>
+  ))}
+</div>

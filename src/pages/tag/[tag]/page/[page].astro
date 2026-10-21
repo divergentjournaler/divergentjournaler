@@ -1,0 +1,83 @@
+
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import BlogFeed from '../../../../components/BlogFeed.astro';
+import Pagination from '../../../../components/Pagination.astro';
+import settings from '../../../../data/site.settings.data.json';
+
+interface Post {
+  metadata: {
+    title: string;
+    slug: string;
+    categorySlug: string;
+    date: string;
+    tags: { name: string; slug: string }[];
+  };
+  html: string;
+}
+
+export function getStaticPaths() {
+  const postFiles = import.meta.glob('../../../../content/posts/**/*.json', {
+    eager: true,
+    import: 'default',
+  });
+
+  const posts = Object.values(postFiles) as Post[];
+  const tags = new Map<string, string>();
+
+  for (const post of posts) {
+    for (const tag of post.metadata.tags ?? []) {
+      tags.set(tag.slug, tag.name);
+    }
+  }
+
+  return Array.from(tags, ([slug, name]) => {
+    const tagPosts = posts
+      .filter((post) =>
+        (post.metadata.tags ?? []).some((tag) => tag.slug === slug)
+      )
+      .sort((a, b) => b.metadata.date.localeCompare(a.metadata.date));
+
+    const totalPages = Math.ceil(
+      tagPosts.length / settings.blog.postsPerPage
+    );
+
+    return Array.from(
+      { length: Math.max(0, totalPages - 1) },
+      (_, index) => {
+        const page = index + 2;
+        const start = (page - 1) * settings.blog.postsPerPage;
+
+        return {
+          params: { tag: slug, page: String(page) },
+          props: {
+            tagName: name,
+            tagSlug: slug,
+            page,
+            totalPages,
+            posts: tagPosts.slice(
+              start,
+              start + settings.blog.postsPerPage
+            ),
+          },
+        };
+      }
+    );
+  }).flat();
+}
+
+const { tagName, tagSlug, page, totalPages, posts } = Astro.props;
+---
+
+<BaseLayout
+  title={`${tagName} — Page ${page}`}
+  description={`Discover more articles tagged ${tagName} at Divergent Journaler. Page ${page}.`}
+>
+  <h1>Tag: {tagName}</h1>
+  <BlogFeed posts={posts} />
+  <Pagination
+    currentPage={page}
+    totalPages={totalPages}
+    basePath={`/tag/${tagSlug}/`}
+  />
+</BaseLayout>

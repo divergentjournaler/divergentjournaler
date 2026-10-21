@@ -1,0 +1,36 @@
+---
+import Search from './Search.astro';
+import RandomQuote from './RandomQuote.astro';
+import Slideshows from './Slideshows.astro';
+import RecentPosts from './RecentPosts.astro';
+import settings from '../data/site.settings.data.json';
+---
+
+<aside class="sidebar">
+  {settings.sidebar.showSearch && (
+    <Search />
+  )}
+
+  {(settings.sidebar.showWritingQuote || settings.sidebar.showPromptQuote) && (
+  <section class="sidebar-quote-panel">
+    {settings.sidebar.showWritingQuote && (
+      <h3 class="sidebar-quote-heading">Quotes :</h3>
+<RandomQuote category="Writing" />
+    )}
+
+    {settings.sidebar.showPromptQuote && (
+      <h3 class="sidebar-quote-heading">Prompt :</h3>
+<RandomQuote category="Prompts" />
+    )}
+  </section>
+)}
+  {settings.sidebar.showRecentPosts && (
+    <RecentPosts limit={settings.sidebar.recentPostsCount} />
+  )}
+
+  {settings.sidebar.showJournals && (
+    <section>
+      <Slideshows id="1467" />
+    </section>
+  )}
+</aside>

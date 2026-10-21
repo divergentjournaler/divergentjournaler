@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import settings from '../data/site.settings.data.json';
+
+const postFiles = import.meta.glob('../content/posts/**/*.json', {
+  eager: true,
+  import: 'default',
+});
+
+interface Post {
+  metadata: {
+    title: string;
+    slug: string;
+    categorySlug: string;
+    date: string;
+  };
+  html: string;
+}
+
+const allPosts = (Object.values(postFiles) as Post[])
+  .sort((a, b) => b.metadata.date.localeCompare(a.metadata.date));
+---
+
+<BaseLayout title="Search Results" description={settings.general.searchDescription}>
+  <main class="search-results">
+    <h1>Search Results</h1>
+    <div id="search-results-list"></div>
+    <script
+  id="search-data"
+  type="application/json"
+  set:html={JSON.stringify(allPosts)}
+/>
+  </main>
+  <script is:inline>
+  const params = new URLSearchParams(window.location.search);
+  const query = (params.get('q') || '').trim().toLowerCase();
+
+  const dataElement = document.getElementById('search-data');
+  const resultsElement = document.getElementById('search-results-list');
+
+  if (dataElement && resultsElement) {
+    const posts = JSON.parse(dataElement.textContent || '[]');
+
+    if (!query) {
+      resultsElement.textContent = 'Enter a search term to find articles.';
+    } else {
+      const matches = posts.filter((post) => {
+        const title = post.metadata.title.toLowerCase();
+        const content = post.html
+          .replace(/<[^>]*>/g, ' ')
+          .toLowerCase();
+
+        return title.includes(query) || content.includes(query);
+      });
+
+      if (matches.length === 0) {
+        resultsElement.textContent = 'No matching articles found.';
+      } else {
+        const count = document.createElement('p');
+        count.textContent = `${matches.length} article(s) found.`;
+        resultsElement.appendChild(count);
+
+        matches.forEach((post) => {
+          const link = document.createElement('a');
+
+          link.href = `/${post.metadata.categorySlug}/${post.metadata.slug}/`;
+          link.textContent = post.metadata.title;
+
+          const item = document.createElement('p');
+          item.appendChild(link);
+          resultsElement.appendChild(item);
+        });
+      }
+    }
+  }
+</script>
+</BaseLayout>

@@ -1,0 +1,103 @@
+
+---
+interface Props {
+  currentPost: any;
+  limit?: number;
+}
+
+const { currentPost, limit = 4 } = Astro.props;
+
+const postFiles = import.meta.glob('../content/posts/**/*.json', {
+  eager: true,
+  import: 'default',
+});
+
+const allPosts = Object.values(postFiles) as any[];
+
+const currentTags = new Set(
+  (currentPost.metadata.tags ?? []).map((tag: any) => tag.slug)
+);
+
+const currentCategories = new Set(
+  (currentPost.metadata.categories ?? []).map((category: any) => category.slug)
+);
+
+// MAINTENANCE REMINDER:
+// When adding a new category, add its default image here.
+// Fallback images are category-based, regardless of
+// whether the entry is an Article or a Thought.
+
+const categoryFallbacks: Record<string, string> = {
+  "creative-playground": "/uploads/tools/playground.png",
+  "divergent-dialogues": "/uploads/tools/prompts.png",
+  "free-journal-resources": "/uploads/tools/freebies.png",
+  "journal-prompts": "/uploads/tools/prompts.png",
+  "journaling": "/uploads/tools/article.png",
+};
+
+const relatedPosts = allPosts
+  .filter((post) =>
+    !(
+      post.metadata.slug === currentPost.metadata.slug &&
+      post.metadata.categorySlug === currentPost.metadata.categorySlug
+    )
+  )
+  .map((post) => {
+    const sharedTags = (post.metadata.tags ?? []).filter(
+      (tag: any) => currentTags.has(tag.slug)
+    ).length;
+
+    const sharedCategories = (post.metadata.categories ?? []).filter(
+      (category: any) => currentCategories.has(category.slug)
+    ).length;
+
+    // Use the first image in the article as its featured image.
+const firstImageMatch = post.html?.match(
+  /<img\b[^>]*\bsrc=["']([^"']+)["']/i
+);
+
+const featuredImage =
+  post.metadata.categorySlug === "journal-prompts"
+    ? "/uploads/tools/prompts.png"
+    : firstImageMatch?.[1] ??
+      categoryFallbacks[post.metadata.categorySlug] ??
+      null;
+
+return { post, sharedTags, sharedCategories, featuredImage };
+
+  })
+  .sort(
+    (a, b) =>
+      b.sharedTags - a.sharedTags ||
+      b.sharedCategories - a.sharedCategories ||
+      b.post.metadata.date.localeCompare(a.post.metadata.date)
+  )
+  .slice(0, limit);
+---
+
+{relatedPosts.length > 0 && (
+  <section class="related-posts">
+    <h2>Related Posts :</h2>
+
+    <div class="related-posts-grid">
+      {relatedPosts.map(({ post, featuredImage }) => (
+        <a
+          class="related-post-card"
+          href={`/${post.metadata.categorySlug}/${post.metadata.slug}/`}
+        >
+            {featuredImage && (
+  <img
+    class="related-post-image"
+    src={featuredImage}
+    alt={post.metadata.title}
+    loading="lazy"
+  />
+)}
+          <span class="related-post-title">
+            {post.metadata.title}
+          </span>
+        </a>
+      ))}
+    </div>
+  </section>
+)}

@@ -1,0 +1,156 @@
+
+---
+import slideshows from '../data/slideshows.data.json';
+
+interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+const slideshow = slideshows[id as keyof typeof slideshows];
+
+if (!slideshow) {
+  throw new Error(`Slideshow ${id} not found`);
+}
+---
+
+<div
+  class="dj-slideshow"
+  data-slideshow-id={id}
+  data-animation={slideshow.animation}
+  data-interval={slideshow.intervalSeconds * 1000}
+  data-transition={slideshow.transitionSeconds * 1000}
+  data-autoplay={String(slideshow.autoplay)}
+  data-loop={String(slideshow.loop)}
+  data-random={String(slideshow.random)}
+  data-pause-on-hover={String(slideshow.pauseOnHover)}
+  style={`--slideshow-width: ${slideshow.maxWidth}px; --slideshow-height: ${slideshow.height}px; --slideshow-transition: ${slideshow.transitionSeconds}s;`}
+>
+  <div class="dj-slideshow-track">
+    {slideshow.slides.map((slide, index) => (
+      <a
+        class="dj-slide"
+        href={slide.url || undefined}
+        target={slide.urlTarget === '_blank' ? '_blank' : undefined}
+        rel={slide.urlTarget === '_blank' ? 'noopener noreferrer' : undefined}
+        aria-hidden={index !== 0 ? 'true' : undefined}
+      >
+        <img
+          src={slide.image}
+          alt={slide.alt || slide.title}
+          loading={index === 0 ? 'eager' : 'lazy'}
+        />
+      </a>
+    ))}
+  </div>
+
+  {slideshow.showPagination && (
+    <div class="dj-slideshow-pagination" aria-label="Slideshow position"></div>
+  )}
+</div>
+
+<script>
+  function initializeSlideshows() {
+    document.querySelectorAll<HTMLElement>('.dj-slideshow').forEach((element) => {
+      if (element.dataset.initialized === 'true') return;
+      element.dataset.initialized = 'true';
+
+      const track = element.querySelector<HTMLElement>('.dj-slideshow-track');
+      const slides = Array.from(element.querySelectorAll<HTMLElement>('.dj-slide'));
+      const pagination = element.querySelector<HTMLElement>('.dj-slideshow-pagination');
+
+      if (!track || !slides.length) return;
+
+      const animation = element.dataset.animation || 'fade';
+      const interval = Number(element.dataset.interval) || 3000;
+      const autoplay = element.dataset.autoplay === 'true';
+      const loop = element.dataset.loop === 'true';
+      const random = element.dataset.random === 'true';
+      const pauseOnHover = element.dataset.pauseOnHover === 'true';
+
+      if (random) {
+        for (let i = slides.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [slides[i], slides[j]] = [slides[j], slides[i]];
+        }
+
+        slides.forEach((slide) => track.appendChild(slide));
+      }
+
+      let current = 0;
+      let timer: ReturnType<typeof setInterval> | undefined;
+
+      const dots = slides.map((_, index) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'dj-slideshow-dot';
+        dot.setAttribute('aria-label', `Go to slide ${index + 1}`);
+        dot.addEventListener('click', () => {
+          showSlide(index);
+          restart();
+        });
+        pagination?.appendChild(dot);
+        return dot;
+      });
+
+      function showSlide(index: number) {
+        current = index;
+
+        slides.forEach((slide, i) => {
+          const active = i === current;
+          slide.classList.toggle('is-active', active);
+          slide.setAttribute('aria-hidden', String(!active));
+          slide.tabIndex = active ? 0 : -1;
+        });
+
+        if (animation === 'slide') {
+          track!.style.transform = `translateX(-${current * 100}%)`;
+        }
+
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('is-active', i === current);
+          dot.setAttribute('aria-current', String(i === current));
+        });
+      }
+
+      function stop() {
+        if (timer) clearInterval(timer);
+        timer = undefined;
+      }
+
+      function start() {
+        if (!autoplay || slides.length < 2 || timer) return;
+
+        timer = setInterval(() => {
+          if (!loop && current === slides.length - 1) {
+            stop();
+            return;
+          }
+
+          showSlide((current + 1) % slides.length);
+        }, interval);
+      }
+
+      function restart() {
+        stop();
+        start();
+      }
+
+      showSlide(0);
+      start();
+
+      if (pauseOnHover) {
+        element.addEventListener('mouseenter', stop);
+        element.addEventListener('mouseleave', start);
+      }
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) stop();
+        else start();
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initializeSlideshows);
+  initializeSlideshows();
+</script>

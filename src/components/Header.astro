@@ -1,0 +1,150 @@
+---
+import settings from '../data/site.settings.data.json';
+
+const { social } = settings;
+---
+
+<header class="site-header">
+  <div class="site-branding">
+    <a href="/" class="site-branding-link" aria-label="Return to homepage">
+      <img
+        src={settings.general.logo}
+        alt={`${settings.general.siteTitle} logo`}
+        class="site-logo"
+        style={`width: ${settings.general.logoWidth}px;`}
+      />
+      <div class="site-branding-text">
+        <h1>{settings.general.siteTitle}</h1>
+        <p>{settings.general.tagline}</p>
+      </div>
+    </a>
+  </div>
+  
+{social.showSocialIcons && (
+  <div class="header-social">
+    <a
+      href={social.instagram}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Instagram"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="2" y="2" width="20" height="20" rx="5" />
+        <circle cx="12" cy="12" r="4" />
+        <circle cx="18" cy="6" r="1" class="icon-dot" />
+      </svg>
+    </a>
+
+    <a
+      href={social.pinterest}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Pinterest"
+    >
+      
+<svg viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M12.017 0C5.396 0 2 4.748 2 8.708c0 2.398.908 4.531 2.854 5.327.32.131.606.004.699-.35.065-.245.217-.863.285-1.12.093-.35.057-.473-.201-.778-.562-.663-.922-1.52-.922-2.735 0-3.526 2.639-6.683 6.874-6.683 3.749 0 5.809 2.291 5.809 5.35 0 4.023-1.78 7.42-4.422 7.42-1.46 0-2.551-1.207-2.201-2.688.419-1.768 1.23-3.677 1.23-4.952 0-1.141-.612-2.093-1.878-2.093-1.489 0-2.686 1.54-2.686 3.601 0 1.313.444 2.2.444 2.2s-1.523 6.453-1.789 7.582c-.532 2.249-.08 5.008-.042 5.286.023.165.235.204.37.079.153-.2 2.128-2.638 2.795-4.825.188-.619 1.077-4.207 1.077-4.207.533 1.017 2.09 1.912 3.745 1.912 4.927 0 8.269-4.49 8.269-10.5C22 4.23 18.148 0 12.017 0Z" />
+</svg>
+
+    </a>
+  </div>
+)}
+</header>
+
+
+
+<nav class="site-navigation" aria-label="Main navigation">
+  {settings.navigation.primary.map((item) => (
+    <a href={item.url}>{item.label}</a>
+  ))}
+
+  <div class="more-menu">
+    <button class="more-menu-trigger" type="button" aria-haspopup="true">
+      MORE...
+    </button>
+
+    <div class="dropdown">
+      {settings.navigation.more.map((item) => (
+        <a href={item.url}>{item.label}</a>
+      ))}
+    </div>
+  </div>
+
+  <!-- Light / dark theme toggle -->
+  <button
+    class="theme-toggle"
+    type="button"
+    aria-label="Switch to dark mode"
+    aria-pressed="false"
+  >
+    <span class="theme-toggle-icon" aria-hidden="true">☾</span>
+  </button>
+</nav>
+
+
+
+<div class="mobile-navigation">
+  <div class="mobile-navigation-bar">
+    <details class="mobile-navigation-menu">
+      <summary aria-label="Toggle navigation menu">☰ Menu</summary>
+
+      <div class="mobile-navigation-links">
+        {settings.navigation.primary.map((item) => (
+          <a href={item.url}>{item.label}</a>
+        ))}
+
+        {settings.navigation.more.map((item) => (
+          <a href={item.url}>{item.label}</a>
+        ))}
+      </div>
+    </details>
+
+    <!-- Mobile light / dark theme toggle -->
+    <button
+      class="theme-toggle"
+      type="button"
+      aria-label="Switch to dark mode"
+      aria-pressed="false"
+    >
+      <span class="theme-toggle-icon" aria-hidden="true">☾</span>
+    </button>
+  </div>
+</div>
+
+
+
+<script>
+  function updateThemeButton() {
+    const isDark = document.documentElement.dataset.theme === "dark";
+
+    document.querySelectorAll<HTMLButtonElement>(".theme-toggle").forEach((button) => {
+      button.setAttribute("aria-pressed", String(isDark));
+      button.setAttribute(
+        "aria-label",
+        isDark ? "Switch to light mode" : "Switch to dark mode"
+      );
+
+      const icon = button.querySelector(".theme-toggle-icon");
+      if (icon) icon.textContent = isDark ? "☀" : "☾";
+    });
+  }
+
+  document.querySelectorAll<HTMLButtonElement>(".theme-toggle").forEach((button) => {
+    button.addEventListener("click", () => {
+      const nextTheme =
+        document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+
+      document.documentElement.dataset.theme = nextTheme;
+      localStorage.setItem("site-theme", nextTheme);
+      updateThemeButton();
+    });
+  });
+
+  const savedTheme = localStorage.getItem("site-theme");
+
+  if (savedTheme === "light" || savedTheme === "dark") {
+    document.documentElement.dataset.theme = savedTheme;
+  }
+
+  updateThemeButton();
+</script>

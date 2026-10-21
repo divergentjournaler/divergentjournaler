@@ -1,0 +1,782 @@
+[
+  {
+    "quote": "List 5 things that make you happy enough you want to dance.",
+    "author": "",
+    "category": "Prompts",
+    "source": ""
+  },
+  {
+    "quote": "Describe the perfect morning.",
+    "author": "",
+    "category": "Prompts",
+    "source": ""
+  },
+  {
+    "quote": "What is your favorite color? Why?",
+    "author": "",
+    "category": "Prompts",
+    "source": ""
+  },
+  {
+    "quote": "Make a lit of songs that make you feel happy or feel like dancing.",
+    "author": "",
+    "category": "Prompts",
+    "source": ""
+  },
+  {
+    "quote": "If you could be invisible for a day... where would you go?",
+    "author": "",
+    "category": "Prompts",
+    "source": ""
+  },
+  {
+    "quote": "Write about a silly or quirky habit that you have.",
+    "author": "",
+    "category": "Prompts",
+    "source": ""
+  },
+  {
+    "quote": "If you had a time machine... where (when) would you go and why?",
+    "author": "",
+    "category": "Prompts",
+    "source": ""
+  },
+  {
+    "quote": "Make a list of your top 10 favorite things.",
+    "author": "",
+    "category": "Prompts",
+    "source": ""
+  },
+  {
+    "quote": "Describe how you would spend an hour with your favorite singer.",
+    "author": "",
+    "category": "Prompts",
+    "source": ""
+  },
+  {
+    "quote": "Who is your favorite band and why?",
+    "author": "",
+    "category": "Prompts",
+    "source": ""
+  },
+  {
+    "quote": "Who was the first band/singer that you fell in love with?",
+    "author": "",
+    "category": "Prompts",
+    "source": ""
+  },
+  {
+    "quote": "Describe your perfect day spent alone or with your favorite person.",
+    "author": "",
+    "category": "Prompts",
+    "source": ""
+  },
+  {
+    "quote": "Write the lyrics of your favorite song.",
+    "author": "",
+    "category": "Prompts",
+    "source": ""
+  },
+  {
+    "quote": "Who is your favorite superhero and why?",
+    "author": "",
+    "category": "Prompts",
+    "source": ""
+  },
+  {
+    "quote": "Describe your ideal treehouse/fort for yourself right now, at your age.",
+    "author": "",
+    "category": "Prompts",
+    "source": ""
+  },
+  {
+    "quote": "Describe your favorite childhood hiding place.",
+    "author": "",
+    "category": "Prompts",
+    "source": ""
+  },
+  {
+    "quote": "Write about something that is inexpensive but extremely valuable to you.",
+    "author": "",
+    "category": "Prompts",
+    "source": ""
+  },
+  {
+    "quote": "Your favorite day ever spent with someone you love.",
+    "author": "",
+    "category": "Prompts",
+    "source": ""
+  },
+  {
+    "quote": "\"Writing is my way of expressing – and thereby eliminating – all the various ways we can be wrong-headed.\"",
+    "author": "Zadie Smith",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"So I often feel like the self that I construct in writing feels truer to how I think of myself than the self I’m constructing in any other way.\"",
+    "author": "Yaa Gyasi",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Fill your paper with the breathings of your heart.\"",
+    "author": "William Wordsworth",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Always carry a notebook. And I mean always. The short-term memory only retains information for three minutes; unless it is committed to paper you can lose an idea for ever.\"",
+    "author": "Will Self",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"It is necessary to write, if the days are not to slip emptily by.\"",
+    "author": "Vita Sackville-West",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"In solitude we give passionate attention to our lives, to our memories, to the details around us.\"",
+    "author": "Virginia Woolf",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"When I am grown up I shall carry a notebook—a fat book with many pages, methodically lettered. I shall enter my phrases.\"",
+    "author": "Virginia Woolf",
+    "category": "Writing",
+    "source": "https://www.pinterest.com/divergentjournaler/quotes-divergentjournalercom/"
+  },
+  {
+    "quote": "\"I don’t journal to ‘be productive.’ I don’t do it to find great ideas or to put down prose I can later publish. The pages aren’t intended for anyone but me. It’s the most cost-effective therapy I’ve ever found.\"",
+    "author": "Tim Ferriss",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-37/"
+  },
+  {
+    "quote": "\"The first draft is just you telling yourself the story.\"",
+    "author": "Terry Pratchett",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Everything in life is writable about if you have the outgoing guts to do it, and the imagination to improvise.\"",
+    "author": "Sylvia Plath",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"A writer, I think, is someone who pays attention to the world.\"",
+    "author": "Susan Sontag",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Love words, agonize over sentences. And pay attention to the world\"",
+    "author": "Susan Sontag",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"A writer is someone who pays attention to the world — a writer is a professional observer.\"",
+    "author": "Susan Sontag",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"In the journal I do not just express myself more openly than I could to any person; I create myself.\"",
+    "author": "Susan Sontag",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"My diary entries allow me to keep track of all the things I would like to change about my life.\"",
+    "author": "Stefan Sagmeister",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Even the busiest people are never too busy to benefit from journaling for just five minutes a day.\"",
+    "author": "Sophia Godkin",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"I am the divergent journaler.\"",
+    "author": "Sarah G",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Journal writing gives us insights into who we are, who we were, and who we can become.\"",
+    "author": "Sandra Marinella",
+    "category": "Writing",
+    "source": "https://www.pinterest.com/divergentjournaler/quotes-divergentjournalercom/"
+  },
+  {
+    "quote": "\"For me, writing is a way of thinking. I write in a journal a lot. I’m a very impatient person, so writing and meditation allow me to slow down and watch my mind; they are containers that keep me in place, hold me still.\"",
+    "author": "Ruth Ozeki",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-24/"
+  },
+  {
+    "quote": "\"I write in a journal daily. This extraordinary ritual has revolutionized my mindset, transformed my heartset, and generally influenced in my life exponentially.\"",
+    "author": "Robin S. Sharma",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-38/"
+  },
+  {
+    "quote": "\"The form of the journal is ideal for capturing life’s tenuous relationship with time; it makes a fugue of one’s completed life.\"",
+    "author": "Patrick Nathan",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-39/"
+  },
+  {
+    "quote": "\"Writing is the only way I have to explain my own life to myself.\"",
+    "author": "Pat Conroy",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-40/"
+  },
+  {
+    "quote": "\"Keep writing, and one day you might just become a great writer.\"",
+    "author": "Pablo Picasso",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"A writer is someone who has taught his mind to misbehave.\"",
+    "author": "Oscar Wilde",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Keeping a journal will absolutely change your life in ways you’ve never imagined.\"",
+    "author": "Oprah Winfrey",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-41/"
+  },
+  {
+    "quote": "\"Write what disturbs you, what you fear, what you have not been willing to speak about. Be willing to be split open.\"",
+    "author": "Natalie Goldberg",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-32/"
+  },
+  {
+    "quote": "\"Nobody cares much whether you write or not. You just have to do it.\"",
+    "author": "Natalie Goldberg",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Writing in a daily journal is important but the reason why I journal is because I can read my own writing after many months have passed by. I’m able to reflect on my life, my actions, my behaviors, my memories and also the behavior of others around me.\"",
+    "author": "Nando Prudhomme",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-42/"
+  },
+  {
+    "quote": "\"Journaling is like whispering to one’s self and listening at the same time.\"",
+    "author": "Mina Murray",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-36/"
+  },
+  {
+    "quote": "\"What happens to us is not as important as the meaning we assign to it. Journaling helps sort this out.\"",
+    "author": "Michael Hyatt",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-25/"
+  },
+  {
+    "quote": "\"There is no greater agony than bearing an untold story inside you.\"",
+    "author": "Maya Angelou",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-43/"
+  },
+  {
+    "quote": "\"What would you write if you weren’t afraid?\"",
+    "author": "Mary Karr",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/journal-prompts/dialogues-01-weekly-prompts/"
+  },
+  {
+    "quote": "\"Keeping a journal of what’s going on in your life is a good way to help you distill what’s important and what’s not.\"",
+    "author": "Martina Navratilova",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-44/"
+  },
+  {
+    "quote": "\"Always tell the truth. Then you don't have to remember anything.\"",
+    "author": "Mark Twain",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"I journal about anything and everything I can in my life – minutiae, dreams, important mailed papers, receipts, etc. There is literally nothing that I won’t put in my assorted journaling.\"",
+    "author": "Margot Olson",
+    "category": "Writing",
+    "source": "https://www.pinterest.com/divergentjournaler/quotes-divergentjournalercom/"
+  },
+  {
+    "quote": "\"The truth is, journaling can be as simple as capturing a moment in time through a photo or arriving at a clear decision made possible by asking intentional questions.\"",
+    "author": "Marc Champagne",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-45/"
+  },
+  {
+    "quote": "\"If you want to write, you need to keep an honest, unpublishable journal that nobody reads, nobody but you.\"",
+    "author": "Madeleine L'Engle",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-46/"
+  },
+  {
+    "quote": "\"Journaling leads people to life changes, leaps of faith, new insights, and meaningful decisions.\"",
+    "author": "Lynda Monk",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"A journal is your completely unaltered voice.\"",
+    "author": "Lucy Dacus",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-33/"
+  },
+  {
+    "quote": "\"Writing in a journal gives me a place to report, interpret, argue, reflect, save, question, predict, unload, praise, compare, cry, laugh, draw, paint, and remember.\"",
+    "author": "Luci Swindoll",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"The private contemplation that journaling provides gives us a place to examine what life really means to us … It receives the mood we’re in and preserves it for us to look at and learn from … Every time we chronicle our thoughts and activities, we are verifying our existence.\"",
+    "author": "Luci Swindoll",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Preserve your memories, keep them well, what you forget you can never retell.\"",
+    "author": "Louisa May Alcott",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Start writing, no matter what. The water does not flow until the faucet is turned on.\"",
+    "author": "Louis L'Amour",
+    "category": "Writing",
+    "source": "https://www.pinterest.com/divergentjournaler/quotes-divergentjournalercom/"
+  },
+  {
+    "quote": "\"Journaling gives me the ability to forget minor details and focus more on the present.\"",
+    "author": "Kyle Weirauch",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-26/"
+  },
+  {
+    "quote": "\"Keeping a journal has taught me that each day holds something significant, something worth recording. My journal has reminded me again and again of the richness and abundance of my daily life, no matter how mundane or predictable some days may seem.\"",
+    "author": "Kristen Webb Wright",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-30/"
+  },
+  {
+    "quote": "\"Journaling to me has become important to me because it allows me to be present with a gratitude mindset daily.\"",
+    "author": "Kevin Anderson",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"We’re drawn to making our mark, leaving a record to show we were here, and a journal is a great place to do it.\"",
+    "author": "Keri Smith",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Journal what you love, what you hate, what’s in your head, what’s important. Journaling organizes your thoughts; allows you to see things in a concrete way that otherwise you might not see.\"",
+    "author": "Kay WalkingStick",
+    "category": "Writing",
+    "source": "https://www.pinterest.com/divergentjournaler/quotes-divergentjournalercom/"
+  },
+  {
+    "quote": "\"Your journal will stand as a chronicle of your growth, your hopes, your fears, your dreams, your ambitions, your sorrows, your serendipities.\"",
+    "author": "Kathleen Adams",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Writing is medicine. It is an appropriate antidote to injury. It is an appropriate companion for any difficult change.\"",
+    "author": "Julia Cameron",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-34/"
+  },
+  {
+    "quote": "\"Once you begin to reap the rewards of your writing, journaling stops being a burden and often becomes the activity you look forward to the most and obtain the greatest value from.\"",
+    "author": "Joyce Chapman",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Life is not always extraordinary in all its details, but it is the sum of those ordinary events that add up to extraordinary lives. The journal is no different.\"",
+    "author": "Journal Fodder",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Writing is a sustaining thing.\"",
+    "author": "John McPhee",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Our pasts define us, yet memory is untrustworthy. By keeping a journal, I can capture those memories when they’re still reasonably fresh. Journaling helps me keep a narrative of my life. It keeps me honest with myself.\"",
+    "author": "John Dumas",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"You can always edit a bad page. You can’t edit a blank page.\"",
+    "author": "Jodi Picoult",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Quite often you want to tell somebody your dream, your nightmare. Well, nobody wants to hear about someone else’s dream, good or bad; nobody wants to walk around with it. The writer is always tricking the reader into listening to their dream.\"",
+    "author": "Joan Didion",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"I write entirely to find out what I’m thinking, what I’m looking at, what I see, and what it means. What I want and what I fear.\"",
+    "author": "Joan Didion",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"I don’t know what I think until I write it down.\"",
+    "author": "Joan Didion",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"People who keep journals have life twice.\"",
+    "author": "Jessamyn West",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"I’ll only live once, and this is a record of the life I’m living.\"",
+    "author": "Jason Shanahan",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Writing in your journal gives you a chance to go back over your day and extract meaning from a hurried meeting with a friend or retrieve the significance of some fleeting event.\"",
+    "author": "Janette Rainwater",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Is not the poet bound to write his own biography? Is there any other work for him but a good journal? We do not wish to know how his imaginary hero, but how he, the actual hero, lived from day to day.\"",
+    "author": "Henry David Thoreau",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"The best time to begin keeping a journal is whenever you decide to.\"",
+    "author": "Hannah Hinchman",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-31/"
+  },
+  {
+    "quote": "\"Journaling has become one of the most gratifying and fulfilling practices of my life. Not only do I derive the daily benefits of consciously directing my thoughts and putting them in writing, but even more powerful are those I have gained from reviewing my journals.\"",
+    "author": "Hal Elrod",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Writing a journal means that facing your ocean you are afraid to swim across it, so you attempt to drink it drop by drop.\"",
+    "author": "George Sand",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Journaling is a way of capturing your life one day at a time. It is a wonderful way to be able to reflect on your past whether in good times or bad. It is really easy to forget how wonderful your life is in certain times, and a quick look back allows you to see the people, places visited, and get some perspective.\"",
+    "author": "George Bonelli",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-29/"
+  },
+  {
+    "quote": "\"You need chaos in your soul to give birth to a dancing star.\"",
+    "author": "Friedrich Nietzsche",
+    "category": "Writing",
+    "source": "https://www.pinterest.com/divergentjournaler/quotes-divergentjournalercom/"
+  },
+  {
+    "quote": "\"I shall live badly if I do not write, and I shall write badly if I do not live.\"",
+    "author": "Francoise Sagan",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Write down the thoughts of the moment. Those that come unsought for are commonly the most valuable.\"",
+    "author": "Francis Bacon",
+    "category": "Writing",
+    "source": "https://www.pinterest.com/divergentjournaler/quotes-divergentjournalercom/"
+  },
+  {
+    "quote": "\"I write because I don’t know what I think until I read what I say.\"",
+    "author": "Flannery O'Connor",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-27/"
+  },
+  {
+    "quote": "\"Write hard and clear about what hurts.\"",
+    "author": "Ernest Hemingway",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-18/"
+  },
+  {
+    "quote": "\"The journal is a place to let seeds of new directions freely scatter on the page.\"",
+    "author": "Ellen Bowers",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"The very act of writing it down made her realize how easy it would be to forget, how important it would be from now on to put everything, everything, down on paper.\"",
+    "author": "Donna Tartt",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"This pouring thoughts out on paper has relieved me. I feel better and full of confidence and resolution.\"",
+    "author": "Diet Eman",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"I started writing one afternoon when I was twenty, and ever since then I have written every day. At first I had to force myself. Then it became part of my identity, and I did it without thinking.\"",
+    "author": "David Sedaris",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"I like to reserve the right to write about whatever I like.\"",
+    "author": "David Sedaris",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"That’s the thing with a diary, though. In order to record your life, you sort of need to live it, not at your desk, but beyond it, out in the world, where it’s so beautiful, and complex, and painful, that sometimes, you just need to sit down and write about it.\"",
+    "author": "David Sedaris",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"The true purpose of journaling is to celebrate your life. No matter how small or mundane or redundant, each drawing and little essay you write to commemorate an event or an object or a place makes it all the more special.\"",
+    "author": "Danny Gregory",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Everything I know about life, I learned from the daily practice of sitting down to write.\"",
+    "author": "Dani Shapiro",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Journal writing is a voyage to the interior.\"",
+    "author": "Christina Baldwin",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-35/"
+  },
+  {
+    "quote": "\"I believe myself that a good writer doesn’t really need to be told anything except to keep at it.\"",
+    "author": "Chinua Achebe",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Documenting little details of your everyday life becomes a celebration of who you are.\"",
+    "author": "Carolyn V. Hamilton",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Journaling is an offshoot of meditation— a type of introspection where a record of events is welcome. It doesn’t have to mean the record is permanent. In fact, it’s probably better as ephemeral— permanently locked behind a password. But, the fact that it exists is a comfort in itself.\"",
+    "author": "C.J. Chilvers",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Write about what really interests you, whether it is real things or imaginary things, and nothing else.\"",
+    "author": "C. S. Lewis",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-28/"
+  },
+  {
+    "quote": "\"Your journal is like your best friend. You don’t have to pretend with it, you can be honest and write exactly how you feel.\"",
+    "author": "Bukola Ogunwale",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"A journal can offer you a place to be someone, anyone, who you want to be.\"",
+    "author": "Brian Ledger",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"If you don’t see the book you want on the shelf, write it.\"",
+    "author": "Beverly Cleary",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Either write something worth reading or do something worth writing.\"",
+    "author": "Benjamin Franklin",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"All the noise in my brain. I clamp it to the page so it will be still.\"",
+    "author": "Barbara Kingsolver",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"I realized that journal writing was and is a powerful tool for personal growth, problem solving, monitoring goals, and documenting my life over time.\"",
+    "author": "Bakari Chavanu",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Journaling helps you to remember how strong you truly are within yourself.\"",
+    "author": "Asad Meah",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"When my journal appears, many statues must come down.\"",
+    "author": "Arthur Wellesley",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"A good journal entry— like a good song, or sketch, or photograph— ought to break up the habitual and lift away the film that forms over the eye, the finger, the tongue, the heart. A good journal entry ought to be a love letter to the world.\"",
+    "author": "Anthony Doerr",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"There is, of course, always personal satisfaction of writing down one’s own experiences so they may be saved, caught and pinned under glass, hoarded against the winter of forgetfullness.\"",
+    "author": "Anne Morrow Lindbergh",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"I owe a good deal to this journal. By unburdening my mind on paper I feel, as it were, in some degree to get rid of it; it seems made over to a friend that hears it patiently, keeps it faithfully, and by never forgetting anything, is always ready to compare the past & present and thus to cheer & edify the future.\"",
+    "author": "Anne Lister",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"I can recapture everything when I write, my thoughts, my ideals and my fantasies.\"",
+    "author": "Anne Frank",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"I can shake off everything as I write; my sorrows disappear, my courage is reborn.\"",
+    "author": "Anne Frank",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"I like to record what’s happened, how my life and relationships have developed, and to know even about the mundane stuff in life that happens, but we might otherwise forget—a trip for coffee with a friend, or some good or bad luck, or a trip to the theatre.\"",
+    "author": "Andy Oldham",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"In the journal, I am at ease.\"",
+    "author": "Anais Nin",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"Journals contain ten categories of life patterns: longing; fear, mastery; (intentional) silences; key influences; hidden lessons; secret gifts; challenges; unfinished business; untapped potential. Each category corresponds to a way we engage or hold back in life.\"",
+    "author": "Alexandra Johnson",
+    "category": "Writing",
+    "source": ""
+  },
+  {
+    "quote": "\"The only thing I have done religiously in my life is keep a journal. I have hundreds of them, filled with feathers, flowers, photographs, and words – without locks, open on my shelves.\"",
+    "author": "Terry Tempest Williams",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-14/"
+  },
+  {
+    "quote": "\"Whether you’re keeping a journal or writing as a meditation, it’s the same thing. What’s important is you’re having a relationship with your mind.\"",
+    "author": "Natalie Goldberg",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-15/"
+  },
+  {
+    "quote": "\"For my 100-day project, I decided to keep a journal. It could be just one sentence. Often it was just one word, occasionally the F-word. But it gave me a sense of structure.\"",
+    "author": "Suleika Jaouad",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-16/"
+  },
+  {
+    "quote": "\"I always carry a Moleskine journal and a simple Parker Jotter click-pen. Journaling an experience is worth more than any photograph.\"",
+    "author": "Josh Gates",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-17/"
+  },
+  {
+    "quote": "\"Writing is like breathing, it’s possible to learn to do it well, but the point is to do it no matter what.\"",
+    "author": "Julia Cameron",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-19/"
+  },
+  {
+    "quote": "\"Journal writing, when it becomes a ritual for transformation, is not only life-changing but life-expanding.\"",
+    "author": "Jennifer Williamson",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-20/"
+  },
+  {
+    "quote": "\"You use a glass mirror to see your face. You use works of art to see your soul.\"",
+    "author": "George Bernard Shaw",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-21/"
+  },
+  {
+    "quote": "\"I love my journal as much as I love my phone. I find it to be a big part of my self-care to reflect on my day and write words that inspire me or paste business cards and pictures.\"",
+    "author": "Franchesca Ramsey",
+    "category": "Writing",
+    "source": "https://divergentjournaler.com/divergent-dialogues/dialogues-weekly-prompts-23/"
+  },
+  {
+    "quote": "\"You are allowed to be both a masterpiece and a work in progress simultaneously.\"",
+    "author": "Sophia Bush",
+    "category": "Writing",
+    "source": "https://www.pinterest.com/divergentjournaler/quotes-divergentjournalercom/"
+  },
+  {
+    "quote": "\"I never wrote things down to remember; I always wrote things down so I could forget.\"",
+    "author": "Matthew McConaughey",
+    "category": "Writing",
+    "source": "https://www.pinterest.com/divergentjournaler/quotes-divergentjournalercom/"
+  },
+  {
+    "quote": "\"Sitting for even five minutes with a journal offers a rare cease-fire in the battle of daily life.\"",
+    "author": "Alexandra Johnson",
+    "category": "Writing",
+    "source": "https://www.pinterest.com/divergentjournaler/quotes-divergentjournalercom/"
+  },
+  {
+    "quote": "\"I thought not fitting in was something I had to fix. Now I see it as my superpower.\"",
+    "author": "Maxime Lagace",
+    "category": "Writing",
+    "source": "https://www.pinterest.com/divergentjournaler/quotes-divergentjournalercom/"
+  }
+]

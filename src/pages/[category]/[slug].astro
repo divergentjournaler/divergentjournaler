@@ -1,0 +1,158 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Slideshows from '../../components/Slideshows.astro';
+import RelatedPosts from '../../components/RelatedPosts.astro';
+
+const posts = import.meta.glob('../../content/posts/**/*.json', {
+  eager: true,
+  import: 'default',
+});
+
+export function getStaticPaths() {
+  const posts = import.meta.glob('../../content/posts/**/*.json', {
+    eager: true,
+    import: 'default',
+  });
+
+  return Object.values(posts).map((post: any) => ({
+    params: {
+      category: post.metadata.categorySlug,
+      slug: post.metadata.slug,
+    },
+    props: {
+      post,
+    },
+  }));
+}
+
+const { post } = Astro.props;
+const { metadata, html } = post;
+// Chronological post navigation
+const sortedPosts = (Object.values(posts) as any[])
+  .sort((a, b) => a.metadata.date.localeCompare(b.metadata.date));
+
+const currentPostIndex = sortedPosts.findIndex(
+  (item) =>
+    item.metadata.slug === metadata.slug &&
+    item.metadata.categorySlug === metadata.categorySlug
+);
+
+const previousPost =
+  currentPostIndex > 0 ? sortedPosts[currentPostIndex - 1] : null;
+
+const nextPost =
+  currentPostIndex >= 0 && currentPostIndex < sortedPosts.length - 1
+    ? sortedPosts[currentPostIndex + 1]
+    : null;
+const openingMediaMatch = html.match(
+  /^\s*(?:(?:<!-- wp:media-text[^>]*-->\s*)?<div class="wp-block-media-text\b[\s\S]*?<\/figure>[\s\S]*?<\/div><\/div>|(?:<!-- wp:image[^>]*-->\s*)?<figure\b[^>]*class="[^"]*\bwp-block-image\b[^"]*"[^>]*>[\s\S]*?<\/figure>)/
+);
+const openingMedia = /weekly-prompts-\d+$/i.test(metadata.slug)
+  ? ''
+  : (openingMediaMatch?.[0] ?? '');
+const remainingHtml = openingMedia
+  ? html.slice(openingMedia.length)
+  : html;
+  const isWeeklyPrompt = /weekly-prompts-\d+$/i.test(metadata.slug);
+
+const cleanedHtml = remainingHtml;
+const slideshowParts = html.split(
+  /(<div data-slideshow-id="(?:1490|1546)"><\/div>)/g
+);
+const remainingParts = cleanedHtml.split(
+  /(<center>\s*<div data-slideshow-id="(?:1490|1546)"><\/div>\s*<\/center>|<div data-slideshow-id="(?:1490|1546)"><\/div>)/g
+);
+---
+
+<BaseLayout
+  title={metadata.title}
+  description={metadata.description}
+>
+  <article class="blog-post">
+  <nav class="post-breadcrumbs" aria-label="Breadcrumb">
+    <a href="/">Home</a>
+    <a href={`/category/${metadata.categorySlug}/`}>
+      {metadata.categories?.find(
+        (category: { name: string; slug: string }) =>
+          category.slug === metadata.categorySlug
+      )?.name ?? metadata.categorySlug}
+    </a>
+    </nav>
+
+  <p class="post-date">
+    Published: {metadata.date.split(' ')[0]}
+  </p>
+
+  {metadata.modified && metadata.showModifiedDate !== false && (
+  <p class="post-modified">
+    Last Updated On: {metadata.modified.split(' ')[0]}
+  </p>
+)}
+
+{openingMedia && (
+  <div class="post-opening-media">
+    <Fragment set:html={openingMedia} />
+  </div>
+)}
+
+{metadata.showTitle !== false &&
+  !/weekly-prompts-\d+$/i.test(metadata.slug) && (
+    <h1 class="post-title">{metadata.title}</h1>
+)}
+
+
+    <div class="post-content">
+{remainingParts.map((part: string) => {
+    const match = part.match(/<div data-slideshow-id="(1490|1546)"><\/div>/);
+    return match
+  ? (
+      match[1] === '1490'
+        ? <div class="post-bottom-slideshow"><Slideshows id={match[1]} /></div>
+        : <Slideshows id={match[1]} />
+    )
+  : <Fragment set:html={part} />;
+  })}
+</div>
+
+
+{html.includes('data-slideshow-id') && (
+  <div class="article-slideshow-data" hidden>
+    <Slideshows id="1490" />
+    <Slideshows id="1546" />
+  </div>
+)}
+
+
+<div class="post-tags">
+  {metadata.tags.map((tag: { name: string; slug: string }) => (
+    <a href={`/tag/${tag.slug}/`}># {tag.name}</a>
+  ))}
+</div>
+
+<nav class="post-navigation" aria-label="Post navigation">
+  <div class="post-navigation-previous">
+    {previousPost && (
+      <a href={`/${previousPost.metadata.categorySlug}/${previousPost.metadata.slug}/`}>
+        ← Previous
+      </a>
+    )}
+  </div>
+
+  <a class="post-navigation-top" href="#top">
+    ↑ Back to Top
+  </a>
+
+
+  <div class="post-navigation-next">
+    {nextPost && (
+      <a href={`/${nextPost.metadata.categorySlug}/${nextPost.metadata.slug}/`}>
+        Next →
+      </a>
+    )}
+  </div>
+</nav>
+
+<RelatedPosts currentPost={post} />
+
+  </article>
+</BaseLayout>

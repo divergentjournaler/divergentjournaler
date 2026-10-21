@@ -1,0 +1,40 @@
+
+---
+interface Props {
+  limit?: number;
+}
+
+const { limit = 5 } = Astro.props;
+
+const postFiles = import.meta.glob('../content/posts/**/*.json', {
+  eager: true,
+  import: 'default',
+});
+
+interface Post {
+  metadata: {
+    title: string;
+    slug: string;
+    categorySlug: string;
+    date: string;
+  };
+}
+
+const recentPosts = (Object.values(postFiles) as Post[])
+  .sort((a, b) => b.metadata.date.localeCompare(a.metadata.date))
+  .slice(0, limit);
+---
+
+<section class="recent-posts">
+  <h2>Recent Posts</h2>
+
+  <ul>
+    {recentPosts.map((post) => (
+      <li>
+        <a href={`/${post.metadata.categorySlug}/${post.metadata.slug}/`}>
+          {post.metadata.title}
+        </a>
+      </li>
+    ))}
+  </ul>
+</section>
