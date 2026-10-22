@@ -101,6 +101,41 @@ html[data-theme="dark"] .site-navigation {
   text-decoration: none;
 }
 
+/* Site Branding: Atmospheric Background Logo */
+.site-atmospheric-logo {
+  position: absolute;
+  top: 0px;
+left: 80%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 400px;
+  background-image: url('/uploads/images/dj-logo-design2.png');
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: 425px auto;
+  opacity: 0.12;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Mobile: Page Top Spacing */
+@media (max-width: 800px) {
+  body {
+    padding-top: 200px;
+  }
+}
+
+/* Site Branding: Atmospheric Logo — Mobile */
+@media (max-width: 800px) {
+  .site-atmospheric-logo {
+    top: 0;
+    opacity: 1;
+    left: 50%;
+    width: 100%;
+    background-size: 300px auto;
+  }
+}
+
 .site-header {
   display: flex;
   justify-content: space-between;
@@ -150,6 +185,28 @@ html[data-theme="dark"] .site-navigation {
   background-color: #505050;
 }
 
+/* Header Social: Theme Toggle */
+.header-social .theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 23px;
+  height: 23px;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background-color: #686868;
+  color: #ffffff;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.header-social .theme-toggle:hover {
+  background-color: #505050;
+}
+
 /* Site branding - Main logo */
 .site-branding {
   display: flex;
@@ -174,6 +231,45 @@ html[data-theme="dark"] .site-navigation {
   text-transform: uppercase;
   margin: 0;
   line-height: 1.5;
+}
+
+/* Site Branding: Gradient Title */
+.site-branding-text .title-gradient {
+  background: linear-gradient(
+    90deg,
+    #13c6e4 0%,
+    #185cae 25%,
+    #ad249f 48%,
+    #fa4380 72%,
+    #ff8524 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Site Branding: Neutral Title on Mobile */
+@media (max-width: 800px) {
+  .site-branding-text .title-gradient {
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    color: inherit;
+    
+  }
+  .site-branding-text {
+  width: 100%;
+  text-align: center;
+}
+
+.site-branding-link {
+  justify-content: center;
+}
+}
+
+/* Site Branding: Hide Small Logo During Redesign */
+.site-logo-hidden {
+  display: none;
 }
 
 /* Site Branding: Tagline Typography */
@@ -204,6 +300,19 @@ html[data-theme="dark"] .site-navigation {
   text-decoration: none;
 }
 
+/* Narrow phone header layout */
+@media (max-width: 480px) {
+  .site-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 16px;
+  }
+
+  .header-social {
+    justify-content: center;
+  }
+}
 
 /* Desktop navigation */
 .site-navigation {
@@ -347,7 +456,8 @@ html[data-theme="dark"] .mobile-navigation {
 .mobile-navigation summary {
   cursor: pointer;
   list-style: none;
-  font-weight: bold;
+  font-weight: 500;
+  font-size: 17px;
 }
 
 .mobile-navigation summary::-webkit-details-marker {
@@ -386,7 +496,7 @@ html[data-theme="dark"] .mobile-navigation-links a {
 /* Mobile Navigation: Menu and Theme Toggle */
 .mobile-navigation-bar {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
 }
 
@@ -442,6 +552,19 @@ html[data-theme="dark"] .mobile-navigation-links a {
   opacity: 0.7;
 }
 
+/* Keep sun and moon in the same space */
+.theme-toggle-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  line-height: 1;
+}
+
+.theme-toggle-icon.is-sun {
+  transform: scale(1.8);
+}
 
 /* ==========================================
    03 — PAGE LAYOUT & PAGINATION
@@ -457,6 +580,13 @@ html[data-theme="dark"] .mobile-navigation-links a {
   box-sizing: border-box;
 }
 
+/* Sidebar: Desktop Vertical Alignment */
+@media (min-width: 801px) {
+  .page-layout > aside {
+    margin-top: 80px;
+  }
+}
+
 /* Full-width layout when sidebar is disabled */
 .page-layout.no-sidebar {
   grid-template-columns: minmax(0, 1fr);
@@ -465,6 +595,7 @@ html[data-theme="dark"] .mobile-navigation-links a {
 @media (max-width: 800px) {
   .page-layout {
     grid-template-columns: 1fr;
+    margin-top: 25px;
   }
 
   .page-layout > aside {
@@ -516,7 +647,6 @@ html[data-theme="dark"] .mobile-navigation-links a {
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
-  padding-right: 190px;
   padding-bottom: 10px;
   margin-bottom: 10px;
   border-bottom: 1px dotted #e0e0e0;
@@ -553,28 +683,6 @@ html[data-theme="dark"] .post-breadcrumbs a:hover {
 
 .blog-post {
   position: relative;
-}
-
-.blog-post > .post-date {
-  position: absolute;
-  top: 10px;
-  right: 0;
-  margin: 0;
-  color: #a9adb1;
-  font-size: 0.9rem;
-}
-
-/* This @media block must remain with the .post-date above */
-
-@media (max-width: 800px) {
-  .blog-post > .post-date {
-    position: static;
-    margin-bottom: 16px;
-  }
-}
-
-html[data-theme="dark"] .blog-post > .post-date {
-  color: #515253;
 }
 
 /* Article last-updated date */
@@ -620,6 +728,13 @@ html[data-theme="dark"] .post-breadcrumbs {
   margin-left: auto;
   margin-right: auto;
   border-radius: 12px;
+}
+
+/* WordPress page images — rounded corners on mobile */
+@media (max-width: 480px) {
+  .wp-block-image img {
+    border-radius: 12px;
+  }
 }
 
 /* Bottom article slideshow spacing */
@@ -724,56 +839,39 @@ html[data-theme="dark"] .blog-post > .post-title {
 
 /* Legacy WordPress Media & Text blocks */
 .post-content .wp-block-media-text {
-  display: grid;
-  grid-template-columns: 50% 1fr;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 0;
   margin: 24px 0;
 }
 
+/* Center images and preserve their proportions */
 .post-content .wp-block-media-text__media {
+  order: 1;
   margin: 0;
+  width: 100%;
   min-width: 0;
+  display: flex;
+  justify-content: center;
 }
 
 .post-content .wp-block-media-text__media img {
   display: block;
-  width: 100%;
+  width: auto;
+  max-width: 100%;
+  max-height: 400px;
   height: auto;
+  object-fit: contain;
+  border-radius: 12px;
 }
 
+/* Text always follows the image */
 .post-content .wp-block-media-text__content {
+  order: 2;
+  width: 100%;
   min-width: 0;
-  padding: 0 8%;
-}
-
-/* Image on the right */
-.post-content .wp-block-media-text.has-media-on-the-right
-.wp-block-media-text__media {
-  grid-column: 2;
-  grid-row: 1;
-}
-
-.post-content .wp-block-media-text.has-media-on-the-right
-.wp-block-media-text__content {
-  grid-column: 1;
-  grid-row: 1;
-}
-
-/* Stack on smaller screens */
-@media (max-width: 800px) {
-  .post-content .wp-block-media-text.is-stacked-on-mobile {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .post-content .wp-block-media-text.is-stacked-on-mobile
-  .wp-block-media-text__media,
-  .post-content .wp-block-media-text.is-stacked-on-mobile
-  .wp-block-media-text__content {
-    width: 100%;
-    padding: 0;
-  }
+  padding: 16px 0 0;
 }
 
 /* ==========================================
@@ -907,7 +1005,7 @@ html[data-theme="dark"] .blog-post > .post-title {
 }
 
 html[data-theme="dark"] .sidebar-quote-panel {
-  background-color: color-mix(in srgb, #212325 98%, white);
+  background-color: color-mix(in srgb, var(--dark-bg) 98%, white);
   border-left: 2px solid #3a3f42;
   color: #c9cbcd;
 }
@@ -953,7 +1051,7 @@ html[data-theme="dark"] .sidebar-quote-panel {
 
 /* Dark mode */
 html[data-theme="dark"] .sidebar .recent-posts h2 {
-  background-color: color-mix(in srgb, #212325 95%, white);
+  background-color: color-mix(in srgb, var(--dark-bg) 95%, white);
   border-left-color: #3a3f42;
 }
 /* Recent Posts — list styling */
@@ -1022,25 +1120,28 @@ html[data-theme="dark"] .sidebar .recent-posts li::after {
 .site-search input {
   flex: 1;
   min-width: 0;
-  padding: 10px 12px;
+  padding: 10px 20px;
   font-family: Optima, Helvetica, sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-size: 14px;
   color: inherit;
-  background-color: color-mix(in srgb, #ffffff 98%, black);
-  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
-  border-radius: 12px;
+  background-color: color-mix(in srgb, #ffffff 97%, black);
+  border: none;
+  border-left: 2px solid color-mix(in srgb, currentColor 10%, transparent);
+  border-radius: 0;
 }
 
 /* Dark Mode — Sidebar Search */
 html[data-theme="dark"] .site-search input {
-  background-color: color-mix(in srgb, #212325 99%, white);
+  background-color: color-mix(in srgb, var(--dark-bg) 98%, white);
+  border-left: 2px solid #3a3f42;
+  color: #c9cbcd;
 }
 
 .site-search input:focus {
-  outline: 2px solid color-mix(in srgb, currentColor 35%, transparent);
-  outline-offset: 2px;
+  outline: 1px solid color-mix(in srgb, var(--link-hover-color) 18%, transparent);
+  outline-offset: 1px;
 }
 
 /* ==========================================
@@ -1085,10 +1186,15 @@ html[data-theme="dark"] .site-search input {
   opacity: 0.75;
 }
 
-/* Single column on narrow screens */
+/* Related Posts — two columns on phones */
 @media (max-width: 480px) {
   .related-posts-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .related-post-card {
+    margin-bottom: 24px;
   }
 }
 
@@ -1155,6 +1261,24 @@ html[data-theme="dark"] .site-search input {
   object-fit: cover;
 }
 
+/* Mobile featured images */
+@media (max-width: 480px) {
+  .post-preview-image {
+    flex: none;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto;
+  }
+
+  .post-preview-image img {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    object-fit: cover;
+    object-position: center;
+  }
+}
 .post-preview-body .post-excerpt {
   flex: 1;
   min-width: 0;
@@ -1165,6 +1289,12 @@ html[data-theme="dark"] .site-search input {
   text-decoration: none;
 }
 
+/* Hide post excerpts on phones */
+@media (max-width: 480px) {
+  .post-preview-body .post-excerpt {
+    display: none;
+  }
+}
 
 /* Publication date bar */
 .post-preview .post-date {

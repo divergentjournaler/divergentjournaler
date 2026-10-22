@@ -79,15 +79,16 @@ const remainingParts = cleanedHtml.split(
     </a>
     </nav>
 
-  <p class="post-date">
-    Published: {metadata.date.split(' ')[0]}
-  </p>
+  <p class="post-modified">
+  Published: {metadata.date.split(' ')[0]}
 
   {metadata.modified && metadata.showModifiedDate !== false && (
-  <p class="post-modified">
-    Last Updated On: {metadata.modified.split(' ')[0]}
-  </p>
-)}
+    <>
+      <span class="date-separator"> ~ </span>
+      Updated: {metadata.modified.split(' ')[0]}
+    </>
+  )}
+</p>
 
 {openingMedia && (
   <div class="post-opening-media">

@@ -4,17 +4,21 @@ import settings from '../data/site.settings.data.json';
 const { social } = settings;
 ---
 
+<div class="site-atmospheric-logo" aria-hidden="true"></div>
 <header class="site-header">
   <div class="site-branding">
     <a href="/" class="site-branding-link" aria-label="Return to homepage">
       <img
         src={settings.general.logo}
         alt={`${settings.general.siteTitle} logo`}
-        class="site-logo"
+        class="site-logo-hidden"
         style={`width: ${settings.general.logoWidth}px;`}
       />
       <div class="site-branding-text">
-        <h1>{settings.general.siteTitle}</h1>
+        <h1>
+  <span class="title-gradient">DIVERGENT</span>
+  <span>JOURNALER</span>
+</h1>
         <p>{settings.general.tagline}</p>
       </div>
     </a>
@@ -47,6 +51,15 @@ const { social } = settings;
 </svg>
 
     </a>
+     <!-- Light / dark theme toggle -->
+  <button
+    class="theme-toggle"
+    type="button"
+    aria-label="Switch to dark mode"
+    aria-pressed="false"
+  >
+    <span class="theme-toggle-icon" aria-hidden="true">☾</span>
+  </button>
   </div>
 )}
 </header>
@@ -69,16 +82,6 @@ const { social } = settings;
       ))}
     </div>
   </div>
-
-  <!-- Light / dark theme toggle -->
-  <button
-    class="theme-toggle"
-    type="button"
-    aria-label="Switch to dark mode"
-    aria-pressed="false"
-  >
-    <span class="theme-toggle-icon" aria-hidden="true">☾</span>
-  </button>
 </nav>
 
 
@@ -99,15 +102,7 @@ const { social } = settings;
       </div>
     </details>
 
-    <!-- Mobile light / dark theme toggle -->
-    <button
-      class="theme-toggle"
-      type="button"
-      aria-label="Switch to dark mode"
-      aria-pressed="false"
-    >
-      <span class="theme-toggle-icon" aria-hidden="true">☾</span>
-    </button>
+    
   </div>
 </div>
 
@@ -124,8 +119,12 @@ const { social } = settings;
         isDark ? "Switch to light mode" : "Switch to dark mode"
       );
 
-      const icon = button.querySelector(".theme-toggle-icon");
-      if (icon) icon.textContent = isDark ? "☀" : "☾";
+const icon = button.querySelector<HTMLElement>(".theme-toggle-icon");
+
+if (icon) {
+  icon.textContent = isDark ? "\u2600\uFE0E" : "\u263E";
+  icon.classList.toggle("is-sun", isDark);
+}
     });
   }
 
