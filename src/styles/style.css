@@ -125,11 +125,16 @@ left: 83%;
 /* Site Branding: Atmospheric Logo — Mobile */
 @media (max-width: 800px) {
   .site-atmospheric-logo {
-    top: 0;
-    opacity: 1;
+    top: -200px;
+    opacity: .8;
     left: 50%;
+    transform: translateX(-50%);
     width: 100%;
     background-size: 300px auto;
+  }
+
+  html[data-theme="dark"] .site-atmospheric-logo {
+    opacity: .7;
   }
 }
 

@@ -1,7 +1,7 @@
 
 {
  "general": {
-  "siteTitle": "The Divergent Journaler",
+  "siteTitle": "Divergent Journaler",
   "tagline": "Quietly chaotic, creatively divergent...",
   "logo": "/uploads/images/dj-logo-design3.png",
   "logoWidth": 120,
@@ -27,7 +27,7 @@
 },
 "seo": {
   "titleSeparator": " : ",
-  "titleSiteName": "The Divergent Journaler",
+  "titleSiteName": "Divergent Journaler",
   "titlePosition": "after",
   "homeTitleOnly": true
 },

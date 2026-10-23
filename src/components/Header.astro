@@ -28,10 +28,10 @@ const { social } = settings;
   </picture>
 
   <!-- Original title remains for mobile -->
-  <h1 class="mobile-title">
-    <span class="title-gradient">DIVERGENT</span>
-    <span>JOURNALER</span>
-  </h1>
+<!-- Mobile title from site settings -->
+<h1 class="mobile-title">
+  {settings.general.siteTitle}
+</h1>
 
   <p>{settings.general.tagline}</p>
 </div>
