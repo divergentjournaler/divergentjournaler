@@ -43,12 +43,6 @@ a:hover {
   color: var(--link-hover-color);
 }
 
-/* Dark Mode: Link Variables */
-html[data-theme="dark"] {
-  --link-color: var(--dark-link-color);
-  --link-hover-color: var(--dark-link-hover-color);
-}
-
 html[data-theme="dark"],
 html[data-theme="dark"] body {
   background-color: var(--dark-bg);
@@ -74,13 +68,6 @@ html[data-theme="dark"] .pagination a.is-active {
   background-color: color-mix(in srgb, var(--link-color) 80%, black);
   color: #ffffff;
   border-color: #626b73;
-}
-
-/* Keep the theme toggle transparent in dark mode */
-html[data-theme="dark"] .site-navigation .theme-toggle {
-  background-color: transparent;
-  color: var(--dark-text);
-  border: none;
 }
 
 /* Dark Mode: Navigation Bar */
@@ -113,7 +100,7 @@ left: 80%;
   background-repeat: no-repeat;
   background-position: center top;
   background-size: 425px auto;
-  opacity: 0.12;
+  opacity: 0.2;
   pointer-events: none;
   z-index: 0;
 }
@@ -265,11 +252,6 @@ left: 80%;
 .site-branding-link {
   justify-content: center;
 }
-}
-
-/* Site Branding: Hide Small Logo During Redesign */
-.site-logo-hidden {
-  display: none;
 }
 
 /* Site Branding: Tagline Typography */
@@ -505,21 +487,6 @@ html[data-theme="dark"] .mobile-navigation-links a {
   min-width: 0;
 }
 
-.mobile-navigation .theme-toggle {
-  background: transparent;
-  border: none;
-  padding: 4px 8px;
-  color: var(--link-color);
-  font-size: 22px;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.mobile-navigation .theme-toggle:hover {
-  color: var(--link-hover-color);
-}
-
-
 /* Desktop dropdown visibility and theme backgrounds */
 @media (min-width: 801px) {
   .site-navigation .more-menu .dropdown {
@@ -536,22 +503,6 @@ html[data-theme="dark"] .mobile-navigation-links a {
   }
 }
 
-/* Navigation: Light / Dark Theme Toggle */
-.site-navigation .theme-toggle {
-  margin-left: auto;
-  padding: 4px 8px;
-  border: none;
-  background: transparent;
-  color: #424242;
-  font-size: 22px;
-  line-height: 1;
-  cursor: pointer;
-}
-
-.site-navigation .theme-toggle:hover {
-  opacity: 0.7;
-}
-
 /* Keep sun and moon in the same space */
 .theme-toggle-icon {
   display: inline-flex;
@@ -563,7 +514,7 @@ html[data-theme="dark"] .mobile-navigation-links a {
 }
 
 .theme-toggle-icon.is-sun {
-  transform: scale(1.8);
+  transform: translateY(-2.5px) scale(1.8);
 }
 
 /* ==========================================
@@ -1234,7 +1185,7 @@ html[data-theme="dark"] .site-search input {
 
 
 /* =========================================================
-   07 — BLOG FEED & POST PREVIEWS
+   08 — BLOG FEED & POST PREVIEWS
    ========================================================= */
 
 /* Featured image and excerpt layout */
@@ -1333,7 +1284,7 @@ html[data-theme="dark"] .site-search input {
 
 
 /* =========================================================
-   08. Footer
+   09 Footer
    ========================================================= */
 
 .site-footer {
