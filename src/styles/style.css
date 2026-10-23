@@ -26,12 +26,17 @@ html[data-theme="dark"] {
   --link-hover-color: var(--dark-link-hover-color);
 }
 
+/* These settings are in site-settings.json, baselayout.astro makes the 
+connection so the names may not match. There is no light-bg in settings, 
+only background in the light theme. */
+
 html, body {
   background-color: var(--light-bg);
   color: var(--light-text);
   font-family: var(--site-font-family);
   font-size: var(--site-font-size);
   line-height: var(--site-line-height);
+  color: #898683;
 }
 
 /* Global Links */
@@ -72,7 +77,12 @@ html[data-theme="dark"] .pagination a.is-active {
 
 /* Dark Mode: Navigation Bar */
 html[data-theme="dark"] .site-navigation {
-  background-color: color-mix(in srgb, var(--dark-bg) 95%, white);
+  background: linear-gradient(
+  to right,
+  color-mix(in srgb, var(--dark-bg) 95%, white) 0%,
+  color-mix(in srgb, var(--dark-bg) 95%, white) 25%,
+  transparent 75%
+);
 }
 
 /* ==========================================
@@ -91,8 +101,8 @@ html[data-theme="dark"] .site-navigation {
 /* Site Branding: Atmospheric Background Logo */
 .site-atmospheric-logo {
   position: absolute;
-  top: 0px;
-left: 80%;
+  top: 10px;
+left: 83%;
   transform: translateX(-50%);
   width: 100%;
   height: 400px;
@@ -125,13 +135,21 @@ left: 80%;
 
 .site-header {
   display: flex;
+  position: relative;
+  overflow-x: clip;
   justify-content: space-between;
   align-items: center;
   gap: 24px;
-  max-width: 1100px;
+  max-width: var(--contentMaxWidth);
   margin: 0 auto;
-  padding: 30px 40px 25px;
+  padding: 50px 40px 25px;
   box-sizing: border-box;
+}
+
+@media (min-width: 801px) {
+  .site-header {
+    padding-bottom: 50px;
+  }
 }
 
 .header-social {
@@ -149,10 +167,17 @@ left: 80%;
   justify-content: center;
   width: 23px;
   height: 23px;
-  background-color: #686868;
-  color: #ffffff;
+  background-color: var(--light-bg);
+  color: var(--light-text);
+  opacity: .7;
   border-radius: 6px;
   text-decoration: none;
+}
+
+html[data-theme="dark"] .header-social a {
+  background-color: var(--dark-bg);
+  color: var(--dark-text);
+  opacity: .5;
 }
 
 .header-social svg {
@@ -182,8 +207,9 @@ left: 80%;
   padding: 0;
   border: none;
   border-radius: 6px;
-  background-color: #686868;
-  color: #ffffff;
+  background-color: var(--light-bg);
+  color: var(--light-text);
+  opacity: .5;
   font-size: 18px;
   line-height: 1;
   cursor: pointer;
@@ -192,6 +218,12 @@ left: 80%;
 
 .header-social .theme-toggle:hover {
   background-color: #505050;
+}
+
+html[data-theme="dark"] .theme-toggle {
+  background-color: var(--dark-bg);
+  color: var(--dark-text);
+  opacity: .5;
 }
 
 /* Site branding - Main logo */
@@ -301,11 +333,15 @@ left: 80%;
   display: flex;
   align-items: center;
   gap: 30px;
-  max-width: 1100px;
+  max-width: var(--contentMaxWidth);
   margin: 0 auto;
   padding: 14px 20px;
-  box-sizing: border-box;
-  background-color: color-mix(in srgb, #ffffff 97%, black);
+  box-sizing: border-box;background: linear-gradient(
+  to right,
+  color-mix(in srgb, var(--light-bg) 97%, black) 0%,
+  color-mix(in srgb, var(--light-bg) 97%, black) 65%,
+  transparent 100%
+);
 }
 
 /* Desktop Navigation Typography */
@@ -332,7 +368,7 @@ left: 80%;
   transform: translateY(-50%);
   height: 1em;
   width: 1px;
-  background-color: color-mix(in srgb, #f6f6f6 97%, black);
+  background-color: color-mix(in srgb, var(--light-bg) 85%, black);
 }
 
 /* Dark Mode: Navigation Separators */
@@ -517,6 +553,54 @@ html[data-theme="dark"] .mobile-navigation-links a {
   transform: translateY(-2.5px) scale(1.8);
 }
 
+/* Desktop Wordmark: Theme-Specific Images */
+.desktop-title {
+  display: block;
+}
+
+.desktop-title img {
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  opacity: 0.60;
+}
+
+/* Light mode */
+.desktop-title-dark {
+  display: none;
+}
+
+.desktop-title-dark img {
+  opacity: .70;
+}
+/* Dark mode */
+html[data-theme="dark"] .desktop-title:not(.desktop-title-dark) {
+  display: none;
+}
+
+html[data-theme="dark"] .desktop-title-dark {
+  display: block;
+}
+
+/* Desktop: Hide Original Text Title */
+@media (min-width: 801px) {
+  .mobile-title {
+    display: none;
+  }
+}
+
+/* Mobile: Preserve Original Title */
+@media (max-width: 800px) {
+  .desktop-title {
+    display: none !important;
+  }
+
+  .mobile-title {
+    display: block;
+  }
+}
+
 /* ==========================================
    03 — PAGE LAYOUT & PAGINATION
    ========================================== */
@@ -525,8 +609,8 @@ html[data-theme="dark"] .mobile-navigation-links a {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 280px;
   gap: 40px;
-  max-width: 1100px;
-  margin:60px auto 30px;
+  max-width: var(--contentMaxWidth);
+  margin: 60px auto 30px;
   padding: 0 20px;
   box-sizing: border-box;
 }
@@ -600,14 +684,14 @@ html[data-theme="dark"] .mobile-navigation-links a {
   gap: 10px;
   padding-bottom: 10px;
   margin-bottom: 10px;
-  border-bottom: 1px dotted #e0e0e0;
+  border-bottom: 1px dotted color-mix(in srgb, var(--light-bg) 55%, black);
 }
 
 .post-breadcrumbs a {
   display: inline-block;
   padding: 3px 12px;
   font-size: 0.8rem;
-  background-color: #f6f6f6;
+  background-color: color-mix(in srgb, var(--light-bg) 90%, black);
   color: var(--link-color);
   border-radius: 4px;
   text-decoration: none;
@@ -617,7 +701,7 @@ html[data-theme="dark"] .mobile-navigation-links a {
 
 .post-breadcrumbs a:hover {
   color: var(--link-hover-color);
-  background-color: color-mix(in srgb, #f6f6f6 95%, black);
+  background-color: color-mix(in srgb, var(--light-bg) 25%, black);
 }
 
 html[data-theme="dark"] .post-breadcrumbs a {
@@ -761,7 +845,7 @@ html[data-theme="dark"] .post-breadcrumbs {
   text-transform: uppercase;
   letter-spacing: .3em;
   margin: 18px 0 18px;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid color-mix(in srgb, var(--light-bg) 55%, black);
 }
 
 html[data-theme="dark"] .blog-post > .post-title {
@@ -945,7 +1029,7 @@ html[data-theme="dark"] .blog-post > .post-title {
    ========================================== */
 
 .sidebar-quote-panel {
-  background-color: color-mix(in srgb, #ffffff 97%, black);
+  background-color: color-mix(in srgb, var(--light-bg) 97%, black);
   color: #242424;
   padding: 20px 20px;
   margin: 20px 0;
@@ -992,7 +1076,7 @@ html[data-theme="dark"] .sidebar-quote-panel {
   font-size: 16px;
   font-weight: 700;
   line-height: 1.4;
-  background-color: color-mix(in srgb, #ffffff 97%, black);
+  background-color: color-mix(in srgb, var(--light-bg) 97%, black);
   border-left: 2px solid color-mix(in srgb, currentColor 10%, transparent);
   padding: 10px 12px;
   margin: 0 0 16px;
@@ -1077,7 +1161,7 @@ html[data-theme="dark"] .sidebar .recent-posts li::after {
   letter-spacing: 0.1em;
   font-size: 14px;
   color: inherit;
-  background-color: color-mix(in srgb, #ffffff 97%, black);
+  background-color: color-mix(in srgb, var(--light-bg) 97%, black);
   border: none;
   border-left: 2px solid color-mix(in srgb, currentColor 10%, transparent);
   border-radius: 0;
@@ -1288,7 +1372,7 @@ html[data-theme="dark"] .site-search input {
    ========================================================= */
 
 .site-footer {
-  max-width: 1100px;
+  max-width: var(--contentMaxWidth);
   margin: 40px auto 0;
   padding: 25px 40px;
   border-top: 1px dotted color-mix(in srgb, currentColor 40%, transparent);

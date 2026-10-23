@@ -2,7 +2,7 @@
 {
  "general": {
   "siteTitle": "The Divergent Journaler",
-  "tagline": "Journaling, creativity, and a beautifully divergent mind.",
+  "tagline": "Quietly chaotic, creatively divergent...",
   "logo": "/uploads/images/dj-logo-design3.png",
   "logoWidth": 120,
   "siteUrl": "https://divergentjournaler.com",
@@ -47,7 +47,7 @@
     "showSidebar": true,
     "sidebarPosition": "right",
     "sidebarWidth": 280,
-    "contentMaxWidth": 1100
+    "contentMaxWidth": 1600
   },
   "sidebar": {
     "showSearch": true,
@@ -62,7 +62,7 @@
   "light": {
     "accentColor": "#008cce",
     "backgroundColor": "#ffffff",
-    "textColor": "#242424",
+    "textColor": "#000000",
     "linkHoverColor": "#7f428d",
     "linkColor": "#42758d"
   },
@@ -79,7 +79,7 @@
   },
   "siteTitle": {
   "fontSize": "20px",
-  "fontWeight": "400",
+  "fontWeight": "600",
   "letterSpacing": "0.3em"
 },
 "tagline": {

@@ -4,17 +4,37 @@ import settings from '../data/site.settings.data.json';
 const { social } = settings;
 ---
 
-<div class="site-atmospheric-logo" aria-hidden="true"></div>
+
 <header class="site-header">
+  <div class="site-atmospheric-logo" aria-hidden="true"></div>
   <div class="site-branding">
     <a href="/" class="site-branding-link" aria-label="Return to homepage">
       <div class="site-branding-text">
-        <h1>
-          <span class="title-gradient">DIVERGENT</span>
-          <span>JOURNALER</span>
-        </h1>
-        <p>{settings.general.tagline}</p>
-      </div>
+
+  <!-- Desktop title images -->
+  <picture class="desktop-title">
+    <img
+      class="desktop-title-light"
+      src="/uploads/images/dj-title-light.png"
+      alt="Divergent Journaler"
+    />
+  </picture>
+
+  <picture class="desktop-title desktop-title-dark">
+    <img
+      src="/uploads/images/dj-title-dark.png"
+      alt=""
+    />
+  </picture>
+
+  <!-- Original title remains for mobile -->
+  <h1 class="mobile-title">
+    <span class="title-gradient">DIVERGENT</span>
+    <span>JOURNALER</span>
+  </h1>
+
+  <p>{settings.general.tagline}</p>
+</div>
     </a>
   </div>
   

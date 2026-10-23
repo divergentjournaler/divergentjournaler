@@ -37,6 +37,11 @@ const formattedTitle = pageTitle
     ? `${seo.titleSiteName}${seo.titleSeparator}${pageTitle}`
     : `${pageTitle}${seo.titleSeparator}${seo.titleSiteName}`
   : seo.titleSiteName;
+
+const contentMaxWidth =
+  settings.layout.contentMaxWidth === 0
+    ? 'none'
+    : `${settings.layout.contentMaxWidth}px`;
 ---
 
 
@@ -72,6 +77,8 @@ const formattedTitle = pageTitle
     --tagline-font-size: ${settings.appearance.typography.tagline.fontSize};
     --tagline-font-weight: ${settings.appearance.typography.tagline.fontWeight};
     --tagline-letter-spacing: ${settings.appearance.typography.tagline.letterSpacing};
+    --contentMaxWidth: ${contentMaxWidth};
+
   `}
 >
 
