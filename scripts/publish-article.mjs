@@ -33,6 +33,9 @@ const IMAGE_DESTINATION = path.join(
   "uploads",
   "images"
 );
+
+const articleImages = new Set();
+
 function getFrontmatterValue(markdown, field) {
   const frontmatter = markdown.match(
     /^---\s*\r?\n([\s\S]*?)\r?\n---/
@@ -75,6 +78,8 @@ function convertImages(markdown) {
       const filename = path.basename(
         reference.split("|")[0].trim()
       );
+
+      articleImages.add(filename);
 
       const source = path.join(IMAGE_SOURCE, filename);
 
@@ -122,6 +127,8 @@ function convertFeaturedImage(markdown) {
       const filename = path.basename(
         value.trim().replace(/^["']|["']$/g, "")
       );
+
+      articleImages.add(filename);
 
       const source = path.join(IMAGE_SOURCE, filename);
       const destination = path.join(
@@ -371,3 +378,8 @@ console.log(
   `\n${mode === "publish" ? "Created" : "Updated"} website article:\n${outputFile}`
 );
 console.log("\nLocal only — nothing deployed.");
+
+console.log(
+  "\nArticle images:",
+  JSON.stringify([...articleImages])
+);
