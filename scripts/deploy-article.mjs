@@ -100,6 +100,16 @@ if (publishingCommit !== remoteMainCommit) {
 
 console.log("Publishing workspace verified and clean.");
 
+const startingCommit = run(
+  "git",
+  ["rev-parse", "HEAD"],
+  PUBLISHING_ROOT
+);
+
+let pushSucceeded = false;
+
+try {
+
 const conversionOutput = execFileSync(
   "node",
   [
@@ -131,28 +141,12 @@ const result = JSON.parse(
   resultLine.slice("PUBLISH_RESULT=".length)
 );
 
-if (result.previousArticleFile) {
-  const oldArticle = path.resolve(
-    PUBLISHING_ROOT,
-    result.previousArticleFile
-  );
-
-  if (
-    !oldArticle.startsWith(
-      path.join(PUBLISHING_ROOT, "src", "content", "markdown") +
-        path.sep
-    )
-  ) {
-    throw new Error("Unsafe previous article path. Cancelled.");
-  }
-
-  fs.unlinkSync(oldArticle);
-  console.log("Removed previous article filename from publishing workspace.");
-}
-
 const filesToStage = [
   result.articleFile,
   ...result.images,
+  ...(result.previousArticleFile
+    ? [result.previousArticleFile]
+    : []),
 ];
 
 const allowedArticleDirectory = path.join(
@@ -174,9 +168,23 @@ for (const file of filesToStage) {
     throw new Error(`Unsafe publishing file path: ${file}`);
   }
 }
-
 if (result.previousArticleFile) {
-  filesToStage.push(result.previousArticleFile);
+  const oldArticle = path.resolve(
+    PUBLISHING_ROOT,
+    result.previousArticleFile
+  );
+
+  if (
+    !oldArticle.startsWith(
+      path.join(PUBLISHING_ROOT, "src", "content", "markdown") +
+        path.sep
+    )
+  ) {
+    throw new Error("Unsafe previous article path. Cancelled.");
+  }
+
+  fs.unlinkSync(oldArticle);
+  console.log("Removed previous article filename from publishing workspace.");
 }
 
 run(
@@ -224,7 +232,24 @@ run(
   PUBLISHING_ROOT
 );
 
+pushSucceeded = true;
+
 console.log("Publishing commit pushed to GitHub:", deployedCommit);
+
+} catch (error) {
+  if (!pushSucceeded) {
+    console.error(
+      "Publishing failed before push. Local changes require recovery."
+    );
+    console.error("Starting commit:", startingCommit);
+  } else {
+    console.error(
+      "GitHub accepted the push. Published changes will not be rolled back."
+    );
+  }
+
+  throw error;
+}
 
 let deploymentRun = null;
 
