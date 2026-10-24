@@ -3,10 +3,12 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const PROJECT_ROOT = path.resolve(
-  path.dirname(fileURLToPath(import.meta.url)),
-  ".."
-);
+const PROJECT_ROOT = process.env.DJ_PUBLISH_ROOT
+  ? path.resolve(process.env.DJ_PUBLISH_ROOT)
+  : path.resolve(
+      path.dirname(fileURLToPath(import.meta.url)),
+      ".."
+    );
 
 const VAULT_ROOT = path.join(
   process.env.HOME,
@@ -387,6 +389,8 @@ console.log(
 console.log(
   "PUBLISH_RESULT=" +
     JSON.stringify({
+      sourceNote: articlePath,
+      trackedMarkdown,
       articleFile: path.relative(PROJECT_ROOT, outputFile),
       images: [...articleImages].map((filename) =>
         path.join("public", "uploads", "images", filename)
