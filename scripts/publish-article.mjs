@@ -383,3 +383,17 @@ console.log(
   "\nArticle images:",
   JSON.stringify([...articleImages])
 );
+
+console.log(
+  "PUBLISH_RESULT=" +
+    JSON.stringify({
+      articleFile: path.relative(PROJECT_ROOT, outputFile),
+      images: [...articleImages].map((filename) =>
+        path.join("public", "uploads", "images", filename)
+      ),
+      previousArticleFile:
+        mode === "update" && existingFile !== outputFile
+          ? path.relative(PROJECT_ROOT, existingFile)
+          : null,
+    })
+);
