@@ -1,8 +1,12 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const PROJECT_ROOT = process.cwd();
+const PROJECT_ROOT = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  ".."
+);
 
 const VAULT_ROOT = path.join(
   process.env.HOME,
@@ -204,9 +208,11 @@ if (
   );
 }
 
+const articleFolder = mode === "publish" ? "DRAFTS" : "PUBLISHED";
+
 const articlePath = path.join(
   DJ_ROOT,
-  "DRAFTS",
+  articleFolder,
   articleName
 );
 
