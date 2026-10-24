@@ -1,5 +1,8 @@
 
 ---
+
+import { getAllUnifiedArticles } from '../lib/articles';
+
 interface Props {
   currentPost: any;
   limit?: number;
@@ -7,12 +10,7 @@ interface Props {
 
 const { currentPost, limit = 4 } = Astro.props;
 
-const postFiles = import.meta.glob('../content/posts/**/*.json', {
-  eager: true,
-  import: 'default',
-});
-
-const allPosts = Object.values(postFiles) as any[];
+const allPosts = await getAllUnifiedArticles();
 
 const currentTags = new Set(
   (currentPost.metadata.tags ?? []).map((tag: any) => tag.slug)

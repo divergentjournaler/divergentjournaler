@@ -2,19 +2,18 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Slideshows from '../../components/Slideshows.astro';
 import RelatedPosts from '../../components/RelatedPosts.astro';
+import { getAllUnifiedArticles } from '../../lib/articles';
+import { getCollection, render } from 'astro:content';
 
 const posts = import.meta.glob('../../content/posts/**/*.json', {
   eager: true,
   import: 'default',
 });
 
-export function getStaticPaths() {
-  const posts = import.meta.glob('../../content/posts/**/*.json', {
-    eager: true,
-    import: 'default',
-  });
+export async function getStaticPaths() {
+  const posts = await getAllUnifiedArticles();
 
-  return Object.values(posts).map((post: any) => ({
+  return posts.map((post) => ({
     params: {
       category: post.metadata.categorySlug,
       slug: post.metadata.slug,
@@ -25,10 +24,25 @@ export function getStaticPaths() {
   }));
 }
 
+
 const { post } = Astro.props;
 const { metadata, html } = post;
+
+let MarkdownContent;
+
+if (post.source === 'markdown') {
+  const entries = await getCollection('markdown');
+  const entry = entries.find((item) => item.id === metadata.slug);
+
+  if (entry) {
+    const { Content } = await render(entry);
+    MarkdownContent = Content;
+  }
+}
+
 // Chronological post navigation
-const sortedPosts = (Object.values(posts) as any[])
+
+const sortedPosts = (await getAllUnifiedArticles())
   .sort((a, b) => a.metadata.date.localeCompare(b.metadata.date));
 
 const currentPostIndex = sortedPosts.findIndex(
@@ -102,17 +116,22 @@ const remainingParts = cleanedHtml.split(
 )}
 
 
-    <div class="post-content">
-{remainingParts.map((part: string) => {
-    const match = part.match(/<div data-slideshow-id="(1490|1546)"><\/div>/);
-    return match
-  ? (
-      match[1] === '1490'
-        ? <div class="post-bottom-slideshow"><Slideshows id={match[1]} /></div>
-        : <Slideshows id={match[1]} />
-    )
-  : <Fragment set:html={part} />;
-  })}
+    
+<div class="post-content">
+  {post.source === 'markdown' ? (
+    MarkdownContent && <MarkdownContent />
+  ) : (
+    remainingParts.map((part: string) => {
+      const match = part.match(/<div data-slideshow-id="(1490|1546)"><\/div>/);
+      return match
+        ? (
+          match[1] === '1490'
+            ? <div class="post-bottom-slideshow"><Slideshows id={match[1]} /></div>
+            : <Slideshows id={match[1]} />
+        )
+        : <Fragment set:html={part} />;
+    })
+  )}
 </div>
 
 

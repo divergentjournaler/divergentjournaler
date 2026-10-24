@@ -25,8 +25,8 @@ export interface ArticleMetadata {
 export interface Article {
   metadata: ArticleMetadata;
   html: string;
+  source?: 'json' | 'markdown';
 }
-
 
 const jsonFiles = import.meta.glob('../content/posts/**/*.json', {
   eager: true,
@@ -34,7 +34,10 @@ const jsonFiles = import.meta.glob('../content/posts/**/*.json', {
 });
 
 export function getAllArticles(): Article[] {
-  return Object.values(jsonFiles) as Article[];
+  return (Object.values(jsonFiles) as Article[]).map((article) => ({
+    ...article,
+    source: 'json',
+  }));
 }
 
 export async function getAllMarkdownEntries() {
@@ -90,4 +93,21 @@ export function markdownToMetadata(data: Record<string, any>): ArticleMetadata {
       slug: toSlug(String(tag)),
     })),
   };
+}
+
+export async function getMarkdownArticles(): Promise<Article[]> {
+  const entries = await getAllMarkdownEntries();
+
+  return entries.map((entry) => ({
+    metadata: markdownToMetadata(entry.data),
+    html: '',
+    source: 'markdown' as const,
+  }));
+}
+
+export async function getAllUnifiedArticles(): Promise<Article[]> {
+  const jsonArticles = getAllArticles();
+  const markdownArticles = await getMarkdownArticles();
+
+  return [...jsonArticles, ...markdownArticles];
 }
