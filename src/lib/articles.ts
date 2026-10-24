@@ -82,6 +82,9 @@ export function markdownToMetadata(data: Record<string, any>): ArticleMetadata {
     categorySlug,
     date: String(data.date).replace(/\./g, '-'),
     description: data.description || undefined,
+    featuredImage: data.featuredImage
+  ? String(data.featuredImage)
+  : undefined,
     categories: [
       {
         name: category,
@@ -95,14 +98,27 @@ export function markdownToMetadata(data: Record<string, any>): ArticleMetadata {
   };
 }
 
+
 export async function getMarkdownArticles(): Promise<Article[]> {
   const entries = await getAllMarkdownEntries();
 
-  return entries.map((entry) => ({
-    metadata: markdownToMetadata(entry.data),
-    html: '',
-    source: 'markdown' as const,
-  }));
+  return entries.map((entry) => {
+    const firstImage = entry.body?.match(
+      /!\[[^\]]*\]\(([^)\s]+(?:%20[^)\s]*)*)\)/
+    )?.[1];
+
+    const metadata = markdownToMetadata(entry.data);
+
+    if (!metadata.featuredImage && firstImage) {
+      metadata.featuredImage = firstImage;
+    }
+
+    return {
+      metadata,
+      html: '',
+      source: 'markdown' as const,
+    };
+  });
 }
 
 export async function getAllUnifiedArticles(): Promise<Article[]> {

@@ -2,6 +2,7 @@
 ---
 
 import { getAllUnifiedArticles } from '../lib/articles';
+import { getFeaturedImage } from '../lib/featuredImages';
 
 interface Props {
   currentPost: any;
@@ -49,17 +50,9 @@ const relatedPosts = allPosts
       (category: any) => currentCategories.has(category.slug)
     ).length;
 
-    // Use the first image in the article as its featured image.
-const firstImageMatch = post.html?.match(
-  /<img\b[^>]*\bsrc=["']([^"']+)["']/i
-);
-
-const featuredImage =
-  post.metadata.categorySlug === "journal-prompts"
-    ? "/uploads/tools/prompts.png"
-    : firstImageMatch?.[1] ??
-      categoryFallbacks[post.metadata.categorySlug] ??
-      null;
+    const featuredImage = getFeaturedImage(post, {
+  context: 'listing',
+});
 
 return { post, sharedTags, sharedCategories, featuredImage };
 

@@ -4,6 +4,7 @@ import Slideshows from '../../components/Slideshows.astro';
 import RelatedPosts from '../../components/RelatedPosts.astro';
 import { getAllUnifiedArticles } from '../../lib/articles';
 import { getCollection, render } from 'astro:content';
+import { getFeaturedImage } from '../../lib/featuredImages';
 
 const posts = import.meta.glob('../../content/posts/**/*.json', {
   eager: true,
@@ -67,7 +68,13 @@ const openingMedia = /weekly-prompts-\d+$/i.test(metadata.slug)
 const remainingHtml = openingMedia
   ? html.slice(openingMedia.length)
   : html;
-  const isWeeklyPrompt = /weekly-prompts-\d+$/i.test(metadata.slug);
+
+const markdownFeaturedImage =
+  post.source === 'markdown'
+    ? getFeaturedImage(post, { context: 'article' })
+    : null;
+
+const isWeeklyPrompt = /weekly-prompts-\d+$/i.test(metadata.slug);
 
 const cleanedHtml = remainingHtml;
 const slideshowParts = html.split(
@@ -110,16 +117,30 @@ const remainingParts = cleanedHtml.split(
   </div>
 )}
 
+{post.source === 'markdown' && markdownFeaturedImage && (
+  <div class="post-opening-media">
+    <img
+      src={markdownFeaturedImage}
+      alt={metadata.title}
+    />
+  </div>
+)}
+
 {metadata.showTitle !== false &&
   !/weekly-prompts-\d+$/i.test(metadata.slug) && (
     <h1 class="post-title">{metadata.title}</h1>
 )}
 
 
-    
 <div class="post-content">
   {post.source === 'markdown' ? (
-    MarkdownContent && <MarkdownContent />
+    MarkdownContent && (
+      <div class:list={['markdown-body', {
+        'skip-first-featured-image': Boolean(markdownFeaturedImage)
+      }]}>
+        <MarkdownContent />
+      </div>
+    )
   ) : (
     remainingParts.map((part: string) => {
       const match = part.match(/<div data-slideshow-id="(1490|1546)"><\/div>/);
