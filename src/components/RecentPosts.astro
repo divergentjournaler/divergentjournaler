@@ -1,26 +1,13 @@
-
 ---
+import { getAllUnifiedArticles } from '../lib/articles';
+
 interface Props {
   limit?: number;
 }
 
 const { limit = 5 } = Astro.props;
 
-const postFiles = import.meta.glob('../content/posts/**/*.json', {
-  eager: true,
-  import: 'default',
-});
-
-interface Post {
-  metadata: {
-    title: string;
-    slug: string;
-    categorySlug: string;
-    date: string;
-  };
-}
-
-const recentPosts = (Object.values(postFiles) as Post[])
+const recentPosts = (await getAllUnifiedArticles())
   .sort((a, b) => b.metadata.date.localeCompare(a.metadata.date))
   .slice(0, limit);
 ---

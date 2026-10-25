@@ -4,25 +4,10 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import BlogFeed from '../../../../components/BlogFeed.astro';
 import Pagination from '../../../../components/Pagination.astro';
 import settings from '../../../../data/site.settings.data.json';
+import { getAllUnifiedArticles } from '../../../../lib/articles';
 
-interface Post {
-  metadata: {
-    title: string;
-    slug: string;
-    categorySlug: string;
-    date: string;
-    categories: { name: string; slug: string }[];
-  };
-  html: string;
-}
-
-export function getStaticPaths() {
-  const postFiles = import.meta.glob('../../../../content/posts/**/*.json', {
-    eager: true,
-    import: 'default',
-  });
-
-  const posts = Object.values(postFiles) as Post[];
+export async function getStaticPaths() {
+  const posts = await getAllUnifiedArticles();
   const categories = new Map<string, string>();
 
   for (const post of posts) {
@@ -38,23 +23,31 @@ export function getStaticPaths() {
       )
       .sort((a, b) => b.metadata.date.localeCompare(a.metadata.date));
 
-    const totalPages = Math.ceil(categoryPosts.length / settings.blog.postsPerPage);
+    const totalPages = Math.ceil(
+      categoryPosts.length / settings.blog.postsPerPage
+    );
 
-    return Array.from({ length: Math.max(0, totalPages - 1) }, (_, index) => {
-      const page = index + 2;
-      const start = (page - 1) * settings.blog.postsPerPage;
+    return Array.from(
+      { length: Math.max(0, totalPages - 1) },
+      (_, index) => {
+        const page = index + 2;
+        const start = (page - 1) * settings.blog.postsPerPage;
 
-      return {
-        params: { category: slug, page: String(page) },
-        props: {
-          categoryName: name,
-          categorySlug: slug,
-          page,
-          totalPages,
-          posts: categoryPosts.slice(start, start + settings.blog.postsPerPage),
-        },
-      };
-    });
+        return {
+          params: { category: slug, page: String(page) },
+          props: {
+            categoryName: name,
+            categorySlug: slug,
+            page,
+            totalPages,
+            posts: categoryPosts.slice(
+              start,
+              start + settings.blog.postsPerPage
+            ),
+          },
+        };
+      }
+    );
   }).flat();
 }
 
@@ -65,7 +58,6 @@ const { categoryName, categorySlug, page, totalPages, posts } = Astro.props;
   title={`${categoryName} — Page ${page}`}
   description={`Explore more ${categoryName} articles and journaling inspiration at Divergent Journaler. Page ${page}.`}
 >
-
   <h1>{categoryName}</h1>
   <BlogFeed posts={posts} />
   <Pagination

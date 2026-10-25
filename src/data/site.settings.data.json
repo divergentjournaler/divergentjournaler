@@ -38,7 +38,7 @@
   },
   "blog": {
     "postsPerPage": 10,
-    "excerptLength": 280,
+    "excerptLength": 30,
     "showDates": true,
     "showExcerpts": true,
     "showReadMore": true
@@ -47,7 +47,7 @@
     "showSidebar": true,
     "sidebarPosition": "right",
     "sidebarWidth": 280,
-    "contentMaxWidth": 1600
+    "contentMaxWidth": 1200
   },
   "sidebar": {
     "showSearch": true,
@@ -69,7 +69,7 @@
 
   "typography": {
   "fontFamily": "-apple-system, BlinkMacSystemFont, \"Helvetica Neue\", Helvetica, sans-serif",
-  "fontSize": "16px",
+  "fontSize": "14px",
   "lineHeight": "1.8",
   "navigation": {
     "fontFamily": "-apple-system, BlinkMacSystemFont, \"Helvetica Neue\", Helvetica, sans-serif",

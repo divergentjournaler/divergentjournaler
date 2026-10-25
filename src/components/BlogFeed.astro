@@ -34,8 +34,10 @@ function createExcerpt(
     .replace(/\s+/g, ' ')
     .trim();
 
-  return text.length > maxLength
-  ? text.slice(0, maxLength).trimEnd()
+  const words = text.split(/\s+/).filter(Boolean);
+
+return words.length > maxLength
+  ? words.slice(0, maxLength).join(' ')
   : text;
 }
 ---
@@ -66,16 +68,18 @@ function createExcerpt(
         )}
 
         {settings.blog.showExcerpts && (
-  <p class="post-excerpt">
-    {createExcerpt(post.html)}{' '}
-    <a
-      class="excerpt-more"
-      href={`/${post.metadata.categorySlug}/${post.metadata.slug}/`}
-      aria-label={`Read more: ${post.metadata.title}`}
-    >
-      [ . . . ]
-    </a>
-  </p>
+  <div class="post-excerpt">
+    <p>{createExcerpt(post.html)}</p>
+    <div class="excerpt-read-more">
+      <a
+        class="excerpt-more"
+        href={`/${post.metadata.categorySlug}/${post.metadata.slug}/`}
+        aria-label={`Read more: ${post.metadata.title}`}
+      >
+        ... Read More
+      </a>
+    </div>
+  </div>
 )}
       </div>
 {settings.blog.showDates && (

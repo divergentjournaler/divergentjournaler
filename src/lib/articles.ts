@@ -44,22 +44,6 @@ export async function getAllMarkdownEntries() {
   return await getCollection('markdown');
 }
 
-export async function getMarkdownTest() {
-  const entries = await getCollection('markdown');
-  const entry = entries.find((item) => item.id === 'bridge-test');
-
-  if (!entry) {
-    throw new Error('Bridge test article not found');
-  }
-
-  const { Content } = await render(entry);
-
-  return {
-    title: entry.data.title,
-    Content,
-  };
-}
-
 function toSlug(value: string): string {
   return value
     .toLowerCase()
@@ -115,7 +99,11 @@ export async function getMarkdownArticles(): Promise<Article[]> {
 
     return {
       metadata,
-      html: '',
+      html: (entry.body ?? '')
+  .replace(/!\[[^\]]*\]\([^)]+\)/g, ' ')
+  .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+  .replace(/^[#>*\-\s]+/gm, '')
+  .replace(/[*_`~]/g, ''),
       source: 'markdown' as const,
     };
   });

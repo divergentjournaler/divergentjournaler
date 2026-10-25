@@ -4,25 +4,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import BlogFeed from '../../components/BlogFeed.astro';
 import settings from '../../data/site.settings.data.json';
 import Pagination from '../../components/Pagination.astro';
+import { getAllUnifiedArticles } from '../../lib/articles';
 
-interface Post {
-  metadata: {
-    title: string;
-    slug: string;
-    categorySlug: string;
-    date: string;
-    categories: { name: string; slug: string }[];
-  };
-  html: string;
-}
-
-export function getStaticPaths() {
-  const postFiles = import.meta.glob('../../content/posts/**/*.json', {
-    eager: true,
-    import: 'default',
-  });
-
-  const posts = Object.values(postFiles) as Post[];
+export async function getStaticPaths() {
+  const posts = await getAllUnifiedArticles();
 
   const categories = new Map<string, string>();
 
@@ -33,21 +18,23 @@ export function getStaticPaths() {
   }
 
   return Array.from(categories, ([slug, name]) => {
-  const categoryPosts = posts
-    .filter((post) =>
-      post.metadata.categories.some((category) => category.slug === slug)
-    )
-    .sort((a, b) => b.metadata.date.localeCompare(a.metadata.date));
+    const categoryPosts = posts
+      .filter((post) =>
+        post.metadata.categories.some((category) => category.slug === slug)
+      )
+      .sort((a, b) => b.metadata.date.localeCompare(a.metadata.date));
 
-  return {
-    params: { category: slug },
-    props: {
-      categoryName: name,
-      posts: categoryPosts.slice(0, settings.blog.postsPerPage),
-      totalPages: Math.ceil(categoryPosts.length / settings.blog.postsPerPage),
-    },
-  };
-});
+    return {
+      params: { category: slug },
+      props: {
+        categoryName: name,
+        posts: categoryPosts.slice(0, settings.blog.postsPerPage),
+        totalPages: Math.ceil(
+          categoryPosts.length / settings.blog.postsPerPage
+        ),
+      },
+    };
+  });
 }
 
 const { categoryName, posts, totalPages } = Astro.props;
@@ -60,8 +47,8 @@ const { categoryName, posts, totalPages } = Astro.props;
   <h1>{categoryName}</h1>
   <BlogFeed posts={posts} />
   <Pagination
-  currentPage={1}
-  totalPages={totalPages}
-  basePath={`/category/${Astro.params.category}/`}
-/>
+    currentPage={1}
+    totalPages={totalPages}
+    basePath={`/category/${Astro.params.category}/`}
+  />
 </BaseLayout>

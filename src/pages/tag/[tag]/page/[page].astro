@@ -4,25 +4,10 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import BlogFeed from '../../../../components/BlogFeed.astro';
 import Pagination from '../../../../components/Pagination.astro';
 import settings from '../../../../data/site.settings.data.json';
+import { getAllUnifiedArticles } from '../../../../lib/articles';
 
-interface Post {
-  metadata: {
-    title: string;
-    slug: string;
-    categorySlug: string;
-    date: string;
-    tags: { name: string; slug: string }[];
-  };
-  html: string;
-}
-
-export function getStaticPaths() {
-  const postFiles = import.meta.glob('../../../../content/posts/**/*.json', {
-    eager: true,
-    import: 'default',
-  });
-
-  const posts = Object.values(postFiles) as Post[];
+export async function getStaticPaths() {
+  const posts = await getAllUnifiedArticles();
   const tags = new Map<string, string>();
 
   for (const post of posts) {

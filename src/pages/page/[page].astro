@@ -4,24 +4,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import BlogFeed from '../../components/BlogFeed.astro';
 import settings from '../../data/site.settings.data.json';
 import Pagination from '../../components/Pagination.astro';
+import { getAllUnifiedArticles } from '../../lib/articles';
 
-interface Post {
-  metadata: {
-    title: string;
-    slug: string;
-    categorySlug: string;
-    date: string;
-  };
-  html: string;
-}
-
-export function getStaticPaths() {
-  const postFiles = import.meta.glob('../../content/posts/**/*.json', {
-    eager: true,
-    import: 'default',
-  });
-
-  const posts = (Object.values(postFiles) as Post[])
+export async function getStaticPaths() {
+  const posts = (await getAllUnifiedArticles())
     .sort((a, b) => b.metadata.date.localeCompare(a.metadata.date));
 
   const postsPerPage = settings.blog.postsPerPage;
@@ -50,7 +36,5 @@ const { posts, page, totalPages } = Astro.props;
   description={`Browse more creative journaling articles, personal reflections, and inspiration from Divergent Journaler. Page ${page}.`}
 >
   <BlogFeed posts={posts} />
-
-<Pagination currentPage={page} totalPages={totalPages} />
-
+  <Pagination currentPage={page} totalPages={totalPages} />
 </BaseLayout>
