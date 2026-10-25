@@ -706,7 +706,7 @@ html[data-theme="dark"] .desktop-title-dark {
 
 .post-breadcrumbs a:hover {
   color: var(--link-hover-color);
-  background-color: color-mix(in srgb, var(--light-bg) 25%, black);
+  background-color: color-mix(in srgb, var(--light-bg) 95%, black);
 }
 
 html[data-theme="dark"] .post-breadcrumbs a {
