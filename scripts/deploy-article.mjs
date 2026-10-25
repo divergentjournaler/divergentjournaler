@@ -1,528 +1,256 @@
+
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
 
-const PROJECT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const PUBLISHING_ROOT = path.resolve(PROJECT_ROOT, "../DivergentJournaler-Publishing");
+const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const REPOSITORY = "divergentjournaler/divergentjournaler";
 const EXPECTED_REMOTE = "https://github.com/divergentjournaler/divergentjournaler.git";
 const articleName = process.argv[2];
 const mode = process.argv[3];
+const preflight = process.argv.includes("--preflight");
 const vaultRoot = path.join(process.env.HOME ?? "", "Vaults", "Kaoverse", "KORE", "SITES", "DIVERGENTJOURNALER");
 const sourceNote = path.join(vaultRoot, mode === "publish" ? "DRAFTS" : "PUBLISHED", articleName ?? "");
 const destination = path.join(vaultRoot, "PUBLISHED", articleName ?? "");
-const lockDirectory = `${PUBLISHING_ROOT}.deploy-lock`;
+const lockDirectory = path.join(ROOT, ".git", "dj-deploy-lock");
 
-function run(command, args, cwd = PROJECT_ROOT) {
+function run(command, args, cwd = ROOT, extra = {}) {
   return execFileSync(command, args, {
-    cwd, encoding: "utf8", stdio: ["inherit", "pipe", "pipe"],
+    cwd, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"],
+    ...extra,
   }).trim();
 }
 
 function git(args) {
-  return run("git", args, PUBLISHING_ROOT);
+  return run("git", args);
 }
 
 function remoteHead() {
   const output = git(["ls-remote", "origin", "refs/heads/main"]);
   const match = output.match(/^([0-9a-f]{40,64})\s+refs\/heads\/main$/);
-  if (!match) throw new Error("Could not verify GitHub main commit.");
+  if (!match) throw new Error("Could not verify GitHub main.");
   return match[1];
 }
 
-function verifyPublishingWorktree() {
-  const actual = fs.realpathSync(git(["rev-parse", "--show-toplevel"]));
-  const expected = fs.realpathSync(PUBLISHING_ROOT);
-  if (actual !== expected) {
-    throw new Error("Unexpected publishing Git worktree. Cancelled.");
+function requireNote() {
+  if (!fs.existsSync(sourceNote) || !fs.lstatSync(sourceNote).isFile()) {
+    throw new Error(`Obsidian source note missing or not a regular file: ${sourceNote}`);
   }
-  if (git(["rev-parse", "--is-inside-work-tree"]) !== "true") {
-    throw new Error("Publishing directory is not a Git worktree.");
+  if (mode === "publish" && fs.existsSync(destination)) {
+    throw new Error("An article with this name already exists in Obsidian PUBLISHED.");
+  }
+  if (!fs.existsSync(path.dirname(destination))) {
+    throw new Error("Obsidian PUBLISHED folder is missing.");
   }
 }
 
-function untrackedContentFiles() {
-  return git([
-    "ls-files", "--others", "--exclude-standard", "--",
-    "src/content/markdown", "public/uploads/images"
-  ]).split("\n").filter(Boolean);
-}
-
-function inside(directory, file) {
-  return file.startsWith(directory + path.sep) && file !== directory;
-}
-
-function requireRegularNote(file) {
-  if (!fs.existsSync(file) || !fs.lstatSync(file).isFile()) {
-    throw new Error(
-      `Obsidian source note is missing or is not a regular file: ${file}`
-    );
+function inspect() {
+  if (fs.realpathSync(git(["rev-parse", "--show-toplevel"])) !== fs.realpathSync(ROOT)) {
+    throw new Error("Unexpected Git repository root.");
   }
+  if (git(["symbolic-ref", "--short", "HEAD"]) !== "main") {
+    throw new Error("Switch the single local website repository to branch main first.");
+  }
+  if (git(["remote", "get-url", "origin"]) !== EXPECTED_REMOTE) {
+    throw new Error("Unexpected origin remote. Publishing cancelled.");
+  }
+  const local = git(["rev-parse", "HEAD"]);
+  const remote = remoteHead();
+  const base = git(["merge-base", "HEAD", "origin/main"]);
+  if (base !== remote) {
+    throw new Error("GitHub main has changes not incorporated locally. Sync manually before publishing.");
+  }
+  const changed = git(["status", "--porcelain", "--untracked-files=all"]);
+  const ahead = local !== remote;
+  return { changed: Boolean(changed), ahead, local, remote, details: changed };
+}
+
+function inside(dir, file) {
+  return file.startsWith(dir + path.sep);
 }
 
 function verifyResult(result) {
-  if (
-    !result ||
-    typeof result !== "object" ||
-    !Array.isArray(result.images) ||
-    typeof result.articleFile !== "string" ||
-    typeof result.trackedMarkdown !== "string" ||
-    typeof result.sourceNote !== "string"
-  ) {
+  if (!result || !Array.isArray(result.images) ||
+      typeof result.articleFile !== "string" ||
+      typeof result.trackedMarkdown !== "string" ||
+      typeof result.sourceNote !== "string") {
     throw new Error("Converter returned incomplete publishing results.");
   }
-
   if (path.resolve(result.sourceNote) !== sourceNote) {
-    throw new Error("Converter returned an unexpected Obsidian source note.");
+    throw new Error("Converter returned an unexpected source note.");
   }
-
-  const articleDir = path.join(
-    PUBLISHING_ROOT, "src", "content", "markdown"
-  );
-  const imageDir = path.join(
-    PUBLISHING_ROOT, "public", "uploads", "images"
-  );
-
-  const paths = [
-    result.articleFile,
-    ...result.images,
-    ...(result.previousArticleFile ? [result.previousArticleFile] : [])
-  ];
+  const articleDir = path.join(ROOT, "src", "content", "markdown");
+  const imageDir = path.join(ROOT, "public", "uploads", "images");
+  const paths = [result.articleFile, ...result.images,
+    ...(result.previousArticleFile ? [result.previousArticleFile] : [])];
 
   for (const relative of paths) {
-    if (
-      typeof relative !== "string" ||
-      path.isAbsolute(relative) ||
-      relative.includes("\0")
-    ) {
-      throw new Error("Converter returned an invalid publishing path.");
+    if (typeof relative !== "string" || !relative || path.isAbsolute(relative) || relative.includes("\0")) {
+      throw new Error("Converter returned an invalid file path.");
     }
-
-    const absolute = path.resolve(PUBLISHING_ROOT, relative);
-
-    if (
-      fs.existsSync(absolute) &&
-      fs.lstatSync(absolute).isSymbolicLink()
-    ) {
-      throw new Error(`Publishing path is a symbolic link: ${relative}`);
+    const absolute = path.resolve(ROOT, relative);
+    if (!inside(articleDir, absolute) && !inside(imageDir, absolute)) {
+      throw new Error(`Converter returned unsafe path: ${relative}`);
     }
-
-    if (
-      !inside(articleDir, absolute) &&
-      !inside(imageDir, absolute)
-    ) {
-      throw new Error(`Unsafe publishing file path: ${relative}`);
+    if (fs.existsSync(absolute) && fs.lstatSync(absolute).isSymbolicLink()) {
+      throw new Error(`Converter returned a symbolic link: ${relative}`);
     }
   }
 
-  if (
-    !inside(
-      articleDir,
-      path.resolve(PUBLISHING_ROOT, result.articleFile)
-    )
-  ) {
-    throw new Error(
-      "Article file must be in the Markdown content directory."
-    );
+  if (!inside(articleDir, path.resolve(ROOT, result.articleFile))) {
+    throw new Error("Article is outside the Markdown directory.");
   }
-
-  if (
-    result.previousArticleFile &&
-    !inside(
-      articleDir,
-      path.resolve(PUBLISHING_ROOT, result.previousArticleFile)
-    )
-  ) {
-    throw new Error(
-      "Previous article file must be in the Markdown content directory."
-    );
-  }
-
-  for (const relative of result.images) {
-    if (
-      !inside(imageDir, path.resolve(PUBLISHING_ROOT, relative))
-    ) {
-      throw new Error(
-        "Image file must be in the image upload directory."
-      );
-    }
-  }
-
   return paths;
 }
 
-if (
-  !articleName ||
-  articleName !== path.basename(articleName) ||
-  !articleName.toLowerCase().endsWith(".md") ||
-  articleName === ".md"
-) {
-  throw new Error("Provide a valid Markdown article filename.");
+function waitForDeployment(commit) {
+  let runId;
+  for (let attempt = 0; attempt < 12; attempt++) {
+    const runs = JSON.parse(run("gh", ["run", "list", "--repo", REPOSITORY,
+      "--workflow", "deploy.yml", "--branch", "main", "--limit", "20",
+      "--json", "databaseId,headSha"]));
+    const match = runs.find(item => item.headSha === commit);
+    if (match) {
+      runId = match.databaseId;
+      break;
+    }
+    Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 5000);
+  }
+  if (!runId) {
+    throw new Error("GitHub accepted the push, but the deployment workflow was not found.");
+  }
+  run("gh", ["run", "watch", String(runId), "--repo", REPOSITORY, "--exit-status"]);
 }
 
+if (!articleName || articleName !== path.basename(articleName) ||
+    !articleName.toLowerCase().endsWith(".md") || articleName === ".md") {
+  throw new Error("Provide a valid Markdown article filename.");
+}
 if (!["publish", "update"].includes(mode)) {
   throw new Error('Mode must be "publish" or "update".');
 }
-
-if (process.env.DJ_ENABLE_DEPLOY !== "YES") {
-  throw new Error(
-    "Deployment disabled. DJ_ENABLE_DEPLOY=YES is required."
-  );
+if (!preflight && process.env.DJ_ENABLE_DEPLOY !== "YES") {
+  throw new Error("Deployment disabled. DJ_ENABLE_DEPLOY=YES is required.");
 }
 
-if (!fs.existsSync(PUBLISHING_ROOT)) {
-  throw new Error("Publishing workspace not found.");
-}
+// Read-only preflight: no fetch, locks, conversion, commits, or file changes.
+if (preflight) {
+  requireNote();
+  const local = git(["rev-parse", "HEAD"]);
+  const remote = remoteHead();
+  const branch = git(["symbolic-ref", "--short", "HEAD"]);
+  const origin = git(["remote", "get-url", "origin"]);
+  const root = fs.realpathSync(git(["rev-parse", "--show-toplevel"]));
+  const base = git(["merge-base", "HEAD", remote]);
 
-// Preflight checks before conversion or deployment.
-requireRegularNote(sourceNote);
-
-if (mode === "publish" && fs.existsSync(destination)) {
-  throw new Error(
-    "A note with this filename already exists in PUBLISHED."
-  );
-}
-
-if (!fs.existsSync(path.dirname(destination))) {
-  throw new Error("Obsidian PUBLISHED folder is missing.");
-}
-
-// Prevent simultaneous publishing runs.
-try {
-  fs.mkdirSync(lockDirectory);
-} catch (error) {
-  if (error.code === "EEXIST") {
-    throw new Error(
-      `Another publishing run may be active. Check lock: ${lockDirectory}`
-    );
+  if (branch !== "main" || origin !== EXPECTED_REMOTE ||
+      root !== fs.realpathSync(ROOT) || base !== remote) {
+    throw new Error("Local main/remote configuration needs attention. No changes made.");
   }
-  throw error;
-}
+  const details = git(["status", "--porcelain", "--untracked-files=all"]);
+  console.log(JSON.stringify({
+    outstanding: Boolean(details) || local !== remote,
+    uncommitted: Boolean(details),
+    unpushed: local !== remote
+  }));
+} else {
+  let pushAccepted = false;
+  let conversionStarted = false;
+  let lockAcquired = false;
 
-let startingCommit = null;
-let deployedCommit = null;
-let result = null;
-let pushAccepted = false;
-let conversionStarted = false;
-let initiallyUntracked = [];
+  try {
+    requireNote();
+    fs.mkdirSync(lockDirectory);
+    lockAcquired = true;
+    git(["fetch", "origin", "main"]);
+    const state = inspect();
+    const publishAll = process.env.DJ_PUBLISH_ALL === "YES";
 
-try {
-  verifyPublishingWorktree();
+    if ((state.changed || state.ahead) && !publishAll) {
+      throw new Error("Unpublished website changes exist. No article was converted. Use the updated QuickAdd confirmation to authorize Publish All.");
+    }
+    if (publishAll) {
+      console.log("Publish All authorized: outstanding local changes will be included.");
+    }
 
-  if (git(["status", "--porcelain"])) {
-    throw new Error(
-      "Publishing workspace has uncommitted changes. Deployment cancelled."
-    );
-  }
+    conversionStarted = true;
+    const conversionOutput = run(process.execPath,
+      [path.join(ROOT, "scripts", "publish-article.mjs"), articleName, mode],
+      ROOT, { env: { ...process.env, DJ_PUBLISH_ROOT: ROOT } });
+    console.log(conversionOutput);
 
-  if (git(["remote", "get-url", "origin"]) !== EXPECTED_REMOTE) {
-    throw new Error(
-      "Unexpected publishing repository. Deployment cancelled."
-    );
-  }
+    const resultLine = conversionOutput.split(/\r?\n/)
+      .find(line => line.startsWith("PUBLISH_RESULT="));
+    if (!resultLine) {
+      throw new Error("Converter did not return publishing results.");
+    }
 
-  git(["fetch", "origin", "main"]);
+    const result = JSON.parse(resultLine.slice("PUBLISH_RESULT=".length));
+    const filesToStage = verifyResult(result);
+    requireNote();
 
-  startingCommit = git(["rev-parse", "HEAD"]);
-
-  if (
-    startingCommit !==
-    git(["rev-parse", "refs/remotes/origin/main"])
-  ) {
-    throw new Error(
-      "Publishing workspace is not synchronized with origin/main."
-    );
-  }
-
-  initiallyUntracked = untrackedContentFiles();
-
-  console.log("Publishing workspace verified and clean.");
-
-  conversionStarted = true;
-
-  const conversionOutput = execFileSync(
-    "node",
-    [
-      path.join(PROJECT_ROOT, "scripts", "publish-article.mjs"),
-      articleName,
-      mode
-    ],
-    {
-      cwd: PROJECT_ROOT,
-      encoding: "utf8",
-      env: {
-        ...process.env,
-        DJ_PUBLISH_ROOT: PUBLISHING_ROOT
+    if (result.previousArticleFile) {
+      const oldFile = path.resolve(ROOT, result.previousArticleFile);
+      if (!fs.existsSync(oldFile) || !fs.lstatSync(oldFile).isFile()) {
+        throw new Error("Previous article file missing or not a regular file.");
       }
-    }
-  );
-
-  console.log(conversionOutput);
-
-  const resultLine = conversionOutput
-    .split(/\r?\n/)
-    .find(line => line.startsWith("PUBLISH_RESULT="));
-
-  if (!resultLine) {
-    throw new Error("Converter did not return publishing results.");
-  }
-
-  result = JSON.parse(
-    resultLine.slice("PUBLISH_RESULT=".length)
-  );
-
-  const filesToStage = verifyResult(result);
-
-  requireRegularNote(sourceNote);
-
-  if (mode === "publish" && fs.existsSync(destination)) {
-    throw new Error(
-      "Destination Obsidian note appeared during conversion; cancelled."
-    );
-  }
-
-  if (result.previousArticleFile) {
-    const oldArticle = path.resolve(
-      PUBLISHING_ROOT,
-      result.previousArticleFile
-    );
-
-    if (
-      !fs.existsSync(oldArticle) ||
-      !fs.lstatSync(oldArticle).isFile()
-    ) {
-      throw new Error(
-        "Previous article file does not exist or is not a regular file."
-      );
+      fs.unlinkSync(oldFile);
     }
 
-    fs.unlinkSync(oldArticle);
-  }
+    if (publishAll) git(["add", "-A"]);
+    else git(["add", "--", ...filesToStage]);
 
-  git(["add", "--", ...filesToStage]);
-
-  const stagedFiles = git([
-    "diff", "--cached", "--name-only"
-  ]);
-
-  if (!stagedFiles) {
-    throw new Error("No article changes to publish.");
-  }
-
-  console.log("Staged files:\n" + stagedFiles);
-
-  git([
-    "commit",
-    "-m",
-    `${mode === "publish" ? "Publish" : "Update"} article: ${articleName}`
-  ]);
-
-  deployedCommit = git(["rev-parse", "HEAD"]);
-
-  console.log(
-    "Publishing commit prepared:",
-    deployedCommit
-  );
-
-  try {
-    git(["push", "origin", "HEAD:main"]);
-    pushAccepted = true;
-  } catch (pushError) {
-    // A network failure may occur after GitHub accepts the push.
-    const actualRemote = remoteHead();
-
-    if (actualRemote === deployedCommit) {
-      pushAccepted = true;
-      console.warn(
-        "Push reported an error, but GitHub confirms the commit was accepted."
-      );
-    } else {
-      throw pushError;
-    }
-  }
-
-  console.log(
-    "Publishing commit pushed to GitHub:",
-    deployedCommit
-  );
-
-  let deploymentRun = null;
-
-  for (let attempt = 1; attempt <= 12; attempt++) {
-    const workflowRuns = JSON.parse(
-      run(
-        "gh",
-        [
-          "run", "list",
-          "--repo", REPOSITORY,
-          "--workflow", "deploy.yml",
-          "--branch", "main",
-          "--limit", "20",
-          "--json", "databaseId,headSha"
-        ],
-        PUBLISHING_ROOT
-      )
-    );
-
-    deploymentRun = workflowRuns.find(
-      workflow => workflow.headSha === deployedCommit
-    );
-
-    if (deploymentRun) break;
-
-    console.log(
-      `Waiting for workflow registration (${attempt}/12)...`
-    );
-
-    await new Promise(resolve => setTimeout(resolve, 5000));
-  }
-
-  if (!deploymentRun) {
-    throw new Error(
-      "Commit pushed, but GitHub did not register its deployment within 60 seconds."
-    );
-  }
-
-  console.log("Waiting for GitHub Pages deployment...");
-
-  run(
-    "gh",
-    [
-      "run", "watch",
-      String(deploymentRun.databaseId),
-      "--repo", REPOSITORY,
-      "--exit-status"
-    ],
-    PUBLISHING_ROOT
-  );
-
-  console.log("GitHub Pages deployment succeeded.");
-
-  // Preserve the source if the Obsidian update fails.
-  try {
-    requireRegularNote(sourceNote);
-
-    if (mode === "publish" && fs.existsSync(destination)) {
-      throw new Error(
-        "A note with this filename already exists in PUBLISHED."
-      );
+    const staged = git(["diff", "--cached", "--name-only"]);
+    if (!staged && !state.ahead) {
+      throw new Error("No changes to publish.");
     }
 
-    fs.writeFileSync(
-      sourceNote,
-      result.trackedMarkdown,
-      "utf8"
-    );
+    console.log("Validating Astro build...");
+    run("npm", ["run", "build"]);
 
-    if (mode === "publish") {
-      fs.renameSync(sourceNote, destination);
+    if (staged) {
+      git(["commit", "-m",
+        `${mode === "publish" ? "Publish" : "Update"} article: ${articleName}${publishAll ? " (including site changes)" : ""}`
+      ]);
     }
 
-    console.log(
-      "Obsidian publication metadata updated successfully."
-    );
-  } catch (error) {
-    throw new Error(
-      `Website deployed successfully, but Obsidian could not be updated: ${error.message}`
-    );
-  }
-
-} catch (error) {
-  if (conversionStarted && !pushAccepted && startingCommit) {
-    // Never reset if GitHub might have accepted the commit.
-    let actualRemote;
+    const deployedCommit = git(["rev-parse", "HEAD"]);
+    if (remoteHead() !== state.remote) {
+      throw new Error("GitHub main changed during publishing. Nothing pushed; local changes preserved.");
+    }
 
     try {
-      actualRemote = remoteHead();
-    } catch {
-      console.error(
-        "Cannot verify GitHub main. Leaving publishing workspace untouched for manual recovery."
-      );
+      git(["push", "origin", "HEAD:main"]);
+      pushAccepted = true;
+    } catch (error) {
+      if (remoteHead() === deployedCommit) pushAccepted = true;
+      else throw error;
     }
 
-    if (actualRemote === startingCommit) {
+    console.log(`GitHub accepted ${deployedCommit}; waiting for deployment...`);
+    waitForDeployment(deployedCommit);
+
+    requireNote();
+    fs.writeFileSync(sourceNote, result.trackedMarkdown, "utf8");
+    if (mode === "publish") fs.renameSync(sourceNote, destination);
+    console.log("GitHub Pages deployment succeeded. Obsidian article updated.");
+  } catch (error) {
+    console.error(error.message);
+    if (pushAccepted) {
+      console.error("GitHub accepted the push. Check deployment and Obsidian before retrying.");
+    } else if (conversionStarted) {
+      console.error("Local files/commits may have changed. Nothing was reset or deleted for recovery; inspect Git status before retrying.");
+    }
+    process.exitCode = 1;
+  } finally {
+    if (lockAcquired) {
       try {
-        verifyPublishingWorktree();
-
-        const newlyUntracked = untrackedContentFiles().filter(
-          file => !initiallyUntracked.includes(file)
-        );
-
-        if (remoteHead() !== startingCommit) {
-          throw new Error(
-            "GitHub main changed during recovery; refusing rollback."
-          );
-        }
-
-        git(["reset", "--hard", startingCommit]);
-
-        for (const relative of newlyUntracked) {
-          const absolute = path.resolve(
-            PUBLISHING_ROOT,
-            relative
-          );
-
-          const articleDir = path.join(
-            PUBLISHING_ROOT,
-            "src",
-            "content",
-            "markdown"
-          );
-
-          const imageDir = path.join(
-            PUBLISHING_ROOT,
-            "public",
-            "uploads",
-            "images"
-          );
-
-          if (
-            !inside(articleDir, absolute) &&
-            !inside(imageDir, absolute)
-          ) {
-            continue;
-          }
-
-          if (
-            fs.existsSync(absolute) &&
-            fs.lstatSync(absolute).isFile()
-          ) {
-            fs.unlinkSync(absolute);
-          }
-        }
-
-        console.error(
-          "Pre-push changes rolled back in verified publishing worktree."
-        );
-      } catch (recoveryError) {
-        console.error(
-          "Automatic rollback failed; manual recovery required:",
-          recoveryError.message
-        );
+        fs.rmdirSync(lockDirectory);
+      } catch (error) {
+        console.error(`Could not remove deployment lock: ${error.message}`);
+        process.exitCode = 1;
       }
-    } else if (actualRemote) {
-      console.error(
-        "Remote main changed or accepted the push. No rollback performed."
-      );
     }
-  } else if (pushAccepted) {
-    console.error(
-      "GitHub accepted the commit. No rollback performed; check deployment and Obsidian state."
-    );
-  }
-
-  throw error;
-
-} finally {
-  try {
-    fs.rmdirSync(lockDirectory);
-  } catch (lockError) {
-    console.error(
-      `Could not remove publishing lock ${lockDirectory}: ${lockError.message}`
-    );
-    console.error(
-      "Remove the lock manually only after confirming no publishing run is active."
-    );
   }
 }
