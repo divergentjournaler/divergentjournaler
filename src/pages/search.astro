@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import settings from '../data/site.settings.data.json';
+import { getAllUnifiedArticles } from '../lib/articles';
 
 const postFiles = import.meta.glob('../content/posts/**/*.json', {
   eager: true,
@@ -17,9 +18,9 @@ interface Post {
   html: string;
 }
 
-const allPosts = (Object.values(postFiles) as Post[])
+const allPosts = (await getAllUnifiedArticles())
   .sort((a, b) => b.metadata.date.localeCompare(a.metadata.date));
----
+  ---
 
 <BaseLayout title="Search Results" description={settings.general.searchDescription}>
   <main class="search-results">
