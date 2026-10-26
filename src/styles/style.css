@@ -340,8 +340,9 @@ html[data-theme="dark"] .theme-toggle {
   gap: 30px;
   max-width: var(--contentMaxWidth);
   margin: 0 auto;
-  padding: 14px 20px;
-  box-sizing: border-box;background: linear-gradient(
+  padding: 8px 20px;
+  box-sizing: border-box;
+  background: linear-gradient(
   to right,
   color-mix(in srgb, var(--light-bg) 97%, black) 0%,
   color-mix(in srgb, var(--light-bg) 97%, black) 65%,
@@ -623,7 +624,7 @@ html[data-theme="dark"] .desktop-title-dark {
 /* Sidebar: Desktop Vertical Alignment */
 @media (min-width: 801px) {
   .page-layout > aside {
-    margin-top: 80px;
+    margin-top: 35px;
   }
 }
 
