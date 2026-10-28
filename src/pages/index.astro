@@ -13,9 +13,10 @@ const totalPages = Math.ceil(
 );
 
 const posts = allPosts.slice(0, settings.blog.postsPerPage);
+// Change this to refresh cache.
 ---
 
-<BaseLayout title="Divergent Journaler" description={settings.general.homeDescription}>
+<BaseLayout title={settings.general.siteTitle} description={settings.general.homeDescription}>
   <BlogFeed posts={posts} />
   <Pagination currentPage={1} totalPages={totalPages} />
 </BaseLayout>

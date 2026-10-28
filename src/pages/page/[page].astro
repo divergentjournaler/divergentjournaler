@@ -33,7 +33,7 @@ const { posts, page, totalPages } = Astro.props;
 
 <BaseLayout
   title={`Page ${page}`}
-  description={`Browse more creative journaling articles, personal reflections, and inspiration from Divergent Journaler. Page ${page}.`}
+  description={`Browse more content from ${settings.general.siteTitle}. Page ${page}.`}
 >
   <BlogFeed posts={posts} />
   <Pagination currentPage={page} totalPages={totalPages} />

@@ -42,10 +42,10 @@ const { categoryName, posts, totalPages } = Astro.props;
 
 <BaseLayout
   title={categoryName}
-  description={`Explore ${categoryName} articles, creative ideas, and journaling inspiration at Divergent Journaler.`}
+  description={`Explore ${categoryName} articles and content at ${settings.general.siteTitle}.`}
 >
-  <h1>{categoryName}</h1>
-  <BlogFeed posts={posts} />
+  <h1 slot="page-intro">{categoryName}</h1>
+<BlogFeed posts={posts} />
   <Pagination
     currentPage={1}
     totalPages={totalPages}

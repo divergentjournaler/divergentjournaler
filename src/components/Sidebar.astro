@@ -7,23 +7,61 @@ import settings from '../data/site.settings.data.json';
 ---
 
 <aside class="sidebar">
-  {settings.sidebar.showSearch && (
+  <div class="sidebar-social">
+  {settings.social.showSocialIcons && (
+    <>
+      <a
+        href={settings.social.instagram}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Instagram"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="2" y="2" width="20" height="20" rx="5" />
+          <circle cx="12" cy="12" r="4" />
+          <circle cx="18" cy="6" r="1" class="icon-dot" />
+        </svg>
+      </a>
+
+      <a
+        href={settings.social.pinterest}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Pinterest"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+  <path d="M12.017 0C5.396 0 2 4.748 2 8.708c0 2.398.908 4.531 2.854 5.327.32.131.606.004.699-.35.065-.245.217-.863.285-1.12.093-.35.057-.473-.201-.778-.562-.663-.922-1.52-.922-2.735 0-3.526 2.639-6.683 6.874-6.683 3.749 0 5.809 2.291 5.809 5.35 0 4.023-1.78 7.42-4.422 7.42-1.46 0-2.551-1.207-2.201-2.688.419-1.768 1.23-3.677 1.23-4.952 0-1.141-.612-2.093-1.878-2.093-1.489 0-2.686 1.54-2.686 3.601 0 1.313.444 2.2.444 2.2s-1.523 6.453-1.789 7.582c-.532 2.249-.08 5.008-.042 5.286.023.165.235.204.37.079.153-.2 2.128-2.638 2.795-4.825.188-.619 1.077-4.207 1.077-4.207.533 1.017 2.09 1.912 3.745 1.912 4.927 0 8.269-4.49 8.269-10.5C22 4.23 18.148 0 12.017 0Z" />
+
+</svg>
+      </a>
+    </>
+  )}
+
+  <button
+    class="theme-toggle"
+    type="button"
+    aria-label="Switch to dark mode"
+    aria-pressed="false"
+  >
+    <span class="theme-toggle-icon" aria-hidden="true">☾</span>
+  </button>
+</div>
+
+{settings.sidebar.showSearch && (
     <Search />
   )}
 
-  {(settings.sidebar.showWritingQuote || settings.sidebar.showPromptQuote) && (
+{settings.sidebar.quotes.enabled && settings.sidebar.quotes.selections.length > 0 && (
   <section class="sidebar-quote-panel">
-    {settings.sidebar.showWritingQuote && (
-      <h3 class="sidebar-quote-heading">Quotes :</h3>
-<RandomQuote category="Writing" />
-    )}
-
-    {settings.sidebar.showPromptQuote && (
-      <h3 class="sidebar-quote-heading">Prompt :</h3>
-<RandomQuote category="Prompts" />
-    )}
+    {settings.sidebar.quotes.selections.map((selection) => (
+      <>
+        <h3 class="sidebar-quote-heading">{selection.heading}</h3>
+        <RandomQuote category={selection.category} />
+      </>
+    ))}
   </section>
 )}
+
   {settings.sidebar.showRecentPosts && (
     <RecentPosts limit={settings.sidebar.recentPostsCount} />
   )}

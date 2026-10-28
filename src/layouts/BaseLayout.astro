@@ -1,4 +1,5 @@
 ---
+// This is where you force css changes to show
 import Header from '../components/Header.astro';
 import Sidebar from '../components/Sidebar.astro';
 import '../styles/style.css';
@@ -60,6 +61,7 @@ const contentMaxWidth =
     --light-link-hover-color: ${light.linkHoverColor};
     --dark-link-color: ${dark.linkColor};
     --dark-link-hover-color: ${dark.linkHoverColor};
+    --site-background-image: url('${settings.general.branding.backgroundImage}');
 
     --site-font-family: ${settings.appearance.typography.fontFamily};
     --site-font-size: ${settings.appearance.typography.fontSize};
@@ -81,7 +83,6 @@ const contentMaxWidth =
 
   `}
 >
-
   <head>
     <script is:inline>
   (() => {
@@ -98,19 +99,44 @@ const contentMaxWidth =
    <title>{formattedTitle}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalUrl} />
-<link rel="icon" type="image/x-icon" href="/favicon.ico" /> 
+<link rel="icon" href={settings.general.branding.favicon} />
 </head>
 
   <body>
     <Header />
 
     <div class:list={['page-layout', { 'no-sidebar': !showSidebar }]}>
-  <main>
-    <slot />
-  </main>
+<main class:list={['page-main', { 'page-home': Astro.url.pathname === '/' }]}>
+  <div class="page-mantra" data-mantra></div>
+  <div class="page-intro">
+    <slot name="page-intro" />
+  </div>
 
+  <div class="page-body">
+    <slot />
+  </div>
+</main>
   {showSidebar && <Sidebar />}
 </div>
 <Footer />
   </body>
 </html>
+
+<script>
+  import mantras from '../data/mantras.txt?raw';
+
+  const entries = mantras
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  document.querySelectorAll<HTMLElement>('[data-mantra]').forEach((element) => {
+    if (entries.length === 0) {
+      element.hidden = true;
+      return;
+    }
+
+    element.textContent = entries[Math.floor(Math.random() * entries.length)]
+    .replace(/\\n/g, '\n');
+  });
+</script>

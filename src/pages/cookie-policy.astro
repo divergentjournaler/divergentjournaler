@@ -1,10 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import cookieHtml from '../content/cookie-policy.html?raw';
+import policyHtml from '../content/cookie-policy.html?raw';
 ---
 
 <BaseLayout title="Cookie Policy">
+  <h1 slot="page-intro">Cookie Policy</h1>
   <main class="cookie-policy">
-    <div set:html={cookieHtml} />
+    <div set:html={policyHtml} />
   </main>
 </BaseLayout>

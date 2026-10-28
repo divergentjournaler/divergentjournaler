@@ -84,13 +84,11 @@ const remainingParts = cleanedHtml.split(
   /(<center>\s*<div data-slideshow-id="(?:1490|1546)"><\/div>\s*<\/center>|<div data-slideshow-id="(?:1490|1546)"><\/div>)/g
 );
 ---
-
 <BaseLayout
   title={metadata.title}
   description={metadata.description}
 >
-  <article class="blog-post">
-  <nav class="post-breadcrumbs" aria-label="Breadcrumb">
+  <nav slot="page-intro" class="post-breadcrumbs" aria-label="Breadcrumb">
     <a href="/">Home</a>
     <a href={`/category/${metadata.categorySlug}/`}>
       {metadata.categories?.find(
@@ -98,7 +96,9 @@ const remainingParts = cleanedHtml.split(
           category.slug === metadata.categorySlug
       )?.name ?? metadata.categorySlug}
     </a>
-    </nav>
+  </nav>
+
+  <article class="blog-post">
 
   <p class="post-modified">
   Published: {metadata.date.split(' ')[0]}
@@ -136,7 +136,7 @@ const remainingParts = cleanedHtml.split(
   {post.source === 'markdown' ? (
     MarkdownContent && (
       <div class:list={['markdown-body', {
-        'skip-first-featured-image': Boolean(markdownFeaturedImage)
+        'skip-first-featured-image': metadata.featuredImageAuto === true
       }]}>
         <MarkdownContent />
       </div>

@@ -1,11 +1,11 @@
-
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import privacyHtml from '../content/privacy-policy.html?raw';
+import policyHtml from '../content/privacy-policy.html?raw';
 ---
 
 <BaseLayout title="Privacy Policy">
+  <h1 slot="page-intro">Privacy Policy</h1>
   <main class="privacy-policy">
-    <div set:html={privacyHtml} />
+    <div set:html={policyHtml} />
   </main>
 </BaseLayout>

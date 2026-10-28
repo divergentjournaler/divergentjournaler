@@ -1,10 +1,13 @@
 
 ---
+import settings from '../data/site.settings.data.json';
 ---
 
 <footer class="site-footer">
   <p>
-    © 2023–<span id="copyright-year">2026</span> The Divergent Journaler -
+    © {settings.general.copyrightStartYear < new Date().getFullYear()
+  ? `${settings.general.copyrightStartYear}–`
+  : ''}<span id="copyright-year">{new Date().getFullYear()}</span> {settings.general.siteTitle} -
     <a href="/privacy-policy/">Privacy Policy</a>
     -
     <a href="/cookie-policy/">Cookie Policy</a>

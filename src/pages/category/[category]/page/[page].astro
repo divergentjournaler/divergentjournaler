@@ -56,9 +56,9 @@ const { categoryName, categorySlug, page, totalPages, posts } = Astro.props;
 
 <BaseLayout
   title={`${categoryName} — Page ${page}`}
-  description={`Explore more ${categoryName} articles and journaling inspiration at Divergent Journaler. Page ${page}.`}
+  description={`Explore ${categoryName} articles and content at ${settings.general.siteTitle}.`}
 >
-  <h1>{categoryName}</h1>
+  <h1 slot="page-intro">{categoryName}</h1>
   <BlogFeed posts={posts} />
   <Pagination
     currentPage={page}

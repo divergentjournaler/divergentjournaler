@@ -1,19 +1,11 @@
 
 ---
+import { getFeaturedImage } from '../lib/featuredImages';
 
-interface Post {
-  metadata: {
-    title: string;
-    slug: string;
-    categorySlug: string;
-    date: string;
-    featuredImage?: string;
-  };
-  html: string;
-}
+import type { Article } from '../lib/articles';
 
 interface Props {
-  posts: Post[];
+  posts: Article[];
 }
 
 import settings from '../data/site.settings.data.json';
@@ -54,13 +46,13 @@ return words.length > maxLength
 
       
       <div class="post-preview-body">
-        {post.metadata.featuredImage && (
+        {getFeaturedImage(post, { context: 'listing' }) && (
           <a
             class="post-preview-image"
             href={`/${post.metadata.categorySlug}/${post.metadata.slug}/`}
           >
             <img
-              src={post.metadata.featuredImage}
+              src={getFeaturedImage(post, { context: 'listing' })!}
               alt={post.metadata.title}
               loading="lazy"
             />
@@ -70,15 +62,17 @@ return words.length > maxLength
         {settings.blog.showExcerpts && (
   <div class="post-excerpt">
     <p>{createExcerpt(post.html)}</p>
-    <div class="excerpt-read-more">
-      <a
-        class="excerpt-more"
-        href={`/${post.metadata.categorySlug}/${post.metadata.slug}/`}
-        aria-label={`Read more: ${post.metadata.title}`}
-      >
-        ... Read More
-      </a>
-    </div>
+        {settings.blog.showReadMore && (
+      <div class="excerpt-read-more">
+        <a
+          class="excerpt-more"
+          href={`/${post.metadata.categorySlug}/${post.metadata.slug}/`}
+          aria-label={`Read more: ${post.metadata.title}`}
+        >
+          ... Read More
+        </a>
+      </div>
+    )}
   </div>
 )}
       </div>

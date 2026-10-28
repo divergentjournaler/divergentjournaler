@@ -1,7 +1,40 @@
 ---
-import settings from '../data/site.settings.data.json';
+import taglines from '../data/taglines.txt?raw';
+
+import rawSettings from '../data/site.settings.data.json';
+
+type NavLink = {
+  label: string;
+  url: string;
+};
+
+const settings = {
+  ...rawSettings,
+  navigation: {
+    primary: rawSettings.navigation.primary as NavLink[],
+    more: rawSettings.navigation.more as NavLink[]
+  }
+};
+
+import { getAllUnifiedArticles } from '../lib/articles';
 
 const { social } = settings;
+
+const articles = await getAllUnifiedArticles();
+
+const categories = Array.from(
+  new Map(
+    articles
+      .flatMap((article) => article.metadata.categories)
+      .map((category) => [category.slug, category])
+  ).values()
+).sort((a, b) => a.name.localeCompare(b.name));
+const moreCategories = categories.filter(
+  (category) =>
+    !settings.navigation.primary.some(
+      (item) => item.url === `/category/${category.slug}/`
+    )
+);
 ---
 
 
@@ -15,14 +48,14 @@ const { social } = settings;
   <picture class="desktop-title">
     <img
       class="desktop-title-light"
-      src="/uploads/images/dj-title-light.png"
-      alt="Divergent Journaler"
+      src={settings.general.branding.titleImageLight}
+      alt=""
     />
   </picture>
 
   <picture class="desktop-title desktop-title-dark">
     <img
-      src="/uploads/images/dj-title-dark.png"
+      src={settings.general.branding.titleImageDark}
       alt=""
     />
   </picture>
@@ -33,7 +66,7 @@ const { social } = settings;
   {settings.general.siteTitle}
 </h1>
 
-  <p>{settings.general.tagline}</p>
+  <p id="rotating-tagline">{settings.general.tagline}</p>
 </div>
     </a>
   </div>
@@ -62,22 +95,24 @@ const { social } = settings;
       
 <svg viewBox="0 0 24 24" aria-hidden="true">
   <path d="M12.017 0C5.396 0 2 4.748 2 8.708c0 2.398.908 4.531 2.854 5.327.32.131.606.004.699-.35.065-.245.217-.863.285-1.12.093-.35.057-.473-.201-.778-.562-.663-.922-1.52-.922-2.735 0-3.526 2.639-6.683 6.874-6.683 3.749 0 5.809 2.291 5.809 5.35 0 4.023-1.78 7.42-4.422 7.42-1.46 0-2.551-1.207-2.201-2.688.419-1.768 1.23-3.677 1.23-4.952 0-1.141-.612-2.093-1.878-2.093-1.489 0-2.686 1.54-2.686 3.601 0 1.313.444 2.2.444 2.2s-1.523 6.453-1.789 7.582c-.532 2.249-.08 5.008-.042 5.286.023.165.235.204.37.079.153-.2 2.128-2.638 2.795-4.825.188-.619 1.077-4.207 1.077-4.207.533 1.017 2.09 1.912 3.745 1.912 4.927 0 8.269-4.49 8.269-10.5C22 4.23 18.148 0 12.017 0Z" />
+
 </svg>
-
     </a>
-     <!-- Light / dark theme toggle -->
-  <button
-    class="theme-toggle"
-    type="button"
-    aria-label="Switch to dark mode"
-    aria-pressed="false"
-  >
-    <span class="theme-toggle-icon" aria-hidden="true">☾</span>
-  </button>
-  </div>
-)}
-</header>
 
+  <!-- Light / dark theme toggle -->
+<button
+  class="theme-toggle"
+  type="button"
+  aria-label="Switch to dark mode"
+  aria-pressed="false"
+>
+  <span class="theme-toggle-icon" aria-hidden="true">☾</span>
+</button>
+ </div>
+)}
+
+
+</header>
 
 
 <nav class="site-navigation" aria-label="Main navigation">
@@ -85,18 +120,27 @@ const { social } = settings;
     <a href={item.url}>{item.label}</a>
   ))}
 
-  <div class="more-menu">
-    <button class="more-menu-trigger" type="button" aria-haspopup="true">
-      MORE...
-    </button>
+  {(moreCategories.length > 0 || settings.navigation.more.length > 0) && (
+    <div class="more-menu">
+      <button class="more-menu-trigger" type="button" aria-haspopup="true">
+        MORE...
+      </button>
 
-    <div class="dropdown">
-      {settings.navigation.more.map((item) => (
-        <a href={item.url}>{item.label}</a>
-      ))}
+      <div class="dropdown">
+        {moreCategories.map((category) => (
+          <a href={`/category/${category.slug}/`}>
+            {category.name}
+          </a>
+        ))}
+
+        {settings.navigation.more.map((item) => (
+          <a href={item.url}>{item.label}</a>
+        ))}
+      </div>
     </div>
-  </div>
+  )}
 </nav>
+
 
 
 
@@ -110,9 +154,16 @@ const { social } = settings;
           <a href={item.url}>{item.label}</a>
         ))}
 
-        {settings.navigation.more.map((item) => (
+{categories.map((category) => (
+  <a href={`/category/${category.slug}/`}>
+    {category.name}
+  </a>
+))}
+
+                {settings.navigation.more.map((item) => (
           <a href={item.url}>{item.label}</a>
         ))}
+
       </div>
     </details>
 
@@ -160,4 +211,18 @@ if (icon) {
   }
 
   updateThemeButton();
+</script>
+
+<script define:vars={{ taglines }}>
+  const options = taglines
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  const taglineElement = document.getElementById('rotating-tagline');
+
+  if (taglineElement && options.length > 0) {
+    taglineElement.textContent =
+      options[Math.floor(Math.random() * options.length)];
+  }
 </script>

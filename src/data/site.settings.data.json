@@ -1,36 +1,44 @@
-
 {
- "general": {
-  "siteTitle": "Divergent Journaler",
-  "tagline": "Quietly chaotic, creatively divergent...",
-  "logo": "/uploads/images/dj-logo-design3.png",
-  "logoWidth": 120,
-  "siteUrl": "https://divergentjournaler.com",
-  "defaultDescription": "Explore journaling methods, creative inspiration, and practical ideas for making your journal uniquely yours.",
-  "homeDescription": "Explore Divergent Journaler for creative journaling ideas, personal reflections, journal prompts, free printables, and inspiration to make journaling your own.",
-  "aboutDescription": "Get to know the journaler behind Divergent Journaler and explore my personal approach to creativity, writing, and journaling.",
-  "vaultDescription": "Visit the Divergent Vault for free journaling resources, printables, and creative materials gathered in one convenient place.",
-  "searchDescription": "Search Divergent Journaler for articles, journal prompts, creative projects, printables, and journaling inspiration."
-},
-"navigation": {
-  "primary": [
-    { "label": "FREEBIE VAULT", "url": "/divergent-vault/" },
-    { "label": "WEEKLY PROMPTS", "url": "/category/journal-prompts/" }
-  ],
-  "more": [
-    { "label": "Journaling", "url": "/category/journaling/" },
-    { "label": "Journal Prompts", "url": "/category/journal-prompts/" },
-    { "label": "Free Journal Resources", "url": "/category/free-journal-resources/" },
-    { "label": "Divergent Dialogues", "url": "/category/divergent-dialogues/" },
-    { "label": "About", "url": "/about-me-and-my-journaling/" }
-  ]
-},
-"seo": {
-  "titleSeparator": " : ",
-  "titleSiteName": "Divergent Journaler",
-  "titlePosition": "after",
-  "homeTitleOnly": true
-},
+  "general": {
+    "siteTitle": "Divergent Journaler",
+    "tagline": "Quietly chaotic, creatively divergent...",
+    "logo": "/uploads/images/dj-logo-design3.png",
+    "logoWidth": 120,
+    "siteUrl": "https://divergentjournaler.com",
+    "defaultDescription": "Explore journaling methods, creative inspiration, and practical ideas for making your journal uniquely yours.",
+    "homeDescription": "Explore Divergent Journaler for creative journaling ideas, personal reflections, journal prompts, free printables, and inspiration to make journaling your own.",
+    "aboutDescription": "Get to know the journaler behind Divergent Journaler and explore my personal approach to creativity, writing, and journaling.",
+    "vaultDescription": "Visit the Divergent Vault for free journaling resources, printables, and creative materials gathered in one convenient place.",
+    "searchDescription": "Search Divergent Journaler for articles, journal prompts, creative projects, printables, and journaling inspiration.",
+    "copyrightStartYear": 2023,
+    "branding": {
+      "logo": "/uploads/images/dj-logo-design3.png",
+      "favicon": "/favicon.ico",
+      "backgroundImage": "/uploads/images/dj-logo-design2.png",
+      "titleImageLight": "/uploads/images/dj-title-light.png",
+      "titleImageDark": "/uploads/images/dj-title-dark.png"
+    }
+  },
+  "navigation": {
+    "primary": [
+      {
+        "label": "FREEBIE VAULT",
+        "url": "/divergent-vault/"
+      }
+    ],
+    "more": [
+      {
+        "label": "About",
+        "url": "/about-me-and-my-journaling/"
+      }
+    ]
+  },
+  "seo": {
+    "titleSeparator": " : ",
+    "titleSiteName": "Divergent Journaler",
+    "titlePosition": "after",
+    "homeTitleOnly": true
+  },
   "social": {
     "showSocialIcons": true,
     "instagram": "https://www.instagram.com/divergentjournaler",
@@ -51,62 +59,71 @@
   },
   "sidebar": {
     "showSearch": true,
-    "showWritingQuote": true,
-    "showPromptQuote": true,
     "showRecentPosts": true,
     "recentPostsCount": 8,
-    "showJournals": true
+    "showJournals": true,
+    "quotes": {
+      "enabled": true,
+      "selections": [
+        {
+          "heading": "Quotes :",
+          "category": "Writing"
+        },
+        {
+          "heading": "Prompt :",
+          "category": "Prompts"
+        }
+      ]
+    }
   },
-  
   "featuredImages": {
-  "categoryFallbacks": {
-    "creative-playground": "/uploads/tools/playground.png",
-    "divergent-dialogues": "/uploads/tools/prompts.png",
-    "free-journal-resources": "/uploads/tools/freebies.png",
-    "journal-prompts": "/uploads/tools/prompts.png",
-    "journaling": "/uploads/tools/article.png"
+    "categoryFallbacks": {
+      "creative-playground": "/uploads/tools/playground.png",
+      "divergent-dialogues": "/uploads/tools/prompts.png",
+      "free-journal-resources": "/uploads/tools/freebies.png",
+      "journal-prompts": "/uploads/tools/prompts.png",
+      "journaling": "/uploads/tools/article.png"
+    },
+    "forceCategoryImageInListings": [
+      "journal-prompts"
+    ]
   },
-  "forceCategoryImageInListings": [
-    "journal-prompts"
-  ]
-},
- "appearance": {
-  "defaultTheme": "light",
-  "light": {
-    "accentColor": "#008cce",
-    "backgroundColor": "#ffffff",
-    "textColor": "#000000",
-    "linkHoverColor": "#7f428d",
-    "linkColor": "#42758d"
-  },
-
-  "typography": {
-  "fontFamily": "-apple-system, BlinkMacSystemFont, \"Helvetica Neue\", Helvetica, sans-serif",
-  "fontSize": "14px",
-  "lineHeight": "1.8",
-  "navigation": {
-    "fontFamily": "-apple-system, BlinkMacSystemFont, \"Helvetica Neue\", Helvetica, sans-serif",
-    "fontSize": "13px",
-    "fontWeight": "300",
-    "letterSpacing": "0.1em"
-  },
-  "siteTitle": {
-  "fontSize": "20px",
-  "fontWeight": "600",
-  "letterSpacing": "0.3em"
-},
-"tagline": {
-  "fontSize": "13px",
-  "fontWeight": "400",
-  "letterSpacing": "0.1em"
-}
-},
-  "dark": {
-    "accentColor": "#a9bccc",
-    "linkColor": "#a9bccc",
-    "linkHoverColor" : "#c2a9cc",
-    "backgroundColor": "#17191b",
-    "textColor": "#c9cbcd"
+  "appearance": {
+    "defaultTheme": "light",
+    "light": {
+      "accentColor": "#008cce",
+      "backgroundColor": "#ffffff",
+      "textColor": "#000000",
+      "linkHoverColor": "#7f428d",
+      "linkColor": "#42758d"
+    },
+    "typography": {
+      "fontFamily": "-apple-system, BlinkMacSystemFont, \"Helvetica Neue\", Helvetica, sans-serif",
+      "fontSize": "14px",
+      "lineHeight": "1.8",
+      "navigation": {
+        "fontFamily": "-apple-system, BlinkMacSystemFont, \"Helvetica Neue\", Helvetica, sans-serif",
+        "fontSize": "13px",
+        "fontWeight": "300",
+        "letterSpacing": "0.1em"
+      },
+      "siteTitle": {
+        "fontSize": "20px",
+        "fontWeight": "600",
+        "letterSpacing": "0.3em"
+      },
+      "tagline": {
+        "fontSize": "13px",
+        "fontWeight": "400",
+        "letterSpacing": "0.1em"
+      }
+    },
+    "dark": {
+      "accentColor": "#a9bccc",
+      "linkColor": "#a9bccc",
+      "linkHoverColor": "#c2a9cc",
+      "backgroundColor": "#17191b",
+      "textColor": "#c9cbcd"
+    }
   }
-}
 }

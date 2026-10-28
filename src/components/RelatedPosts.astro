@@ -21,19 +21,6 @@ const currentCategories = new Set(
   (currentPost.metadata.categories ?? []).map((category: any) => category.slug)
 );
 
-// MAINTENANCE REMINDER:
-// When adding a new category, add its default image here.
-// Fallback images are category-based, regardless of
-// whether the entry is an Article or a Thought.
-
-const categoryFallbacks: Record<string, string> = {
-  "creative-playground": "/uploads/tools/playground.png",
-  "divergent-dialogues": "/uploads/tools/prompts.png",
-  "free-journal-resources": "/uploads/tools/freebies.png",
-  "journal-prompts": "/uploads/tools/prompts.png",
-  "journaling": "/uploads/tools/article.png",
-};
-
 const relatedPosts = allPosts
   .filter((post) =>
     !(

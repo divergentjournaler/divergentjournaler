@@ -1,15 +1,14 @@
-
 ---
 import quotes from '../data/quotes.data.json';
 
 interface Props {
-  category: 'Writing' | 'Prompts';
+  category?: string | null;
 }
 
-const { category } = Astro.props;
+const { category = null } = Astro.props;
 ---
 
-<div class="random-quote" data-category={category}>
+<div class="random-quote" data-category={category ?? ''}>
   <p class="quote-text"></p>
   <p class="quote-author"></p>
 </div>
@@ -20,22 +19,18 @@ const { category } = Astro.props;
   function displayRandomQuotes() {
     document.querySelectorAll<HTMLElement>('.random-quote').forEach((widget) => {
       const category = widget.dataset.category;
-      const entries = quotes.filter((entry) => entry.category === category);
+      const entries = category
+        ? quotes.filter((entry) => entry.category === category)
+        : quotes;
 
       if (entries.length === 0) return;
 
       const selected = entries[Math.floor(Math.random() * entries.length)];
-
       const text = widget.querySelector('.quote-text');
       const author = widget.querySelector('.quote-author');
 
-      if (text) {
-        text.textContent = selected.quote;
-      }
-
-      if (author) {
-        author.textContent = selected.author || '';
-      }
+      if (text) text.textContent = selected.quote;
+      if (author) author.textContent = selected.author || '';
     });
   }
 

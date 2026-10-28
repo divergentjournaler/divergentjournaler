@@ -42,9 +42,9 @@ const { tagName, tagSlug, posts, totalPages } = Astro.props;
 
 <BaseLayout
   title={tagName}
-  description={`Browse articles and creative journaling ideas tagged ${tagName} at Divergent Journaler.`}
+  description={`Browse content tagged ${tagName} at ${settings.general.siteTitle}.`}
 >
-  <h1>Tag: {tagName}</h1>
+  <h1 slot="page-intro">Tag : #{tagName}</h1>
   <BlogFeed posts={posts} />
   <Pagination
     currentPage={1}
