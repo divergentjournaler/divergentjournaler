@@ -16,12 +16,14 @@
    ========================================== */
 /* Light Mode: Link Variables */
 :root {
+  --divider-color: color-mix(in srgb, var(--light-text) 40%, white);
   --link-color: var(--light-link-color);
   --link-hover-color: var(--light-link-hover-color);
 }
 
 /* Dark Mode: Link Variables */
 html[data-theme="dark"] {
+  --divider-color: color-mix(in srgb, var(--dark-text) 40%, black);
   --link-color: var(--dark-link-color);
   --link-hover-color: var(--dark-link-hover-color);
 }
@@ -118,15 +120,15 @@ html[data-theme="dark"] .site-navigation {
 /* Site Branding: Atmospheric Background Logo */
 .site-atmospheric-logo {
   position: absolute;
-  top: 10px;
-left: 83%;
+  top: var(--background-desktop-y);
+left: var(--background-desktop-x);
   transform: translateX(-50%);
   width: 100%;
   height: 400px;
   background-image: var(--site-background-image);
   background-repeat: no-repeat;
   background-position: center top;
-  background-size: 355px auto;
+  background-size: var(--background-desktop-size) auto;
   opacity: 0.4;
   pointer-events: none;
   z-index: 0;
@@ -146,12 +148,12 @@ html[data-theme="dark"] .site-atmospheric-logo {
 /* Site Branding: Atmospheric Logo — Mobile */
 @media (max-width: 800px) {
   .site-atmospheric-logo {
-    top: -220px;
+    top: var(--background-mobile-y);
     opacity: .7;
-    left: 50%;
+    left: var(--background-mobile-x);
     transform: translateX(-50%);
     width: 100%;
-    background-size: 300px auto;
+    background-size: var(--background-mobile-size) auto;
   }
 
   html[data-theme="dark"] .site-atmospheric-logo {
@@ -234,20 +236,21 @@ color: color-mix(in srgb, var(--dark-text) 77%, transparent);
 opacity: .7;
 }
 
-/* Shared hover — BOTH themes */
+/* LIGHT THEME — social and toggle hover */
 .header-social a:hover,
 .sidebar-social a:hover,
 .header-social .theme-toggle:hover,
-.sidebar-social .theme-toggle:hover,
+.sidebar-social .theme-toggle:hover {
+  background-color: var(--link-hover-color);
+  color: var(--dark-text);
+}
+
+/* DARK THEME — social and toggle hover (independently adjustable) */
 html[data-theme="dark"] .header-social a:hover,
 html[data-theme="dark"] .sidebar-social a:hover,
 html[data-theme="dark"] .header-social .theme-toggle:hover,
 html[data-theme="dark"] .sidebar-social .theme-toggle:hover {
   background-color: var(--link-hover-color);
-  color: var(--light-text);
-}
-
-.sidebar-social a:hover, .sidebar-social .theme-toggle:hover {
   color: var(--dark-text);
 }
 
@@ -609,7 +612,7 @@ html[data-theme="dark"] .mobile-navigation {
   font-size: 13px;
   text-decoration: none;
   text-transform: uppercase;
-  border-bottom: 1px dotted color-mix(in srgb, currentColor 25%, transparent);
+  border-bottom: 1px dotted var(--divider-color);
   opacity: 0.8;
   background: var(--light-bg);
 }
@@ -713,10 +716,10 @@ html[data-theme="dark"] .desktop-title-dark {
   box-sizing: border-box;
 }
 
-/* Sidebar: Desktop Vertical Alignment */
+/* Shared sidebar positioning */
 @media (min-width: 801px) {
   .page-layout > aside {
-    margin-top: 35px;
+    margin-top: var(--sidebar-top-offset, 35px);
   }
 }
 
@@ -740,19 +743,15 @@ html[data-theme="dark"] .desktop-title-dark {
 /* Shared page intro — consistent desktop alignment : main divider */
 @media (min-width: 801px) {
   .page-intro {
-    height: 72px;
+    height: var(--intro-height);
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    border-bottom: 1px dotted color-mix(in srgb, currentColor 40%, transparent);
+    border-bottom: 1px dotted var(--divider-color);
     padding-bottom: 0;
     margin-bottom: 4px;
   }
-
-  html[data-theme="dark"] .page-intro {
-  border-bottom-color: #44484c;
-}
 
 /* Had to comment out to stop the argument with astro
   .page-intro:empty {
@@ -762,11 +761,11 @@ html[data-theme="dark"] .desktop-title-dark {
 
 .page-mantra {
   position: absolute;
-  top: -48px;
+  top: var(--mantra-top);
   left: 0;
   right: 0;
   opacity: 0.8;
-  height: 75px;
+  height: var(--mantra-height);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -818,8 +817,8 @@ header {
 /* Homepage-only mantra positioning */
 @media (min-width: 801px) {
   .page-home .page-mantra {
-    top: -55px;
-    height: 120px;
+    top: var(--home-mantra-top);
+    height: var(--home-mantra-height);
   }
 }
 
@@ -918,10 +917,6 @@ main img {
 
 /* Divider below breadcrumbs and publication date */
 
-html[data-theme="dark"] .post-breadcrumbs {
-  border-bottom: 1px dotted color-mix(in srgb, currentColor 40%, transparent);
-
-}
 
 /* Center images within post content */
 .post-content img {
@@ -981,7 +976,7 @@ html[data-theme="dark"] .post-breadcrumbs {
   gap: 24px;
   margin: 40px 0;
   padding: 18px 0;
-  border-top: 1px dotted color-mix(in srgb, currentColor 40%, transparent);
+  border-top: 1px dotted var(--divider-color);
 }
 
 .post-navigation-previous {
@@ -1020,12 +1015,7 @@ html[data-theme="dark"] .post-breadcrumbs {
   letter-spacing: .3em;
   margin: 8px 0 18px;
   padding-top: 8px;
-  border-top: 1px dotted color-mix(in srgb, currentColor 40%, transparent);
-}
-
-html[data-theme="dark"] .blog-post > .post-title {
-  border-bottom-color: #44484c;
-  border-top-color: #505050;
+  border-top: 1px dotted var(--divider-color);
 }
 
 .wp-block-separator.is-style-dots {
@@ -1291,7 +1281,7 @@ html[data-theme="dark"] .sidebar .recent-posts h2 {
   display: block;
   width: 90%;
   height: 0;
-  border-top: 1px dotted color-mix(in srgb, currentColor 40%, transparent);
+  border-top: 1px dotted var(--divider-color);
   margin: 10px 5px 0;
 }
 
@@ -1414,7 +1404,7 @@ html[data-theme="dark"] .site-search input {
   text-transform: uppercase;
   text-align: left;
   letter-spacing: 0.2em;
-  border-bottom: 1px dotted color-mix(in srgb, currentColor 40%, transparent);
+  border-bottom: 1px dotted var(--divider-color);
   padding-bottom: 10px;
   line-height: 1.4;
   color: inherit;
@@ -1548,7 +1538,7 @@ html[data-theme="dark"] .site-search input {
   margin: 10px 0 20px;
   text-transform: uppercase;
   padding-bottom: 10px;
-  border-bottom: 1px dotted color-mix(in srgb, currentColor 40%, transparent);
+  border-bottom: 1px dotted var(--divider-color);
 }
 
 .post-preview h2 a {
@@ -1565,7 +1555,7 @@ html[data-theme="dark"] .site-search input {
   max-width: var(--contentMaxWidth);
   margin: 40px auto 0;
   padding: 25px 40px;
-  border-top: 1px dotted color-mix(in srgb, currentColor 40%, transparent);
+  border-top: 1px dotted var(--divider-color);
   box-sizing: border-box;
   text-align: center;
 }
@@ -1593,9 +1583,10 @@ html[data-theme="dark"] .site-search input {
 }
 
 
-/* Policy pages: keep section headings close to their content. */
+/* Policy pages: separate sections while keeping headings with their content. */
 .privacy-policy h2,
 .cookie-policy h2 {
+  margin-top: 1.5em;
   margin-bottom: 0.35em;
 }
 

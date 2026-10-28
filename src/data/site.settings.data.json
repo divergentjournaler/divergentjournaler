@@ -15,23 +15,44 @@
       "logo": "/uploads/images/dj-logo-design3.png",
       "favicon": "/favicon.ico",
       "backgroundImage": "/uploads/images/dj-logo-design2.png",
+      "backgroundDisplay": {
+        "desktopSize": 355,
+        "desktopPositionX": "83%",
+        "desktopPositionY": "10px",
+        "mobileSize": 300,
+        "mobilePositionX": "50%",
+        "mobilePositionY": "-220px"
+      },
       "titleImageLight": "/uploads/images/dj-title-light.png",
       "titleImageDark": "/uploads/images/dj-title-dark.png"
     }
   },
   "navigation": {
-    "primary": [
+    "featuredCategories": [
+      "creative-playground",
+      "divergent-dialogues",
+      "journal-prompts"
+    ],
+    "pages": [
       {
         "label": "FREEBIE VAULT",
-        "url": "/divergent-vault/"
-      }
-    ],
-    "more": [
+        "url": "/divergent-vault/",
+        "location": "bar"
+      },
       {
         "label": "About",
-        "url": "/about-me-and-my-journaling/"
+        "url": "/about-me-and-my-journaling/",
+        "location": "more"
       }
-    ]
+    ],
+    "categoryLabels": {
+      "creative-playground": "PLAYGROUND",
+      "divergent-dialogues": "DIALOGUES",
+      "journal-prompts": "PROMPTS",
+      "free-journal-resources": "RESOURCES",
+      "journaling": "JOURNALING",
+      "printables-digitals": "PRINTABLES"
+    }
   },
   "seo": {
     "titleSeparator": " : ",
@@ -52,12 +73,20 @@
     "showReadMore": true
   },
   "layout": {
+    "mantraLayout": {
+      "mantraHeight": 75,
+      "homeMantraHeight": 120,
+      "mantraTop": -48,
+      "homeMantraTop": -55,
+      "introHeight": 72
+    },
     "showSidebar": true,
     "sidebarPosition": "right",
     "sidebarWidth": 280,
     "contentMaxWidth": 1200
   },
   "sidebar": {
+    "topOffsetDesktop": 0,
     "showSearch": true,
     "showRecentPosts": true,
     "recentPostsCount": 8,
@@ -94,7 +123,7 @@
       "accentColor": "#008cce",
       "backgroundColor": "#ffffff",
       "textColor": "#000000",
-      "linkHoverColor": "#7f428d",
+      "linkHoverColor": "#94275C",
       "linkColor": "#42758d"
     },
     "typography": {
@@ -121,7 +150,7 @@
     "dark": {
       "accentColor": "#a9bccc",
       "linkColor": "#a9bccc",
-      "linkHoverColor": "#c2a9cc",
+      "linkHoverColor": "#94275C",
       "backgroundColor": "#17191b",
       "textColor": "#c9cbcd"
     }

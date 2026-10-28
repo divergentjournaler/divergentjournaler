@@ -8,18 +8,14 @@ type NavLink = {
   url: string;
 };
 
-const settings = {
-  ...rawSettings,
-  navigation: {
-    primary: rawSettings.navigation.primary as NavLink[],
-    more: rawSettings.navigation.more as NavLink[]
-  }
+type PageLink = NavLink & {
+  location: 'bar' | 'more';
 };
 
 import { getAllUnifiedArticles } from '../lib/articles';
 
+const settings = rawSettings;
 const { social } = settings;
-
 const articles = await getAllUnifiedArticles();
 
 const categories = Array.from(
@@ -29,12 +25,54 @@ const categories = Array.from(
       .map((category) => [category.slug, category])
   ).values()
 ).sort((a, b) => a.name.localeCompare(b.name));
+
+const featuredSlugs = settings.navigation.featuredCategories.slice(0, 3);
+
+const featuredCategories = featuredSlugs
+  .map((slug) => categories.find((category) => category.slug === slug))
+  .filter((category) => category !== undefined);
+
 const moreCategories = categories.filter(
-  (category) =>
-    !settings.navigation.primary.some(
-      (item) => item.url === `/category/${category.slug}/`
-    )
+  (category) => !featuredSlugs.includes(category.slug)
 );
+
+const barPages = (settings.navigation.pages as PageLink[])
+  .filter((page) => page.location === 'bar');
+
+const morePages = (settings.navigation.pages as PageLink[])
+  .filter((page) => page.location === 'more');
+
+const barLinks: NavLink[] = [
+  { label: 'HOME', url: '/' },
+  ...featuredCategories.map((category) => ({
+    label: settings.navigation.categoryLabels[category.slug] || category.name,
+    url: `/category/${category.slug}/`
+  })),
+  ...barPages
+];
+
+const moreLinks: NavLink[] = [
+  ...moreCategories.map((category) => ({
+    label: category.name,
+    url: `/category/${category.slug}/`
+  })),
+  ...morePages
+];
+
+const mobileLinks: NavLink[] = [
+  { label: 'HOME', url: '/' },
+  ...featuredCategories.map((category) => ({
+    label: category.name,
+    url: `/category/${category.slug}/`
+  })),
+  ...barPages,
+  ...moreCategories.map((category) => ({
+    label: category.name,
+    url: `/category/${category.slug}/`
+  })),
+  ...morePages
+];
+
 ---
 
 
@@ -116,24 +154,18 @@ const moreCategories = categories.filter(
 
 
 <nav class="site-navigation" aria-label="Main navigation">
-  {settings.navigation.primary.map((item) => (
+  {barLinks.map((item) => (
     <a href={item.url}>{item.label}</a>
   ))}
 
-  {(moreCategories.length > 0 || settings.navigation.more.length > 0) && (
+  {moreLinks.length > 0 && (
     <div class="more-menu">
       <button class="more-menu-trigger" type="button" aria-haspopup="true">
         MORE...
       </button>
 
       <div class="dropdown">
-        {moreCategories.map((category) => (
-          <a href={`/category/${category.slug}/`}>
-            {category.name}
-          </a>
-        ))}
-
-        {settings.navigation.more.map((item) => (
+        {moreLinks.map((item) => (
           <a href={item.url}>{item.label}</a>
         ))}
       </div>
@@ -141,37 +173,18 @@ const moreCategories = categories.filter(
   )}
 </nav>
 
-
-
-
 <div class="mobile-navigation">
   <div class="mobile-navigation-bar">
     <details class="mobile-navigation-menu">
       <summary aria-label="Toggle navigation menu">☰ Menu</summary>
-
       <div class="mobile-navigation-links">
-        {settings.navigation.primary.map((item) => (
+        {mobileLinks.map((item) => (
           <a href={item.url}>{item.label}</a>
         ))}
-
-{categories.map((category) => (
-  <a href={`/category/${category.slug}/`}>
-    {category.name}
-  </a>
-))}
-
-                {settings.navigation.more.map((item) => (
-          <a href={item.url}>{item.label}</a>
-        ))}
-
       </div>
     </details>
-
-    
   </div>
 </div>
-
-
 
 <script>
   function updateThemeButton() {
