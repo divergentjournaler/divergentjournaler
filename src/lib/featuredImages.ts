@@ -1,13 +1,12 @@
 
 import type { Article } from './articles';
+import settings from '../data/site.settings.data.json';
 
-const categoryFallbacks: Record<string, string> = {
-  'creative-playground': '/uploads/tools/playground.png',
-  'divergent-dialogues': '/uploads/tools/prompts.png',
-  'free-journal-resources': '/uploads/tools/freebies.png',
-  'journal-prompts': '/uploads/tools/prompts.png',
-  'journaling': '/uploads/tools/article.png',
-};
+const categoryFallbacks: Record<string, string> =
+  settings.featuredImages.categoryFallbacks;
+
+const forceCategoryImageInListings: string[] =
+  settings.featuredImages.forceCategoryImageInListings;
 
 function firstImageFromHtml(html: string): string | undefined {
   return html.match(/<img\b[^>]*\bsrc=["']([^"']+)["']/i)?.[1];
@@ -20,10 +19,13 @@ export function getFeaturedImage(
   const context = options.context ?? 'listing';
   const category = article.metadata.categorySlug;
 
-  // Preserve the existing Journal Prompts listing exception.
-  if (context === 'listing' && category === 'journal-prompts') {
-    return categoryFallbacks[category] ?? null;
-  }
+  // Some categories always use their default image in listings.
+if (
+  context === 'listing' &&
+  forceCategoryImageInListings.includes(category)
+) {
+  return categoryFallbacks[category] ?? null;
+}
 
   // An explicitly selected featured image takes priority.
   if (article.metadata.featuredImage) {

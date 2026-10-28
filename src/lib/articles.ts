@@ -8,6 +8,7 @@ export interface ArticleMetadata {
   date: string;
   modified?: string;
   description?: string;
+  featuredImageAuto?: boolean;
   featuredImage?: string;
   originalUrl?: string;
   categories: {
@@ -92,10 +93,11 @@ export async function getMarkdownArticles(): Promise<Article[]> {
     )?.[1];
 
     const metadata = markdownToMetadata(entry.data);
-
+    metadata.slug = entry.id;
     if (!metadata.featuredImage && firstImage) {
-      metadata.featuredImage = firstImage;
-    }
+  metadata.featuredImage = firstImage;
+  metadata.featuredImageAuto = true;
+}
 
     return {
       metadata,

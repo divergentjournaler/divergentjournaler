@@ -57,6 +57,19 @@
     "recentPostsCount": 8,
     "showJournals": true
   },
+  
+  "featuredImages": {
+  "categoryFallbacks": {
+    "creative-playground": "/uploads/tools/playground.png",
+    "divergent-dialogues": "/uploads/tools/prompts.png",
+    "free-journal-resources": "/uploads/tools/freebies.png",
+    "journal-prompts": "/uploads/tools/prompts.png",
+    "journaling": "/uploads/tools/article.png"
+  },
+  "forceCategoryImageInListings": [
+    "journal-prompts"
+  ]
+},
  "appearance": {
   "defaultTheme": "light",
   "light": {
