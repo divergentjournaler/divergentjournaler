@@ -6,9 +6,9 @@ site-tags:
   - playground
   - stitchery
 date: 2026.10.24
-last-update: 2026.10.26
+last-update: 2026.10.30
 ---
-Big journeys begin with small steps....
+Big journeys begin with small steps..
 
 Note to self : The Star Wars pin that sits on my desk because it brings so much happy feelings... Is now a needle minder (thank you youtube) that I can use when I am stitching.
 
