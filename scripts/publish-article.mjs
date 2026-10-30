@@ -116,7 +116,17 @@ function convertImages(markdown) {
 
       const alt = path.parse(filename).name.replace(/[-_]/g, " ");
 
-      return `![${alt}](${url})`;
+      const size = (reference.split("|")[1] ?? "").trim();
+    const dimensions = size.match(/^([1-9]\d*)(?:x([1-9]\d*))?$/);
+
+    if (!dimensions) return `![${alt}](${url})`;
+
+    const width = dimensions[1];
+    const height = dimensions[2] ? ` height="${dimensions[2]}"` : "";
+    const safeAlt = alt.replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;").replace(/</g, "&lt;");
+
+    return `<img src="${url}" alt="${safeAlt}" width="${width}"${height}>`;
     }
   );
 }
