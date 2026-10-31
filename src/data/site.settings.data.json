@@ -16,7 +16,7 @@
       "favicon": "/favicon.ico",
       "backgroundImage": "/uploads/images/dj-logo-design2.png",
       "backgroundDisplay": {
-        "desktopSize": 355,
+        "desktopSize": 600,
         "desktopPositionX": "83%",
         "desktopPositionY": "10px",
         "mobileSize": 300,

@@ -1,4 +1,3 @@
-
 import { getCollection, render } from 'astro:content';
 
 export interface ArticleMetadata {
@@ -57,19 +56,18 @@ export function markdownToMetadata(data: Record<string, any>): ArticleMetadata {
   const category = String(data.category || 'Creative Playground');
   const categorySlug = toSlug(category);
 
-  const websiteTags = Array.isArray(data['site-tags'])
-    ? data['site-tags']
-    : [];
+  const websiteTags = Array.isArray(data['site-tags']) ? data['site-tags'] : [];
 
   return {
     title: String(data.title),
     slug: toSlug(String(data.slug || data.title)),
     categorySlug,
     date: String(data.date).replace(/\./g, '-'),
+    modified: data['last-update']
+      ? String(data['last-update']).replace(/\./g, '-')
+      : undefined,
     description: data.description || undefined,
-    featuredImage: data.featuredImage
-  ? String(data.featuredImage)
-  : undefined,
+    featuredImage: data.featuredImage ? String(data.featuredImage) : undefined,
     categories: [
       {
         name: category,
@@ -83,29 +81,28 @@ export function markdownToMetadata(data: Record<string, any>): ArticleMetadata {
   };
 }
 
-
 export async function getMarkdownArticles(): Promise<Article[]> {
   const entries = await getAllMarkdownEntries();
 
   return entries.map((entry) => {
     const firstImage = entry.body?.match(
-      /!\[[^\]]*\]\(([^)\s]+(?:%20[^)\s]*)*)\)/
+      /!\[[^\]]*\]\(([^)\s]+(?:%20[^)\s]*)*)\)/,
     )?.[1];
 
     const metadata = markdownToMetadata(entry.data);
     metadata.slug = entry.id;
     if (!metadata.featuredImage && firstImage) {
-  metadata.featuredImage = firstImage;
-  metadata.featuredImageAuto = true;
-}
+      metadata.featuredImage = firstImage;
+      metadata.featuredImageAuto = true;
+    }
 
     return {
       metadata,
       html: (entry.body ?? '')
-  .replace(/!\[[^\]]*\]\([^)]+\)/g, ' ')
-  .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-  .replace(/^[#>*\-\s]+/gm, '')
-  .replace(/[*_`~]/g, ''),
+        .replace(/!\[[^\]]*\]\([^)]+\)/g, ' ')
+        .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+        .replace(/^[#>*\-\s]+/gm, '')
+        .replace(/[*_`~]/g, ''),
       source: 'markdown' as const,
     };
   });
