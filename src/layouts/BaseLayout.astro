@@ -10,12 +10,20 @@ interface Props {
   title?: string;
   description?: string;
   showSidebar?: boolean;
+  favicon?: string;
+  appleTouchIcon?: string;
 }
 
 const {
   title = settings.general.siteTitle,
   description = settings.general.defaultDescription,
   showSidebar = settings.layout.showSidebar,
+  favicon = import.meta.env.DEV
+  ? settings.general.branding.faviconLocal
+  : settings.general.branding.faviconLive,
+  appleTouchIcon = import.meta.env.DEV
+  ? settings.general.branding.appleTouchIconLocal
+  : undefined,
 } = Astro.props;
 
 const canonicalUrl = new URL(
@@ -111,7 +119,10 @@ const contentMaxWidth =
    <title>{formattedTitle}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonicalUrl} />
-<link rel="icon" href={settings.general.branding.favicon} />
+<link rel="icon" type={favicon.split("?")[0].endsWith(".png") ? "image/png" : "image/x-icon"} href={favicon} />
+{appleTouchIcon && (
+  <link rel="apple-touch-icon" href={appleTouchIcon} />
+)}
 </head>
 
   <body>

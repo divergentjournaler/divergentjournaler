@@ -58,7 +58,11 @@ const automaticFeaturedImage = !featuredImage && !!firstImage;
 const previewFeaturedImage = featuredImage || firstImage;
 ---
 
-<BaseLayout title={`Preview: ${title}`}>
+<BaseLayout
+  title={`Preview: ${title}`}
+  favicon="/dj-graveyard-tab.png"
+  appleTouchIcon="/dj-graveyard-touch.png"
+/>
   <nav slot="page-intro" class="post-breadcrumbs" aria-label="Breadcrumb">
     <a href="/">Home</a>
     <a href={`/category/${categorySlug}/`}>{category}</a>

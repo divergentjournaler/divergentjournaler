@@ -13,7 +13,9 @@
     "copyrightStartYear": 2023,
     "branding": {
       "logo": "/uploads/images/dj-logo-design3.png",
-      "favicon": "/favicon.ico",
+      "faviconLocal": "/dj-favicon-local.ico",
+      "faviconLive": "/dj-favicon-live.ico",
+      "appleTouchIconLocal": "/dj-local-touch.png",
       "backgroundImage": "/uploads/images/dj-logo-design2.png",
       "backgroundDisplay": {
         "desktopSize": 600,
