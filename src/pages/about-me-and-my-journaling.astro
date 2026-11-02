@@ -6,6 +6,20 @@ import settings from '../data/site.settings.data.json';
 ---
 
 <BaseLayout title="About" description={settings.general.aboutDescription}>
-  
-  <div class="about-page" set:html={aboutHtml} />
+  <nav slot="page-intro" class="post-breadcrumbs" aria-label="Breadcrumb">
+    <a href="/">Home</a>
+  <a href="/about-me-and-my-journaling/" aria-current="page">About</a>
+  </nav>
+
+  <article class="blog-post">
+    <p class="post-modified">
+      Published: 2023-12-18
+    </p>
+
+    <h1 class="post-title">About Me and My Journaling</h1>
+
+    <div class="post-content">
+      <div class="about-page" set:html={aboutHtml} />
+    </div>
+  </article>
 </BaseLayout>

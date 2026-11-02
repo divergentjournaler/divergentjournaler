@@ -18,7 +18,7 @@
       "appleTouchIconLocal": "/dj-local-touch.png",
       "backgroundImage": "/uploads/images/dj-logo-design2.png",
       "backgroundDisplay": {
-        "desktopSize": 600,
+        "desktopSize": 450,
         "desktopPositionX": "83%",
         "desktopPositionY": "10px",
         "mobileSize": 300,
@@ -32,8 +32,8 @@
   "navigation": {
     "featuredCategories": [
       "creative-playground",
-      "divergent-dialogues",
-      "journal-prompts"
+      "journal-prompts",
+      "printables-digitals"
     ],
     "pages": [
       {

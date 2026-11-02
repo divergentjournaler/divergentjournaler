@@ -314,7 +314,7 @@ html[data-theme='dark'] .sidebar-social .theme-toggle:hover {
     justify-content: center;
     gap: 20px;
     padding: 0;
-    margin: 8px 0 5px;
+    margin: 3px 0 5px;
 
     /* Keep buttons above atmospheric artwork */
     position: relative;
@@ -457,8 +457,8 @@ html[data-theme='dark'] .sidebar-social .theme-toggle:hover {
   background: linear-gradient(
     to right,
     color-mix(in srgb, var(--light-bg) 97%, black) 0%,
-    color-mix(in srgb, var(--light-bg) 97%, black) 65%,
-    transparent 100%
+    color-mix(in srgb, var(--light-bg) 97%, black) 25%,
+    transparent 75%
   );
 }
 
@@ -1273,12 +1273,12 @@ html[data-theme='dark'] .sidebar .recent-posts h2 {
 /* Recent Posts — list styling */
 .sidebar .recent-posts ul {
   list-style: none;
-  padding: 0;
+  padding: 0 0 27px;
   margin: 0;
 }
 
 .sidebar .recent-posts li {
-  padding: 10px 0;
+  padding: 8px 0;
 }
 
 .sidebar .recent-posts li a {
@@ -1352,6 +1352,7 @@ html[data-theme='dark'] .sidebar .recent-posts {
   border-left: 2px solid color-mix(in srgb, var(--light-text) 5%, transparent);
   border-bottom: 1px solid color-mix(in srgb, var(--light-text) 15%, transparent);
   border-radius: 0;
+  opacity: .65;
 }
 
 /* Dark Mode — Sidebar Search */
@@ -1360,6 +1361,7 @@ html[data-theme='dark'] .site-search input {
   border-bottom: 1px solid color-mix(in srgb, var(--dark-text) 10%, transparent);
   border-left: 2px solid color-mix(in srgb, var(--dark-text) 10%, transparent);
   color: #c9cbcd;
+  opacity: 1;
 }
 
 .site-search input:focus {
@@ -1519,6 +1521,10 @@ html[data-theme='dark'] .site-search input {
   flex: 1;
   min-width: 0;
   margin-top: 0;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 140px;
 }
 
 .post-excerpt a {
@@ -1532,7 +1538,8 @@ html[data-theme='dark'] .site-search input {
 
 .excerpt-read-more {
   text-align: right;
-  margin-top: 0.4rem;
+  margin-top: auto;
+  padding-top: 0.4rem;
 }
 
 /* Hide post excerpts on phones */

@@ -4,20 +4,35 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import vaultHtml from '../content/divergent-vault.html?raw';
 import settings from '../data/site.settings.data.json';
 
-const vaultUrl = 'https://drive.google.com/drive/folders/1f7tC5BlCbFzXKZS63scZ_u39k1BgmkkO?usp=share_link';
+// Extract the original image and remove it from the article body.
+const imageMatch = vaultHtml.match(/<figure\b[\s\S]*?<\/figure>/);
+const featuredImage = imageMatch?.[0] ?? '';
+const articleHtml = featuredImage
+  ? vaultHtml.replace(featuredImage, '')
+  : vaultHtml;
+
+const finalHtml = articleHtml;
 ---
 
 <BaseLayout title="Divergent Vault" description={settings.general.vaultDescription}>
+  <nav slot="page-intro" class="post-breadcrumbs" aria-label="Breadcrumb">
+    <a href="/">Home</a>
+    <a href="/divergent-vault/" aria-current="page">Divergent Vault</a>
+  </nav>
 
-  <main class="divergent-vault">
-    
-<p>
-  <a href={vaultUrl} target="_blank" rel="noopener noreferrer">
-    Enter the Vault
-  </a>
-</p>
+  <article class="blog-post">
+    <p class="post-modified">
+      Published: 2024-01-04
+    </p>
 
-<div set:html={vaultHtml} />
+    {featuredImage && (
+      <div class="post-opening-media" set:html={featuredImage} />
+    )}
 
-  </main>
+    <h1 class="post-title">Divergent Vault</h1>
+
+    <div class="post-content">
+      <div class="divergent-vault" set:html={finalHtml} />
+    </div>
+  </article>
 </BaseLayout>
