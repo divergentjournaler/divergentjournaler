@@ -23,7 +23,7 @@ const {
   : settings.general.branding.faviconLive,
   appleTouchIcon = import.meta.env.DEV
   ? settings.general.branding.appleTouchIconLocal
-  : undefined,
+  : settings.general.branding.appleTouchIconLive,
 } = Astro.props;
 
 const canonicalUrl = new URL(

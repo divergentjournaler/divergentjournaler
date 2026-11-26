@@ -134,7 +134,7 @@ function convertImages(markdown) {
 
 function convertFeaturedImage(markdown) {
   return markdown.replace(
-    /^(featuredImage:\s*)(.+)$/m,
+    /^(featuredImage:[ \t]*)(\S[^\r\n]*)$/m,
     (match, prefix, value) => {
       const filename = path.basename(
         value.trim().replace(/^["']|["']$/g, "")
