@@ -3,7 +3,13 @@ title: Line by Line
 category: Creative Playground
 featuredImage:
 site-tags:
-  - "#inktense #playground #uniball #stalogy #playground #fun in journaling #Derwent"
+  - "#inktense"
+  - "#playground"
+  - "#uniball"
+  - "#Derwent"
+  - "#stalogy"
+  - "#fun in journaling"
+  - "#linework"
 date: 2026.11.25
 ---
 ![IMG 9808](/uploads/images/IMG_9808.jpeg)
