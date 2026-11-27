@@ -14,13 +14,13 @@ site-tags:
   - "#Derwent"
   - "#Watercolor"
 date: 2026.05.29
-last-update: 2026.06.04
+last-update: 2026.11.27
 original-date: 2026-05-29 22:40:13
 original-modified: 2026-06-04 10:24:27
 ---
 
 
 
-Note to self : A ridiculously free and easy way to calm anxiety. Patterns, lines, and watercolor.
+Note to self : A ridiculously free and easy way to calm anxiety. Patterns, lines, and watercolor..
 
 Supplies Used : B6 Stalogy, Uniball Vision .7, Micron .3, Derwent Inktense Watercolor

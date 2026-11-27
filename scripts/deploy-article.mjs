@@ -3,6 +3,11 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
+import {
+  validateArticle,
+  toSlug,
+  isValidSlug
+} from "./validate-article.mjs";
 
 const ROOT = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -105,6 +110,11 @@ function requireNote() {
   if (!fs.existsSync(path.dirname(destination))) {
     throw new Error("Obsidian PUBLISHED folder is missing.");
   }
+}
+
+function requireValidArticle() {
+  const markdown = fs.readFileSync(sourceNote, "utf8");
+  return validateArticle(markdown);
 }
 
 function inspect() {
@@ -222,6 +232,14 @@ function verifyResult(result) {
   if (!inside(articleDir, path.resolve(ROOT, result.articleFile))) {
     throw new Error(
       "Article is outside the Markdown directory."
+    );
+  }
+  if (
+    result.previousArticleFile &&
+    !inside(articleDir, path.resolve(ROOT, result.previousArticleFile))
+  ) {
+    throw new Error(
+      "Previous article is outside the Markdown directory."
     );
   }
 
@@ -342,6 +360,87 @@ if (
 if (preflight) {
   requireGitHubAccount();
   requireNote();
+  
+  const articleData = requireValidArticle();
+  const filenameTitle = path.basename(sourceNote, ".md");
+  const titleMismatch = filenameTitle !== articleData.title;
+  const titleSlug = toSlug(articleData.title);
+
+  const publishedSlug = articleData["published-slug"] || null;
+  
+  const publishedSlugChanged =
+    mode === "update" &&
+    Boolean(articleData.slug) &&
+    articleData.slug !== publishedSlug;
+
+    const intendedSlug = mode === "update"
+  ? articleData.slug || publishedSlug
+  : articleData.slug || titleSlug;
+
+  if (!isValidSlug(intendedSlug)) {
+    throw new Error(
+      "Prepublish checks failed:\n\n" +
+      "Missing or invalid intended article slug."
+    );
+  }
+
+    if (
+    mode === "update" &&
+    toSlug(articleData.category) !== articleData["published-category"]
+  ) {
+    throw new Error(
+      "Prepublish checks failed:\n\n" +
+      "Published article primary category cannot be changed until redirect support is available."
+    );
+  }
+
+    const outputDirectory = path.join(
+    ROOT, "src", "content", "markdown"
+  );
+
+  const slugAvailable = slug =>
+    isValidSlug(slug) &&
+    !fs.existsSync(
+      path.join(outputDirectory, `${slug}.md`)
+    );
+
+  const intendedSlugAvailable =
+  mode === "update" && !publishedSlugChanged
+    ? fs.existsSync(path.join(outputDirectory, `${publishedSlug}.md`))
+    : slugAvailable(intendedSlug);
+
+  const titleSlugAvailable = slugAvailable(titleSlug);
+
+    if (mode === "update") {
+  if (!isValidSlug(publishedSlug) ||
+      !fs.existsSync(path.join(outputDirectory, `${publishedSlug}.md`))) {
+    throw new Error(
+      "Prepublish checks failed:\n\n" +
+      "Original published article file not found."
+    );
+  }
+
+  if (!intendedSlugAvailable) {
+    throw new Error(
+      "Prepublish checks failed:\n\n" +
+      `Requested slug is unavailable: ${intendedSlug}`
+    );
+  }
+}
+
+  if (
+    mode === "publish" &&
+    !intendedSlugAvailable &&
+    !titleSlugAvailable
+  ) {
+    throw new Error(
+      "Prepublish checks failed:\n\n" +
+      "Neither proposed URL slug is available.\n\n" +
+`Existing slug: ${intendedSlug} — Unavailable\n` +
+`Title-derived slug: ${titleSlug} — Unavailable\n\n` +
+"Enter a unique slug in the article properties."
+    );
+  }
 
   const local = git(["rev-parse", "HEAD"]);
   const remote = remoteHead();
@@ -377,7 +476,17 @@ if (preflight) {
   console.log(JSON.stringify({
     outstanding: Boolean(details) || local !== remote,
     uncommitted: Boolean(details),
-    unpushed: local !== remote
+    unpushed: local !== remote,
+    filenameTitle,
+    articleTitle: articleData.title,
+    titleMismatch,
+    titleSlug,
+    intendedSlug,
+    publishedSlug,
+    intendedSlugAvailable,
+    titleSlugAvailable,
+    publishedSlugChanged,
+    slugMismatch: intendedSlug !== titleSlug
   }));
 
 } else {
@@ -389,6 +498,7 @@ if (preflight) {
   try {
     requireGitHubAccount();
     requireNote();
+    requireValidArticle();
 
     fs.mkdirSync(lockDirectory);
     lockAcquired = true;

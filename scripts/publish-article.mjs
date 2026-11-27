@@ -2,6 +2,11 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  validateArticle,
+  toSlug,
+  isValidSlug
+} from "./validate-article.mjs";
 
 const PROJECT_ROOT = process.env.DJ_PUBLISH_ROOT
   ? path.resolve(process.env.DJ_PUBLISH_ROOT)
@@ -324,6 +329,8 @@ if (!fs.existsSync(articlePath)) {
 
 const originalMarkdown = fs.readFileSync(articlePath, "utf8");
 
+validateArticle(originalMarkdown);
+
 const articleTitle = getFrontmatterValue(originalMarkdown, "title");
 const articleCategory = getFrontmatterValue(originalMarkdown, "category");
 const articleDate = getFrontmatterValue(originalMarkdown, "date");
@@ -337,26 +344,14 @@ const publishedCategory = getFrontmatterValue(
   "published-category"
 );
 
-if (!articleTitle || !articleCategory || !articleDate) {
+const selectedSlug = process.env.DJ_SELECTED_SLUG || "";
+
+if (selectedSlug && !isValidSlug(selectedSlug)) {
+
   throw new Error(
-    "Article must have a title, category, and date."
+    "Invalid selected slug. Publishing cancelled."
   );
 }
-
-const convertedMarkdown = convertMediaText(removeDuplicateFeaturedImage(convertFeaturedImage(convertImages(convertSlideshows(originalMarkdown)))));
-
-// Remove private Obsidian tags from the website copy.
-// Keep site-tags because Astro already uses them.
-
-const publishableMarkdown = convertedMarkdown
-  .replace(
-    /^tags:\s*\n(?:[ \t]+-[^\n]*\n)*/m,
-    ""
-  )
-  .replace(
-    /^published-(?:slug|category):[^\r\n]*(?:\r?\n|$)/gm,
-    ""
-  );
 
 const outputDirectory = path.join(
   PROJECT_ROOT,
@@ -375,30 +370,51 @@ if (isLegacyArticle && !publishedSlug) {
   );
 }
 
-const articleSlug = isLegacyArticle
-  ? publishedSlug
-  : articleTitle
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-|-$/g, "");
+const titleSlug = toSlug(articleTitle);
 
-      if (isLegacyArticle) {
-  const currentCategorySlug = articleCategory
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
+const draftSlug = getFrontmatterValue(originalMarkdown, "slug");
+
+if (
+  mode === "publish" &&
+  selectedSlug &&
+  ![draftSlug || titleSlug, titleSlug].includes(selectedSlug)
+) {
+  throw new Error(
+    "Selected slug does not match an available choice. Publishing cancelled."
+  );
+}
+
+if (
+  mode === "publish" &&
+  draftSlug &&
+  draftSlug !== titleSlug &&
+  !selectedSlug
+) {
+  throw new Error(
+    "Draft slug differs from the article title. " +
+    "Explicit slug selection is required."
+  );
+}
+
+const articleSlug = mode === "update"
+  ? draftSlug || publishedSlug
+  : selectedSlug || draftSlug || titleSlug;
+
+if (mode === "update") {
+  const currentCategorySlug = toSlug(articleCategory);
+
 
   if (currentCategorySlug !== publishedCategory) {
     throw new Error(
-      "Legacy article primary category cannot be changed."
+      "Published article primary category cannot be changed until redirect support is available."
     );
   }
 }
 
-if (!articleSlug) {
-  throw new Error("Cannot generate a slug from the article title.");
+if (!isValidSlug(articleSlug)) {
+  throw new Error(
+    "Missing or invalid article slug. Publishing cancelled."
+  );
 }
 
 const outputFile = path.join(
@@ -414,12 +430,6 @@ const existingFile = path.join(
 );
 
 fs.mkdirSync(outputDirectory, { recursive: true });
-
-console.log("\nFeatured image conversion:");
-console.log(
-  publishableMarkdown.match(/^featuredImage:.*$/m)?.[0]
-    ?? "No featured image found"
-);
 
 const articleExists = fs.existsSync(existingFile);
 
@@ -446,18 +456,44 @@ if (mode === "update") {
   }
 }
 
-let finalMarkdown = publishableMarkdown;
+let originalDate;
 
 if (mode === "update") {
   const existingMarkdown = fs.readFileSync(existingFile, "utf8");
-  const originalDate = getFrontmatterValue(existingMarkdown, "date");
+  originalDate = getFrontmatterValue(existingMarkdown, "date");
 
   if (!originalDate) {
     throw new Error(
       "Existing article has no publication date. Update cancelled."
     );
   }
+}
 
+const convertedMarkdown = convertMediaText(removeDuplicateFeaturedImage(convertFeaturedImage(convertImages(convertSlideshows(originalMarkdown)))));
+
+// Remove private Obsidian tags from the website copy.
+// Keep site-tags because Astro already uses them.
+
+const publishableMarkdown = convertedMarkdown
+  .replace(
+    /^tags:\s*\n(?:[ \t]+-[^\n]*\n)*/m,
+    ""
+  )
+  .replace(
+    /^(?:slug|published-slug|published-category):[^\r\n]*(?:\r?\n|$)/gm,
+    ""
+  );
+
+
+console.log("\nFeatured image conversion:");
+console.log(
+  publishableMarkdown.match(/^featuredImage:.*$/m)?.[0]
+    ?? "No featured image found"
+);
+
+let finalMarkdown = publishableMarkdown;
+
+if (mode === "update") {
   finalMarkdown = finalMarkdown.replace(
     /^(date:\s*).+$/m,
     (_, prefix) => `${prefix}${originalDate}`
@@ -466,12 +502,16 @@ if (mode === "update") {
 
 const trackedMarkdown = setFrontmatterValue(
   setFrontmatterValue(
-    originalMarkdown,
+    setFrontmatterValue(
+      originalMarkdown,
+      "slug",
+      articleSlug
+    ),
     "published-slug",
     articleSlug
   ),
   "published-category",
-  articleCategory.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-")
+  toSlug(articleCategory)
 );
 
 const temporaryFile = `${outputFile}.tmp`;
