@@ -1,6 +1,6 @@
 ---
-title: "Pattern Play"
-category: "Creative Playground"
+title: Pattern Play
+category: Creative Playground
 additional-categories: []
 featuredImage: /wp-content/uploads/2026/05/IMG_9805-1024x694.jpeg
 site-tags:
@@ -9,10 +9,14 @@ site-tags:
   - "#patterns"
   - "#playground"
   - "#stalogy"
+  - "#uniball"
+  - "#micron"
+  - "#Derwent"
+  - "#Watercolor"
 date: 2026.05.29
 last-update: 2026.06.04
-original-date: "2026-05-29 22:40:13"
-original-modified: "2026-06-04 10:24:27"
+original-date: 2026-05-29 22:40:13
+original-modified: 2026-06-04 10:24:27
 ---
 
 
