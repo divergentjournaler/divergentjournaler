@@ -53,6 +53,14 @@ function toSlug(value: string): string {
     .replace(/^-|-$/g, '');
 }
 
+function normalizeArticleDate(value: unknown): string {
+  if (value instanceof Date) {
+    return value.toISOString().slice(0, 19).replace('T', ' ');
+  }
+
+  return String(value).trim().replace(/\./g, '-');
+}
+
 export function markdownToMetadata(data: Record<string, any>): ArticleMetadata {
   const category = String(data.category || 'Creative Playground');
   const categorySlug = toSlug(category);
@@ -83,14 +91,10 @@ export function markdownToMetadata(data: Record<string, any>): ArticleMetadata {
     title: String(data.title),
     slug: toSlug(String(data.slug || data.title)),
     categorySlug,
-    date: data['original-date']
-  ? String(data['original-date'])
-  : String(data.date).replace(/\./g, '-'),
-modified: data['original-modified']
-  ? String(data['original-modified'])
-  : data['last-update']
-    ? String(data['last-update']).replace(/\./g, '-')
-    : undefined,
+    date: normalizeArticleDate(data['original-date'] ?? data.date),
+    modified: data['original-modified'] || data['last-update']
+     ? normalizeArticleDate(data['original-modified'] ?? data['last-update'])
+     : undefined,
     description: data.description || undefined,
     featuredImage: data.featuredImage ? String(data.featuredImage) : undefined,
     featuredImageListingOnly: data.featuredImageListingOnly === true,
