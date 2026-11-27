@@ -29,12 +29,23 @@ const { post } = Astro.props;
 const { metadata, html } = post;
 
 let MarkdownContent;
+let markdownSlideshowIds: string[] = [];
 
 if (post.source === 'markdown') {
   const entries = await getCollection('markdown');
   const entry = entries.find((item) => item.id === metadata.slug);
 
   if (entry) {
+    markdownSlideshowIds = [
+  ...new Set(
+    Array.from(
+      (entry.body ?? '').matchAll(
+        /data-slideshow-placeholder="(1490|1546)"/g
+      ),
+      match => match[1]
+    )
+  )
+];
     const { Content } = await render(entry);
     MarkdownContent = Content;
   }
@@ -155,7 +166,18 @@ const remainingParts = cleanedHtml.split(
           })}
     </div>
 
+    {markdownSlideshowIds.length > 0 && (
+  <div class="markdown-slideshow-source" hidden>
+    {markdownSlideshowIds.map((id) => (
+      <div data-slideshow-source={id}>
+        <Slideshows id={id} />
+      </div>
+    ))}
+  </div>
+)}
+
     {html.includes('data-slideshow-id') && (
+      
       <div class="article-slideshow-data" hidden>
         <Slideshows id="1490" />
         <Slideshows id="1546" />
@@ -197,3 +219,32 @@ const remainingParts = cleanedHtml.split(
     <RelatedPosts currentPost={post} />
   </article>
 </BaseLayout>
+
+<script>
+  function positionMarkdownSlideshows() {
+    document.querySelectorAll<HTMLElement>(
+      '[data-slideshow-placeholder]'
+    ).forEach((placeholder) => {
+      const id = placeholder.dataset.slideshowPlaceholder;
+
+      const source = document.querySelector<HTMLElement>(
+        `[data-slideshow-source="${id}"]`
+      );
+
+      if (!source) return;
+
+      if (id === '1490') {
+        source.classList.add('post-bottom-slideshow');
+      }
+
+      placeholder.replaceWith(source);
+    });
+  }
+
+  positionMarkdownSlideshows();
+
+  document.addEventListener(
+    'astro:page-load',
+    positionMarkdownSlideshows
+  );
+</script>

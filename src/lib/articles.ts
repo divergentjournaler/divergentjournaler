@@ -9,6 +9,7 @@ export interface ArticleMetadata {
   description?: string;
   featuredImageAuto?: boolean;
   featuredImage?: string;
+  featuredImageListingOnly?: boolean;
   originalUrl?: string;
   categories: {
     name: string;
@@ -82,12 +83,17 @@ export function markdownToMetadata(data: Record<string, any>): ArticleMetadata {
     title: String(data.title),
     slug: toSlug(String(data.slug || data.title)),
     categorySlug,
-    date: String(data.date).replace(/\./g, '-'),
-    modified: data['last-update']
-      ? String(data['last-update']).replace(/\./g, '-')
-      : undefined,
+    date: data['original-date']
+  ? String(data['original-date'])
+  : String(data.date).replace(/\./g, '-'),
+modified: data['original-modified']
+  ? String(data['original-modified'])
+  : data['last-update']
+    ? String(data['last-update']).replace(/\./g, '-')
+    : undefined,
     description: data.description || undefined,
     featuredImage: data.featuredImage ? String(data.featuredImage) : undefined,
+    featuredImageListingOnly: data.featuredImageListingOnly === true,
     categories,
     tags: websiteTags.map((tag: string) => ({
       name: String(tag),

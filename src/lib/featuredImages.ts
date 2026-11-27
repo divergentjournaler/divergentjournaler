@@ -18,6 +18,12 @@ export function getFeaturedImage(
 ): string | null {
   const context = options.context ?? 'listing';
   const category = article.metadata.categorySlug;
+  if (
+  context === 'article' &&
+  article.metadata.featuredImageListingOnly === true
+) {
+  return null;
+}
 
   // Some categories always use their default image in listings.
 if (

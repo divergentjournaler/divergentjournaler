@@ -10,11 +10,13 @@ const PROJECT_ROOT = process.env.DJ_PUBLISH_ROOT
       ".."
     );
 
-const VAULT_ROOT = path.join(
-  process.env.HOME,
-  "Vaults",
-  "Kaoverse"
-);
+const VAULT_ROOT = process.env.DJ_VAULT_ROOT
+  ? path.resolve(process.env.DJ_VAULT_ROOT)
+  : path.join(
+      process.env.HOME,
+      "Vaults",
+      "Kaoverse"
+    );
 
 const DJ_ROOT = path.join(
   VAULT_ROOT,
@@ -73,10 +75,60 @@ function setFrontmatterValue(markdown, field, value) {
   );
 }
 
+function getLegacyImageUrl(reference) {
+  const prefix =
+    "KORE/SITES/DIVERGENTJOURNALER/UPLOADS/LEGACY/";
+
+  if (!reference.startsWith(prefix)) return null;
+
+  const relative = reference.slice(prefix.length);
+
+  const url = relative.startsWith("TOOLS/")
+    ? "/uploads/tools/" + relative.slice(6)
+    : "/wp-content/uploads/" + relative;
+
+  const destination = path.join(
+    PROJECT_ROOT,
+    "public",
+    url
+  );
+
+  if (!fs.existsSync(destination)) {
+    throw new Error(`Legacy website image not found: ${url}`);
+  }
+
+  return url.split("/").map(encodeURIComponent).join("/");
+}
+
 function convertImages(markdown) {
   return markdown.replace(
     /!\[\[([^\]]+)\]\]/g,
     (match, reference) => {
+      const parts = reference.split("|").map(part => part.trim());
+const legacyUrl = getLegacyImageUrl(parts[0]);
+
+if (legacyUrl) {
+  const dimensions = parts.at(-1).match(
+    /^([1-9]\d*)(?:x([1-9]\d*))?$/
+  );
+
+  const alt = parts.slice(1, dimensions ? -1 : undefined).join("|");
+
+  if (!dimensions) {
+    return `![${alt}](${legacyUrl})`;
+  }
+
+  const width = dimensions[1];
+  const height = dimensions[2]
+    ? ` height="${dimensions[2]}"`
+    : "";
+
+  const safeAlt = alt.replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;");
+
+  return `<img src="${legacyUrl}" alt="${safeAlt}" width="${width}"${height}>`;
+}
       const filename = path.basename(
         reference.split("|")[0].trim()
       );
@@ -136,6 +188,12 @@ function convertFeaturedImage(markdown) {
   return markdown.replace(
     /^(featuredImage:[ \t]*)(\S[^\r\n]*)$/m,
     (match, prefix, value) => {
+      const reference = value.trim().replace(/^["']|["']$/g, "");
+const legacyUrl = getLegacyImageUrl(reference);
+
+if (legacyUrl) {
+  return `${prefix}${legacyUrl}`;
+}
       const filename = path.basename(
         value.trim().replace(/^["']|["']$/g, "")
       );
@@ -172,7 +230,19 @@ function convertFeaturedImage(markdown) {
   );
 }
 
+function convertSlideshows(markdown) {
+  return markdown.replace(
+    /^> \[!slideshow\] Slideshow[ \t]*\r?\n> (1490|1546)[ \t]*$/gm,
+    (_, id) => `<div data-slideshow-placeholder="${id}"></div>`
+  );
+}
+
 function removeDuplicateFeaturedImage(markdown) {
+    if (
+    getFrontmatterValue(markdown, "featuredImageListingOnly") === "true"
+  ) {
+    return markdown;
+  }
   const featuredMatch = markdown.match(
     /^featuredImage:\s*["']?([^"'\r\n]+)["']?\s*$/m
   );
@@ -262,7 +332,9 @@ if (!articleTitle || !articleCategory || !articleDate) {
 
 const convertedMarkdown = removeDuplicateFeaturedImage(
   convertFeaturedImage(
-    convertImages(originalMarkdown)
+    convertImages(
+      convertSlideshows(originalMarkdown)
+    )
   )
 );
 
@@ -286,11 +358,37 @@ const outputDirectory = path.join(
   "markdown"
 );
 
-const articleSlug = articleTitle
-  .toLowerCase()
-  .trim()
-  .replace(/[^a-z0-9]+/g, "-")
-  .replace(/^-|-$/g, "");
+const isLegacyArticle = Boolean(
+  getFrontmatterValue(originalMarkdown, "original-date")
+);
+
+if (isLegacyArticle && !publishedSlug) {
+  throw new Error(
+    "Legacy article is missing its published slug."
+  );
+}
+
+const articleSlug = isLegacyArticle
+  ? publishedSlug
+  : articleTitle
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+
+      if (isLegacyArticle) {
+  const currentCategorySlug = articleCategory
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+  if (currentCategorySlug !== publishedCategory) {
+    throw new Error(
+      "Legacy article primary category cannot be changed."
+    );
+  }
+}
 
 if (!articleSlug) {
   throw new Error("Cannot generate a slug from the article title.");
