@@ -1,7 +1,11 @@
 import fs from 'node:fs';
 import TurndownService from 'turndown';
 
-const source = 'src/content/posts/journal-prompts/dialogues-weekly-prompts-03.json';
+const source = process.argv[2];
+
+if (!source) {
+  throw new Error('Provide the path to a legacy JSON article.');
+}
 
 const article = JSON.parse(fs.readFileSync(source, 'utf8'));
 
@@ -74,6 +78,44 @@ turndown.addRule('legacyVideoEmbeds', {
   }
 });
 
+turndown.addRule('legacyDottedSeparator', {
+  filter: function (node) {
+    return node.nodeName === 'HR' &&
+      node.classList.contains('is-style-dots');
+  },
+  replacement: function () {
+    return '\n\n<hr class="wp-block-separator is-style-dots">\n\n';
+  }
+});
+
+turndown.addRule('emptyLinks', {
+  filter: function (node) {
+    return node.nodeName === 'A' &&
+      !node.textContent.trim() &&
+      !node.querySelector('img');
+  },
+  replacement: function () {
+    return '';
+  }
+});
+
+turndown.addRule('legacyMediaText', {
+  filter: function (node) {
+    return node.nodeName === 'DIV' &&
+      node.classList.contains('wp-block-media-text');
+  },
+  replacement: function (content, node) {
+    const media = node.querySelector('.wp-block-media-text__media');
+    const text = node.querySelector('.wp-block-media-text__content');
+
+    return '\n\n' +
+      (media ? turndown.turndown(media.innerHTML) + '\n<!-- media-text -->' : '') +
+      '\n\n' +
+      (text ? turndown.turndown(text.innerHTML) : '') +
+      '\n\n';
+  }
+});
+
 const html = article.html.replace(
   /(<div\b[^>]*data-slideshow-id="[^"]+"[^>]*>)\s*<\/div>/gi,
   '$1SLIDESHOW_PLACEHOLDER</div>'
@@ -118,7 +160,7 @@ const frontmatter = [
   '---',
   `published-category: ${meta.categorySlug}`,
   `published-slug: ${meta.slug}`,
-  `title: ${quote(meta.title)}`,
+  `title: ${quote(meta.title.replace(/&amp;/g, '&'))}`,
   `category: ${quote(primary.name)}`,
   ...(additional.length
     ? [
@@ -127,7 +169,10 @@ const frontmatter = [
       ]
     : ['additional-categories: []']),
   `featuredImage: ${quote(legacyImagePath(meta.featuredImage))}`,
-  ...(meta.featuredImage.includes('/uploads/tools/')
+  ...((
+  meta.featuredImage.includes('/uploads/tools/') ||
+  ['bright-side', 'passport-tn-dashboard'].includes(meta.slug)
+)
   ? ['featuredImageListingOnly: true']
   : []),
   'tags:',

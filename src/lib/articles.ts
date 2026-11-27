@@ -96,9 +96,9 @@ modified: data['original-modified']
     featuredImageListingOnly: data.featuredImageListingOnly === true,
     categories,
     tags: websiteTags.map((tag: string) => ({
-      name: String(tag),
-      slug: toSlug(String(tag)),
-    })),
+    name: String(tag).trim().replace(/^#+\s*/, ''),
+    slug: toSlug(String(tag)),
+  })),
   };
 }
 

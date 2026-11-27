@@ -100,6 +100,19 @@ function getLegacyImageUrl(reference) {
   return url.split("/").map(encodeURIComponent).join("/");
 }
 
+function convertMediaText(markdown) {
+  return markdown.replace(
+    /^!\[([^\]]*)\]\(([^)\n]+)\)[ \t]*\r?\n<!-- media-text -->[ \t]*$/gm,
+    (_, alt, url) => {
+      const safeAlt = alt.replace(/&/g, "&amp;")
+        .replace(/"/g, "&quot;")
+        .replace(/</g, "&lt;");
+
+      return `<img src="${url}" alt="${safeAlt}" class="legacy-media-text">`;
+    }
+  ).replace(/^[ \t]*<!-- media-text -->[ \t]*\r?$/gm, "");
+}
+
 function convertImages(markdown) {
   return markdown.replace(
     /!\[\[([^\]]+)\]\]/g,
@@ -330,13 +343,7 @@ if (!articleTitle || !articleCategory || !articleDate) {
   );
 }
 
-const convertedMarkdown = removeDuplicateFeaturedImage(
-  convertFeaturedImage(
-    convertImages(
-      convertSlideshows(originalMarkdown)
-    )
-  )
-);
+const convertedMarkdown = convertMediaText(removeDuplicateFeaturedImage(convertFeaturedImage(convertImages(convertSlideshows(originalMarkdown)))));
 
 // Remove private Obsidian tags from the website copy.
 // Keep site-tags because Astro already uses them.
