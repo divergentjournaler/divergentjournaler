@@ -56,6 +56,26 @@ export function markdownToMetadata(data: Record<string, any>): ArticleMetadata {
   const category = String(data.category || 'Creative Playground');
   const categorySlug = toSlug(category);
 
+  const additionalCategories = Array.isArray(data['additional-categories'])
+    ? data['additional-categories']
+    : [];
+
+  const categories = [
+    {
+      name: category,
+      slug: categorySlug,
+    },
+  ];
+
+  for (const value of additionalCategories) {
+    const name = String(value).trim();
+    const slug = toSlug(name);
+
+    if (slug && !categories.some((item) => item.slug === slug)) {
+      categories.push({ name, slug });
+    }
+  }
+
   const websiteTags = Array.isArray(data['site-tags']) ? data['site-tags'] : [];
 
   return {
@@ -68,12 +88,7 @@ export function markdownToMetadata(data: Record<string, any>): ArticleMetadata {
       : undefined,
     description: data.description || undefined,
     featuredImage: data.featuredImage ? String(data.featuredImage) : undefined,
-    categories: [
-      {
-        name: category,
-        slug: categorySlug,
-      },
-    ],
+    categories,
     tags: websiteTags.map((tag: string) => ({
       name: String(tag),
       slug: toSlug(String(tag)),
