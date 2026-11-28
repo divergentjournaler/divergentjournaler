@@ -205,6 +205,21 @@ if (legacyUrl) {
   );
 }
 
+// Ensure an automatic opening featured image has paragraph separation.
+function normalizeOpeningImage(markdown) {
+  if (getFrontmatterValue(markdown, "featuredImage")) {
+    return markdown;
+  }
+
+  if (getFrontmatterValue(markdown, "original-date")) {
+    return markdown;
+  }
+
+  return markdown.replace(
+    /^(---[ \t]*\r?\n[\s\S]*?\r?\n---[ \t]*\r?\n\s*!\[[^\]\r\n]*\]\([^\r\n)]+\)[ \t]*)(\r?\n)(?=[^\s])/,
+    "$1$2$2"
+  );
+}
 
 function convertFeaturedImage(markdown) {
   return markdown.replace(
@@ -484,7 +499,7 @@ const convertedMarkdown = convertMediaText(removeDuplicateFeaturedImage(convertF
 // Remove private Obsidian tags from the website copy.
 // Keep site-tags because Astro already uses them.
 
-const publishableMarkdown = convertedMarkdown
+const publishableMarkdown = normalizeOpeningImage(convertedMarkdown)
   .replace(
     /^tags:\s*\n(?:[ \t]+-[^\n]*\n)*/m,
     ""
