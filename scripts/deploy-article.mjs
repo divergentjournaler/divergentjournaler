@@ -50,6 +50,36 @@ function run(command, args, cwd = ROOT, extra = {}) {
   }).trim();
 }
 
+function requireValidImages(selectedSlug) {
+  try {
+    run(
+      process.execPath,
+      [
+        path.join(ROOT, "scripts", "publish-article.mjs"),
+        articleName,
+        mode,
+        "--check-images"
+      ],
+      ROOT,
+      {
+        env: {
+          ...process.env,
+          DJ_PUBLISH_ROOT: ROOT,
+          DJ_SELECTED_SLUG: selectedSlug
+        }
+      }
+    );
+  } catch (error) {
+    const details = String(error.stderr || error.message);
+    const message = details.match(/^Error: (.+)$/m)?.[1]
+      || details.trim();
+
+    throw new Error(
+      "Prepublish checks failed:\n\n" + message
+    );
+  }
+}
+
 function git(args) {
   return run("git", args);
 }
@@ -441,6 +471,10 @@ if (preflight) {
 "Enter a unique slug in the article properties."
     );
   }
+
+    requireValidImages(
+    intendedSlugAvailable ? intendedSlug : titleSlug
+  );
 
   const local = git(["rev-parse", "HEAD"]);
   const remote = remoteHead();

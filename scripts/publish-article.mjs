@@ -43,6 +43,8 @@ const IMAGE_DESTINATION = path.join(
   "images"
 );
 
+const checkImagesOnly = process.argv.includes("--check-images");
+
 const articleImages = new Set();
 
 function getFrontmatterValue(markdown, field) {
@@ -159,9 +161,9 @@ if (legacyUrl) {
         throw new Error(`Image not found: ${filename}`);
       }
 
-      fs.mkdirSync(IMAGE_DESTINATION, {
-        recursive: true,
-      });
+      if (!checkImagesOnly) {
+  fs.mkdirSync(IMAGE_DESTINATION, { recursive: true });
+}
 
       const destination = path.join(
         IMAGE_DESTINATION,
@@ -179,7 +181,9 @@ if (legacyUrl) {
     );
   }
 } else {
+  if (!checkImagesOnly) {
   fs.copyFileSync(source, destination);
+}
 }
 
       const url = `/uploads/images/${encodeURIComponent(filename)}`;
@@ -228,7 +232,9 @@ if (legacyUrl) {
         throw new Error(`Featured image not found: ${filename}`);
       }
 
-      fs.mkdirSync(IMAGE_DESTINATION, { recursive: true });
+      if (!checkImagesOnly) {
+  fs.mkdirSync(IMAGE_DESTINATION, { recursive: true });
+}
 
       if (fs.existsSync(destination)) {
         const existing = fs.readFileSync(destination);
@@ -240,7 +246,9 @@ if (legacyUrl) {
           );
         }
       } else {
-        fs.copyFileSync(source, destination);
+       if (!checkImagesOnly) {
+  fs.copyFileSync(source, destination);
+}
       }
 
       return `${prefix}/uploads/images/${encodeURIComponent(filename)}`;
@@ -429,7 +437,9 @@ const existingFile = path.join(
   `${existingSlug}.md`
 );
 
-fs.mkdirSync(outputDirectory, { recursive: true });
+if (!checkImagesOnly) {
+  fs.mkdirSync(outputDirectory, { recursive: true });
+}
 
 const articleExists = fs.existsSync(existingFile);
 
@@ -513,6 +523,11 @@ const trackedMarkdown = setFrontmatterValue(
   "published-category",
   toSlug(articleCategory)
 );
+
+if (checkImagesOnly) {
+  console.log("Image verification passed.");
+  process.exit(0);
+}
 
 const temporaryFile = `${outputFile}.tmp`;
 
